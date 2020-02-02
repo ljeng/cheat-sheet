@@ -35,7 +35,7 @@ def parse_string(s, open_bracket = '(', close_bracket = ')'):
 	return evaluate(outer)
 ```
 #### Example 1
-Implement a basic calculator to evaluate a simple expression string. The expression string may contain open `(` and closing parentheses `)`, the plus `+` or minus sign `-`, non-negative integers and empty spaces ` `. We modify the basic implentation to solve this:
+Implement a basic calculator to evaluate a simple expression string. The expression string may contain open `(` and closing parentheses `)`, the plus `+` or minus sign `-`, non-negative integers and empty spaces ` `. We modify the basic implementation to solve this:
 ```python
 def evaluate(s): sum(int(char) for char in s.replace('--', '+').replace('-', '+-').split('+') if char)
 

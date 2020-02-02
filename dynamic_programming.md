@@ -28,7 +28,7 @@ def knapsack(values, weights, capacity):
         for j in q: dp[i][j] = dp[a][j] if weights[i] > j else max(dp[a][j], dp[a][j - weights[i]] + values[i])
     return dp[-1][-1]
 ```
-### Matrix Chain Multiplicaion
+### Matrix Chain Multiplication
 You're given a list of matrix dimensions. For example, `dimensions = [22, 17, 68, 3, 88, 59, 54, 23, 22, 77]` means you have a 22 × 17 matrix, a 17 × 68 matrix, a 68 × 3 matrix, a 3 × 88 matrix, an 88 × 59 matrix, a 59 × 54 matrix, a 54 × 23 matrix, a 23 × 22 matrix, and a 22 × 77 matrix. Find the least number of operations needed to multiply these matrices.
 ```python
 def matrix_chain_multiplication(dimensions):
