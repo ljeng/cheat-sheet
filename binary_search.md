@@ -9,7 +9,8 @@ class A:
 		# write your condition here
 
 
-def index_of_first(start, end): return bisect.bisect_left(A(), True, start, end)
+def index_of_first(start, end):
+	return bisect.bisect_left(A(), True, start, end)
 ```
 #### Example 1
 A mountain is a list of numbers with the following properties:
@@ -24,9 +25,12 @@ import bisect
 def peak_index(mountain):
 
 	class Range:
-		def __getitem__(self, k): return mountain[k] > mountain[k + 1]
+	
+		def __getitem__(self, k):
+			return mountain[k] > mountain[k + 1]
 
-	def index_of_first(start, end): return bisect.bisect_left(A(), True, start, end)
+	def index_of_first(start, end):
+		return bisect.bisect_left(A(), True, start, end)
 
 	return index_of_first(1, len(mountain) - 2)
 	
@@ -55,9 +59,12 @@ import bisect
 def first_bad_version(n):
 
 	class A:
-		def __getitem__(self, k): return is_bad(k + 1)
+	
+		def __getitem__(self, k):
+			return is_bad(k + 1)
 
-	def index_of_first(start, end): return bisect.bisect_left(A(), True, start, end) + 1
+	def index_of_first(start, end):
+		return bisect.bisect_left(A(), True, start, end) + 1
 
 	return index_of_first(0, n - 1)
 	
