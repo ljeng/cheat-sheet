@@ -22,6 +22,6 @@ This cheat sheet contains concise implementations of common data structures and 
 * Djikstra's Algorithm
 * Bellman-Ford Algorithm
 * Floyd-Warshall Algorithm
-### Competitive Programming Hacks
+### [Competitive Programming Hacks](https://github.com/ljeng/cheat-sheet/blob/master/cp_hacks.md)
 * Fast O(*n*) Tricks
 * 2-Line Memoization
