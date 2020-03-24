@@ -9,20 +9,24 @@ Examples:
 [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays)
 ```python
 def findMedianSortedArrays(nums1, nums2):
+
     def median(a, b, extrema):
         k, half = -1 if extrema == max else 0, []
         if a: half += [nums2[j + k]]
         if b: half += [nums1[i + k]]
         return extrema(half)
+
     nums1, nums2 = sorted([nums1, nums2], key = len)
     m, n = len(nums1), len(nums2)
-    full_len = m + n
-    half_len = (full_len + 1)//2
-    function = lambda x: x and nums1[x - 1] > nums2[half_len - x]
-    i = binary_search(function, 0, m)
-    j = half_len - i
+    sum_len = m + n
+    mean_len = (sum_len + 1)//2
+    i = binary_search(lambda x: x and nums1[x - 1] > nums2[mean_len - x],
+        0,
+        m
+    )
+    j = sum_len - i
     median_low = median(i, j, max)
-    if full_len%2: return median_low
+    if sum_len%2: return median_low
     else: return (median_low + median(i == m, j == n, min))/2
 ```
 
@@ -55,8 +59,10 @@ def searchRange(nums, target):
 ```python
 def searchMatrix(matrix, target):
     m = len(matrix[0])
-    function = lambda x: matrix[x//m][x%m] >= target
-    i = binary_search(function, 0, len(matrix)*m - 1)
+    i = binary_search(lambda x: matrix[x//m][x%m] >= target,
+        0,
+        len(matrix)*m - 1
+    )
     return matrix[i//m][i%m] == target
 ```
 
@@ -71,17 +77,20 @@ def search(nums, target):
         while lo < n and nums[lo] == nums[0]: lo += 1
         while hi and nums[hi] == nums[-1]: hi -= 1
         i = binary_search(lambda x: nums[x - 1] > nums[x], lo, hi)
-        j = binary_search(lambda y: nums[y%n] >= target, i, i + m)%n
-        return nums[j] == target
+        return nums[binary_search(lambda y: nums[y%n] >= target,
+            i,
+            i + m
+        )%n] == target
     return False
 ```
 
 [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array)
 ```python
 def findMin(nums):
-    function = lambda x: nums[x - 1] > nums[x]
-    i = binary_search(function, 0, len(nums) - 1)
-    return nums[i]
+    return nums[binary_search(lambda x: nums[x - 1] > nums[x],
+        0,
+        len(nums) - 1
+    )]
 ```
 
 [Find Peak Element](https://leetcode.com/problems/find-peak-element)
@@ -99,8 +108,7 @@ def findPeakElement(nums):
 ```python
 def hIndex(citations):
     n = len(citations)
-    function = lambda x: citations[x] >= n - x
-    return binary_search(function, 0, n - 1)
+    return binary_search(lambda x: citations[x] >= n - x, 0, n - 1)
 ```
 
 [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence)
@@ -166,6 +174,9 @@ def findSolution(customfunction, z):
 [Find the Smallest Divisor Given a Threshold](https://leetcode.com/problems/find-the-smallest-divisor-given-a-threshold)
 ```python
 def smallestDivisor(nums, threshold):
-    function = lambda x: sum((i + x - 1)//x for i in nums) <= threshold
-    return binary_search(function, 1, max(nums))
+    return binary_search(
+        lambda x: sum((i + x - 1)//x for i in nums) <= threshold,
+        1,
+        max(nums)
+    )
 ```
