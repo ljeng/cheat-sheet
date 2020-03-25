@@ -1,7 +1,7 @@
-def kadane(arr, start, var, func, k):
-    for i in range(start, len(arr)):
-        for j in range(len(var)): var[j] = func[j](i, var)
-    return var[k]
+def kadane(arr, start, i, var, func):
+    for j in range(start, len(arr)):
+        for k in range(len(var)): var[k] = func[k](j, var)
+    return var[i]
 
 def wagner_fischer(matrix, initial, left, top, each_cell):
     matrix[0][0], r = initial, range(1, len(matrix))

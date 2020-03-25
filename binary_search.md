@@ -98,8 +98,10 @@ def findMin(nums):
 def findPeakElement(nums):
     n = len(nums)
     if n > 2:
-        function = lambda x: nums[x - 1] < nums[x] > nums[x + 1]
-        i = binary_search(function, 1, n - 2)
+        i = binary_search(lambda x: nums[x - 1] < nums[x] > nums[x + 1],
+            1,
+            n - 2
+        )
         return nums[i]
     else: return max(nums)
 ```
