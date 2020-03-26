@@ -1,6 +1,6 @@
 ## dynamic_programming
 
-[dynamic_programming.**kadane**(*arr*, *start*, *var*, *func*, *i*)](/dynamic_programming.py)
+### [dynamic_programming.**kadane**(*arr*, *start*, *var*, *func*, *i*)](/dynamic_programming.py)
 
 Solves a dynamic programming problem with input `arr` using a generalized form of Kadane's algorithm by doing the following steps:
 
@@ -8,9 +8,7 @@ Solves a dynamic programming problem with input `arr` using a generalized form o
     * For each index `k` in `range(len(var))`, apply `func[k]` to `var[k]`.
 1. Return `var[i]`.
 
-Examples:
-
-[Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
+[Maximum Subarray](https://leetcode.com/problems/maximum-subarray)
 ```python
 def maxSubArray(nums):
     return kadane(nums, 1, 1, [nums[0], nums[0]],
@@ -30,7 +28,7 @@ def numDecodings(s):
     )
 ```
 
-[Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+[Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock)
 ```python
 def maxProfit(prices):
     return kadane(prices, 1, 1, [0, 0],
@@ -92,7 +90,7 @@ def maxProduct(nums):
     ) if nums else 0
 ```
 
-[House Robber](https://leetcode.com/problems/house-robber/)
+[House Robber](https://leetcode.com/problems/house-robber)
 ```python
 def rob(nums):
     return kadane(nums, 0, 1, [0, 0, 0],
@@ -172,7 +170,7 @@ def maxSubarraySumCircular(A):
     return max(max_sum, sum(A) - extreme_sum(min)) if max_sum > 0 else max_sum
 ```
 
-[dynamic_programming.**wagner_fischer**(*matrix*, *initial*, *left*, *top*, *each_cell*)](/dynamic_programming.py)
+### [dynamic_programming.**wagner_fischer**(*matrix*, *initial*, *left*, *top*, *each_cell*)](/dynamic_programming.py)
 
 Solves a dynamic programming problem with input `matrix` using a generalized form of the Wagner-Fischer algorithm by doing the following steps:
 
@@ -183,8 +181,6 @@ Solves a dynamic programming problem with input `matrix` using a generalized for
     * Update the subsequent cells with `each_cell`, where `each_cell` is a function in the form of `lambda i, j: [function]`.
 
 Note that this function modifies `matrix` in-place.
-
-Examples:
 
 [Unique Paths II](https://leetcode.com/problems/unique-paths-ii)
 ```python
@@ -229,7 +225,7 @@ def minimumTotal(triangle):
     return min(triangle[-1])
 ```
 
-[Maximal Square](https://leetcode.com/problems/maximal-square/)
+[Maximal Square](https://leetcode.com/problems/maximal-square)
 ```python
 def maximalSquare(matrix):
     wagner_fischer(matrix, int(matrix[0][0]),
@@ -338,7 +334,7 @@ def matrixBlockSum(mat, K):
     return answer
 ```
 
-[dynamic_programming.**hirschberg**(*x*, *y*, *initial*, *left*, *top*, *each_cell*)](/dynamic_programming.py)
+### [dynamic_programming.**hirschberg**(*x*, *y*, *initial*, *left*, *top*, *each_cell*)](/dynamic_programming.py)
 
 Solves a dynamic programming problem with inputs `x` and `y` using a generalized form of Hirschberg's algorithm by doing the following steps:
 
@@ -348,8 +344,6 @@ Solves a dynamic programming problem with inputs `x` and `y` using a generalized
     * Fill the left-most cell with `left`, where `left` is a function in the form of `lambda x, y, i: [function]` and `i` is the row number.
     * Fill the subsequent cells with `each_cell`, where `each_cell` is a function in the form of `lambda x, y, i, j: [function]`.
 1. Return the bottom-right cell.
-
-Examples:
 
 [Edit Distance](https://leetcode.com/problems/edit-distance)
 ```python

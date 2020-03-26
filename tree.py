@@ -1,13 +1,13 @@
 import copy
 
 
-def _reverse(start, end):
+def reverse_(start, end):
     if start != end:
         prev, curr = start, start.right
         while prev != end: curr.right, prev, curr = prev, curr, curr.right
 
 
-def dfs(root, traversal):
+def dfs(root, traversal='inorder'):
     visited = []
     if traversal == 'postorder':
         dummy = copy.copy(root)
@@ -19,13 +19,13 @@ def dfs(root, traversal):
                 previous = previous.right
             if previous.right:
                 if traversal == 'postorder':
-                    _reverse(root.left, previous)
+                    reverse_(root.left, previous)
                     current = previous
                     while True:
                         visited += [current]
                         if current == root.left: break
                         current = current.right
-                    _reverse(previous, root.left)
+                    reverse_(previous, root.left)
                 previous.right = None
                 if traversal == 'inorder': visited += [root]
                 root = root.right
@@ -39,8 +39,8 @@ def dfs(root, traversal):
     return visited
 
 
-def memoize(root, none_val, function):
-    stack, memo = [], {None: none_val}
+def memoize(root, base, function, return_dict=False):
+    stack, memo = [], {None: base}
     if root: stack += [root]
     while stack:
         if stack[-1].left: stack += [stack[-1].left]
@@ -55,7 +55,7 @@ def memoize(root, none_val, function):
                 if stack and stack[-1].left is current and stack[-1].right:
                     stack += [stack[-1].right]
                     break
-    return memo[root]
+    return memo if return_dict else memo[root]
 
 
 def level_order(root):

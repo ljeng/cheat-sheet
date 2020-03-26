@@ -11,9 +11,9 @@ def wagner_fischer(matrix, initial, left, top, each_cell):
         for j in range(1, len(matrix[i])): matrix[i][j] = each_cell(i, j)
 
 def hirschberg(x, y, initial, left, top, each_cell):
-    y, x = sorted([x, y], key = len)
+    y, x = sorted([x, y], key=len)
     m = len(y)
-    dp = [[0 for j in range(m)] for k in range(2)]
+    dp = [[0]*m for k in range(2)]
     dp[0][0], r, q = initial, range(1, len(x)), range(1, m)
     for j in q: dp[0][j] = top(dp, x, y, j)
     for i in r:

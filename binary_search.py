@@ -10,5 +10,5 @@ class A:
         return self.function(k)
 
 
-def binary_search(function, start, end):
+def binary_search(start, end, function):
     return bisect.bisect_left(A(function), True, start, end)
