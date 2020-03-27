@@ -4,7 +4,8 @@ import copy
 def reverse_(start, end):
     if start != end:
         prev, curr = start, start.right
-        while prev != end: curr.right, prev, curr = prev, curr, curr.right
+        while prev != end:
+            curr.right, prev, curr = prev, curr, curr.right
 
 
 def dfs(root, traversal='inorder'):
@@ -23,16 +24,17 @@ def dfs(root, traversal='inorder'):
                     current = previous
                     while True:
                         visited += [current]
-                        if current == root.left: break
+                        if current == root.left:
+                            break
                         current = current.right
                     reverse_(previous, root.left)
-                previous.right = None
-                if traversal == 'inorder': visited += [root]
-                root = root.right
+                if traversal == 'inorder':
+                    visited += [root]
+                previous.right, root = None, root.right
             else:
-                previous.right = root
-                if traversal == 'preorder': visited += [root]
-                root = root.left
+                if traversal == 'preorder':
+                    visited += [root]
+                previous.right, root = root, root.left
         else:
             if traversal != 'postorder': visited += [root]
             root = root.right
@@ -40,11 +42,15 @@ def dfs(root, traversal='inorder'):
 
 
 def memoize(root, base, function, return_dict=False):
-    stack, memo = [], {None: base}
-    if root: stack += [root]
+    stack = []
+    memo = {None, base}
+    if root:
+        stack += [root]
     while stack:
-        if stack[-1].left: stack += [stack[-1].left]
-        elif stack[-1].right: stack += [stack[-1].right]
+        if stack[-1].left:
+            stack += [stack[-1].left]
+        elif stack[-1].right:
+            stack += [stack[-1].right]
         else:
             while stack:
                 current = stack.pop()

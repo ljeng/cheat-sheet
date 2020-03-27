@@ -10,8 +10,10 @@ def findMedianSortedArrays(nums1, nums2):
 
     def median(a, b, extrema):
         k, half = -1 if extrema == max else 0, []
-        if a: half += [nums2[j + k]]
-        if b: half += [nums1[i + k]]
+        if a:
+            half += [nums2[j + k]]
+        if b:
+            half += [nums1[i + k]]
         return extrema(half)
 
     nums1, nums2 = sorted([nums1, nums2], key=len)
@@ -22,9 +24,9 @@ def findMedianSortedArrays(nums1, nums2):
         lambda x: x and nums1[x - 1] > nums2[mean_len - x]
     )
     j = sum_len - i
-    median_low = median(i, j, max)
-    if sum_len%2: return median_low
-    else: return (median_low + median(i == m, j == n, min))/2
+    return median_low if sum_len%2 else (median_low
+        + median(i == m, j == n, min)
+    )/2
 ```
 
 [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array)
@@ -48,7 +50,8 @@ def searchRange(nums, target):
         if nums[i] == target:
             j = binary_search(i, n, lambda y: nums[y] > target) - 1
             return [i, j]
-        else: return [-1, -1]
+        else:
+            return [-1, -1]
     return [-1, -1]
 ```
 
@@ -70,8 +73,10 @@ def search(nums, target):
         n = len(nums)
         m = n - 1
         lo, hi = 0, m
-        while lo < n and nums[lo] == nums[0]: lo += 1
-        while hi and nums[hi] == nums[-1]: hi -= 1
+        while lo < n and nums[lo] == nums[0]:
+            lo += 1
+        while hi and nums[hi] == nums[-1]:
+            hi -= 1
         i = binary_search(lambda x: nums[x - 1] > nums[x], lo, hi)
         return nums[binary_search(i, i + m,
             lambda y: nums[y%n] >= target
@@ -96,7 +101,8 @@ def findPeakElement(nums):
             lambda x: nums[x - 1] < nums[x] > nums[x + 1]
         )
         return nums[i]
-    else: return max(nums)
+    else:
+        return max(nums)
 ```
 
 [H-Index II](https://leetcode.com/problems/h-index-ii)
@@ -137,8 +143,10 @@ def splitArray(nums, m):
         return True
 
     array_sum = sum(nums)
-    if m > 1: return binary_search(max(nums), array_sum, is_valid)
-    else: return array_sum
+    return binary_search(max(nums),
+        array_sum
+        is_valid
+    ) if m > 1 else array_sum
 ```
 
 [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas)
@@ -149,7 +157,8 @@ def minEatingSpeed(piles, H):
         hours = 0
         for pile in piles:
             hours += pile//K
-            if pile%K: hours += 1
+            if pile%K:
+                hours += 1
         return hours <= H
 
     return binary_search(1, max(piles), can_eat)
@@ -158,7 +167,8 @@ def minEatingSpeed(piles, H):
 [Find Positive Integer Solution for a Given Equation](https://leetcode.com/problems/find-positive-integer-solution-for-a-given-equation)
 ```python
 def findSolution(customfunction, z):
-    lo, hi, pairs = 1, 1001, []
+    lo, hi = 1, 1001
+    pairs = []
     for x in range(1, 1001):
         if not customfunction.f(x, lo) < customfunction.f(x, hi) < z:
             y = binary_search(lo, hi, lambda b: customfunction.f(x, b) >= z)
@@ -166,7 +176,8 @@ def findSolution(customfunction, z):
             if value >= z:
                 if value == z: pairs += [[x, y]]
                 hi = y
-            else: lo = y
+            else:
+                lo = y
     return pairs
 ```
 

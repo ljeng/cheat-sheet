@@ -29,8 +29,10 @@ def findTarget(root, k):
     if len(nums) >= 2:
         enum = dict()
         for i, x in enumerate(nums):
-            if x in enum: return True
-            else: enum[k - x] = i
+            if x in enum:
+                return True
+            else:
+                enum[k - x] = i
     return False
 ```
 
@@ -49,7 +51,7 @@ def getAllElements(root1, root2):
 
 ### [tree.**memoize**(*root*, *base*, *function*)](/tree.py)
 
-Applies a `function(x, L, R)` to a tree binary tree node `root` where `x` is the root, `L'` is the output of `function` applied to `root.left`', and `R` is the output of `function` applied to `root.right`. Sets the base case to `function(x = None) = base`.
+Applies a `function(x, L, R)` to a tree binary tree node `root` where `x` is the root, `L` is the output of `function` applied to `root.left`', and `R` is the output of `function` applied to `root.right`. Sets the base case to `function(x = None) = base`.
 
 [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree)
 ```python
@@ -114,8 +116,10 @@ def sumOfLeftLeaves(root):
     def function(x, L, R):
         s = R
         if x.left:
-            if x.left.left == x.left.right == None: s += x.left.val
-            else: s += L
+            if x.left.left == x.left.right == None:
+                s += x.left.val
+            else:
+                s += L
         return s
 
     return memoize(root, 0, function)
@@ -158,8 +162,10 @@ def tree2str(t):
         s = str(x.val)
         if x.left:
             s += parenthesize(L)
-            if x.right: s += parenthesize(R)
-        elif x.right: s += '()' + parenthesize(R)
+            if x.right:
+                s += parenthesize(R)
+        elif x.right:
+            s += '()' + parenthesize(R)
         return s
 
     parenthesize = lambda y: '(' + y + ')'
@@ -171,8 +177,10 @@ def tree2str(t):
 def trimBST(root, L, R):
 
     def function(x, _L, _R):
-        if x.val < L: return _R
-        elif x.val > R: return _L
+        if x.val < L:
+            return _R
+        elif x.val > R:
+            return _L
         x.left, x.right = _L, _R
         return x
 
@@ -184,12 +192,16 @@ def trimBST(root, L, R):
 def findSecondMinimumValue(root):
 
     def function(x, L, R):
-        if x.left == x.right == None: return -1
+        if x.left == x.right == None:
+            return -1
         a = x.left.val if x.left.val != x.val else L
         b = x.right.val if x.right.val != x.val else R
-        if min(a, b) > -1: return min(a, b)
-        elif a > -1: return a
-        else: return b
+        if min(a, b) > -1:
+            return min(a, b)
+        elif a > -1:
+            return a
+        else:
+            return b
 
     return memoize(root, -1, function)
 ```
@@ -225,9 +237,12 @@ def pruneTree(root):
 def subtreeWithAllDeepest(root):
 
     def function(x, L, R):
-        if L[0] > R[0]: return L[0] + 1, L[1]
-        elif L[0] < R[0]: return R[0] + 1, R[1]
-        else: return L[0] + 1, x
+        if L[0] > R[0]:
+            return L[0] + 1, L[1]
+        elif L[0] < R[0]:
+            return R[0] + 1, R[1]
+        else:
+            return L[0] + 1, x
 
     return memoize(root, (0, None), function)[1]
 ```
@@ -237,9 +252,12 @@ def subtreeWithAllDeepest(root):
 def rangeSumBST(root, L, R):
 
     def function(x, _L, _R):
-        if x.val < L: return _R
-        elif x.val > R: return _L
-        else: return x.val + _L + _R
+        if x.val < L:
+            return _R
+        elif x.val > R:
+            return _L
+        else:
+            return x.val + _L + _R
 
     return memoize(root, 0, function)
 ```
@@ -255,9 +273,12 @@ def isUnivalTree(root):
 def lcaDeepestLeaves(root):
 
     def function(x, L, R):
-        if L[0] > R[0]: return L[0] + 1, L[1]
-        elif L[0] < R[0]: return R[0] + 1, R[1]
-        else: return L[0] + 1, x
+        if L[0] > R[0]:
+            return L[0] + 1, L[1]
+        elif L[0] < R[0]:
+            return R[0] + 1, R[1]
+        else:
+            return L[0] + 1, x
 
     return memoize(root, (0, None), function)[1]
 ```
@@ -268,11 +289,15 @@ def sumEvenGrandparent(root):
     def sum_grandchildren(x, L, R):
         s = 0
         if x.left:
-            if x.left.left: s += x.left.left.val
-            if x.left.right: s += x.left.right.val
+            if x.left.left:
+                s += x.left.left.val
+            if x.left.right:
+                s += x.left.right.val
         if x.right:
-            if x.right.left: s += x.right.left.val
-            if x.right.right: s += x.right.right.val
+            if x.right.left:
+                s += x.right.left.val
+            if x.right.right:
+                s += x.right.right.val
         return s
         
     sum_memo = memoize(root, None, sum_grandchildren, True)
@@ -284,8 +309,10 @@ def sumEvenGrandparent(root):
 def removeLeafNodes(root):
 
     def function(x, L, R):
-        if x.left: x.left = L
-        if x.right: x.right = R
+        if x.left:
+            x.left = L
+        if x.right:
+            x.right = R
         return None if x.left == x.right and x.val == target else x
 
     return memoize(root, None, function)
@@ -323,7 +350,8 @@ def levelOrder(root):
 ```python
 def zigzagLevelOrder(root):
     visited = [[y.val for y in x] for x in level_order(root)]
-    for i in range(1, len(visited), 2): visited[i].reverse()
+    for i in range(1, len(visited), 2):
+        visited[i].reverse()
     return visited
 ```
 

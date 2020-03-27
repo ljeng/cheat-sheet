@@ -1,6 +1,6 @@
 ## dynamic_programming
 
-### [dynamic_programming.**kadane**(*arr*, *start*, *var*, *func*, *i*)](/dynamic_programming.py)
+### [dynamic_programming.**kadane**(*arr*, *start*, *i*, *var*, *func*)](/dynamic_programming.py)
 
 Solves a dynamic programming problem with input `arr` using a generalized form of Kadane's algorithm by doing the following steps:
 
@@ -20,8 +20,7 @@ def maxSubArray(nums):
 ```python
 def numDecodings(s):
     return kadane(s, 0, 2, [0, 0, int(bool(s)), ''],
-        [lambda i, x: x[1],
-            lambda i, x: x[2],
+        [lambda i, x: x[1], lambda i, x: x[2],
             lambda i, x: (s[i] > '0')*x[2] + (0 < int(x[3] + s[i]) <= 26)*x[0],
             lambda i, x: s[i]
         ]
@@ -83,9 +82,7 @@ def maxProduct(nums):
     return kadane(nums, 1, 2, [0, 0, nums[0], nums[0], nums[0]],
         [lambda i, x: max(max(nums[i]*x[3], nums[i]*x[4]), nums[i]),
             lambda i, x: min(min(nums[i]*x[3], nums[i]*x[4]), nums[i]),
-            lambda i, x: max(x[0], x[2]),
-            lambda i, x: x[0],
-            lambda i, x: x[1]
+            lambda i, x: max(x[0], x[2]), lambda i, x: x[0], lambda i, x: x[1]
         ]
     ) if nums else 0
 ```
@@ -94,8 +91,7 @@ def maxProduct(nums):
 ```python
 def rob(nums):
     return kadane(nums, 0, 1, [0, 0, 0],
-        [lambda i, x: x[1],
-            lambda i, x: max(x[1], nums[i] + x[2]),
+        [lambda i, x: x[1], lambda i, x: max(x[1], nums[i] + x[2]),
             lambda i, x: x[0]
         ]
     )
@@ -105,8 +101,7 @@ def rob(nums):
 ```python
 def rob(nums):
     rob1 = lambda start: kadane(nums, start, 1, [0, 0, 0],
-        [lambda i, x: x[1],
-            lambda i, x: max(x[1], nums[i] + x[2]),
+        [lambda i, x: x[1], lambda i, x: max(x[1], nums[i] + x[2]),
             lambda i, x: x[0]
         ]
     )
@@ -131,10 +126,8 @@ def singleNumber(nums):
 ```python
 def maxProfit(prices):
     return kadane(prices, 1, 3, [0, -prices[0], 0, 0],
-        [lambda i, x: x[1],
-            lambda i, x: max(x[2] - prices[i], x[0]),
-            lambda i, x: x[3],
-            lambda i, x: max(x[0] + prices[i], x[2])
+        [lambda i, x: x[1], lambda i, x: max(x[2] - prices[i], x[0]),
+            lambda i, x: x[3], lambda i, x: max(x[0] + prices[i], x[2])
         ]
     ) if prices else 0
 ```
@@ -143,8 +136,7 @@ def maxProfit(prices):
 ```python
 def maxProfit(prices, fee):
     return kadane(prices, 0, 1, [0, 0, -float('inf')],
-        [lambda i, x: x[1],
-            lambda i, x: max(x[1], x[2] + prices[i] - fee),
+        [lambda i, x: x[1], lambda i, x: max(x[1], x[2] + prices[i] - fee),
             lambda i, x: max(x[2], x[0] - prices[i])
         ]
     )
@@ -154,9 +146,7 @@ def maxProfit(prices, fee):
 ```python
 def subarrayBitwiseORs(A):
     return len(kadane(A, 0, 1, [set(), set()],
-        [lambda i, x: {A[i]|y for y in x[0]}|{A[i]},
-            lambda i, x: x[0]|x[1]
-        ]
+        [lambda i, x: {A[i]|y for y in x[0]}|{A[i]}, lambda i, x: x[0]|x[1]]
     ))
 ```
 
@@ -170,11 +160,11 @@ def maxSubarraySumCircular(A):
     return max(max_sum, sum(A) - extreme_sum(min)) if max_sum > 0 else max_sum
 ```
 
-### [dynamic_programming.**wagner_fischer**(*matrix*, *initial*, *left*, *top*, *each_cell*)](/dynamic_programming.py)
+### [dynamic_programming.**wagner_fischer**(*matrix*, *base*, *left*, *top*, *each_cell*)](/dynamic_programming.py)
 
 Solves a dynamic programming problem with input `matrix` using a generalized form of the Wagner-Fischer algorithm by doing the following steps:
 
-1. Fill the top-left cell with `initial`.
+1. Fill the top-left cell with `base`.
 1. Update the top row with `top`, where `top` is a function in the form of `lambda j: [function]` and `j` is the column number.
 1. For each subsequent row:
     * Update the left-most cell with `left`, where `left` is a function in the form of `lambda i: [function]` and `i` is the row number.
@@ -213,14 +203,15 @@ def minimumTotal(triangle):
     def each_cell(i, j):
         row = i - 1
         previous = triangle[row][j - 1]
-        if i > j: increment = min(previous, triangle[row][j])
-        else: increment = previous
+        if i > j:
+            increment = min(previous, triangle[row][j])
+        else:
+            increment = previous
         return triangle[i][j] + increment
 
     wagner_fischer(triangle, triangle[0][0],
         lambda i: triangle[i - 1][0] + triangle[i][0],
-        lambda j: triangle[0][0],
-        each_cell
+        lambda j: triangle[0][0], each_cell
     )
     return min(triangle[-1])
 ```
@@ -228,11 +219,9 @@ def minimumTotal(triangle):
 [Maximal Square](https://leetcode.com/problems/maximal-square)
 ```python
 def maximalSquare(matrix):
-    wagner_fischer(matrix, int(matrix[0][0]),
-        lambda i: int(matrix[i][0]),
+    wagner_fischer(matrix, int(matrix[0][0]), lambda i: int(matrix[i][0]),
         lambda j: int(matrix[0][j]),
-        lambda i, j: min(matrix[i - 1][j - 1],
-            matrix[i - 1][j],
+        lambda i, j: min(matrix[i - 1][j - 1], matrix[i - 1][j],
             matrix[i][j - 1]
         ) + 1 if matrix[i][j] == '1' else 0
     )
@@ -248,15 +237,13 @@ class NumMatrix:
         wagner_fischer(self.prefix_sum, 0, lambda i: 0, lambda j: 0,
             lambda i, j: (
                 matrix[i - 1][j - 1]
-                - self.prefix_sum[i - 1][j - 1]
-                + self.prefix_sum[i - 1][j]
+                - self.prefix_sum[i - 1][j - 1] + self.prefix_sum[i - 1][j]
                 + self.prefix_sum[i][j - 1]
             )
         )
 
     def sumRegion(self, row1, col1, row2, col2):
-        return (self.prefix_sum[row1][col1]
-            - self.prefix_sum[row1][col2 + 1]
+        return (self.prefix_sum[row1][col1] - self.prefix_sum[row1][col2 + 1]
             - self.prefix_sum[row2 + 1][col1]
             + self.prefix_sum[row2 + 1][col2 + 1]
         )
@@ -270,15 +257,11 @@ def largest1BorderedSquare(grid):
     horizontal, vertical = [[0]*m for i in r], [[0]*m for i in r]
     hor_each_cell = lambda i, j: grid[i][j] * (horizontal[i][j - 1] + 1)
     vert_each_cell = lambda i, j: grid[i][j] * (vertical[i - 1][j] + 1)
-    wagner_fischer(horizontal, grid[0][0],
-        lambda i: hor_each_cell(i, 0),
-        lambda j: grid[0][j],
-        hor_each_cell
+    wagner_fischer(horizontal, grid[0][0], lambda i: hor_each_cell(i, 0),
+        lambda j: grid[0][j], hor_each_cell
     )
-    wagner_fischer(vertical, grid[0][0],
-        lambda i: grid[i][0],
-        lambda j: vert_each_cell(0, j),
-        vert_each_cell
+    wagner_fischer(vertical, grid[0][0], lambda i: grid[i][0],
+        lambda j: vert_each_cell(0, j), vert_each_cell
     )
     side_len = 0
     for i in range(n - 1, -1, -1):
@@ -295,10 +278,9 @@ def largest1BorderedSquare(grid):
 ```python
 def countSquares(matrix):
     wagner_fischer(matrix, 0, lambda i: matrix[i][0], lambda j: matrix[0][j],
-        lambda i, j: matrix[i][j]*min(matrix[i - 1][j - 1]
-            matrix[i - 1][j],
-            matrix[i][j - 1])
-        + 1
+        lambda i, j: matrix[i][j]*min(matrix[i - 1][j - 1], matrix[i - 1][j],
+            matrix[i][j - 1]
+        ) + 1
     )
     return sum(map(sum, matrix))
 ```
@@ -312,38 +294,36 @@ def matrixBlockSum(mat, K):
         c1 = max(j - K, 0)
         r2 = min(i + K + 1, m)
         c2 = min(j + K + 1, n)
-        return (prefix_sum[r1][c1]
-            - prefix_sum[r1][c2]
-            - prefix_sum[r2][c1]
-            + prefix_sum[r2][c2])
+        return (prefix_sum[r1][c1] - prefix_sum[r1][c2] - prefix_sum[r2][c1]
+            + prefix_sum[r2][c2]
+        )
 
     n, m = len(mat), len(mat[0])
     prefix_sum = [[0]*(m+1) for i in range(n + 1)]
     wagner_fischer(prefix_sum, 0, lambda i: 0, lambda j: 0,
-        lambda i, j: (mat[i - 1][j - 1]
-            - prefix_sum[i - 1][j - 1]
-            + prefix_sum[i - 1][j]
-            + prefix_sum[i][j - 1]
+        lambda i, j: (mat[i - 1][j - 1] - prefix_sum[i - 1][j - 1]
+            + prefix_sum[i - 1][j] + prefix_sum[i][j - 1]
         )
     )
     answer = [[0]*m for i in range(n)]
-    wagner_fischer(answer, each_cell(0, 0),
-        lambda i: each_cell(i, 0),
-        lambda j: each_cell(0, j),
-        each_cell)
+    wagner_fischer(answer, each_cell(0, 0), lambda i: each_cell(i, 0),
+        lambda j: each_cell(0, j), each_cell
+    )
     return answer
 ```
 
-### [dynamic_programming.**hirschberg**(*x*, *y*, *initial*, *left*, *top*, *each_cell*)](/dynamic_programming.py)
+### [dynamic_programming.**hirschberg**(*x*, *y*, *base*, *left*, *top*, *each_cell*, *flexible=True*)](/dynamic_programming.py)
 
 Solves a dynamic programming problem with inputs `x` and `y` using a generalized form of Hirschberg's algorithm by doing the following steps:
 
-1. Fill the top-left cell with `initial`.
+1. Fill the top-left cell with `base`.
 1. Fill the top row with `top`, where `top` is a function in the form of `lambda x, y, j: [function]` and `j` is the column number.
 1. For each subsequent row:
     * Fill the left-most cell with `left`, where `left` is a function in the form of `lambda x, y, i: [function]` and `i` is the row number.
     * Fill the subsequent cells with `each_cell`, where `each_cell` is a function in the form of `lambda x, y, i, j: [function]`.
 1. Return the bottom-right cell.
+
+If `flexible` is `True`, `x` and `y` will be swapped as needed to minimize memory usage. If `flexible` is `False`, `x` and `y` won't be swapped and your problem will be treated as a knapsack problem where `x` is the list of items, `y` is `range(capacity + 1)`, and `capacity` is how much weight the knapsack can hold.
 
 [Edit Distance](https://leetcode.com/problems/edit-distance)
 ```python
@@ -352,11 +332,11 @@ def minDistance(word1, word2):
         return hirschberg(word1, word2, int(word1[0] != word2[0]),
             lambda dp, x, y, i: max(dp[0][0] + int(x[i] != y[0]), i),
             lambda dp, x, y, j: max(dp[0][j - 1] + int(x[0] != y[j]), j),
-            lambda dp, x, y, i, j: min(dp[0][col],
+            lambda dp, x, y, i, j: min(dp[0][j - 1],
                 dp[0][j],
-                dp[i][j - 1]
+                dp[1][j - 1]
                 ) + 1 if x[i] != y[j] else dp[0][j - 1]
-            )[-1]
+            )
     return len(word1 + word2)
 ```
 
@@ -379,8 +359,7 @@ def minDistance(word1, word2):
         int(word1[0] == word2[0]),
         lambda dp, x, y, i: max(dp[0][0], int(x[i] == y[0])),
         lambda dp, x, y, j: max(dp[0][j - 1], int(x[0] == y[j])),
-        lambda dp, x, y, i, j: max(dp[0][j],
-            dp[1][j - 1],
+        lambda dp, x, y, i, j: max(dp[0][j], dp[1][j - 1],
             dp[0][j - 1] + int(x[i] == y[j])
         )
     )
@@ -404,8 +383,7 @@ def longestCommonSubsequence(text1, text2):
     return hirschberg(text1, text2, int(x[0] == y[0]),
         lambda dp, x, y, i: max(dp[0][0], int(x[i] == y[0])),
         lambda dp, x, y, j: max(dp[0][j - 1], int(x[0] == y[j])),
-        lambda dp, x, y, i, j: max(dp[0][j],
-            dp[1][j - 1],
+        lambda dp, x, y, i, j: max(dp[0][j], dp[1][j - 1],
             dp[0][j - 1] + int(x[i] == y[j])
         )
     )
@@ -416,11 +394,9 @@ def longestCommonSubsequence(text1, text2):
 def minInsertions(s):
     n = len(s)
     r = range(n + 1)
-    return n - hirschberg(r, r, 0,
-        lambda dp, x, y, i: 0,
+    return n - hirschberg(r, r, 0, lambda dp, x, y, i: 0,
         lambda dp, x, y, j: 0,
-        lambda dp, x, y, i, j: max(dp[0][j],
-            dp[1][j - 1]
+        lambda dp, x, y, i, j: max(dp[0][j], dp[1][j - 1]
         ) if s[i - 1] != s[-j] else dp[0][j - 1] + 1
     )
 ```
