@@ -1,61 +1,32 @@
 ## dynamic_programming
 
-### [dynamic_programming.**kadane**(*arr*, *start*, *i*, *var*, *func*)](/dynamic_programming.py)
+### [dynamic_programming.**kadane**(*arr*, *start=0*, *k=-1*, *var = [0, -float('inf')]*, *func='kadane'*)](/dynamic_programming.py)
 
 Solves a dynamic programming problem with input `arr` using a generalized form of Kadane's algorithm by doing the following steps:
 
 1. Iterate through `arr` starting from index `start`. For each iteration do:
-    * For each index `k` in `range(len(var))`, apply `func[k]` to `var[k]`.
-1. Return `var[i]`.
+    * For each index `j` in `range(len(var))`, apply `func[j]` to `var[j]`.
+1. Return `var[k]`.
+
+`func` can either be a function in the form of `lambda i, x: [function]` or one of the following built-in algorithms:
+* `kadane`: Kadane's algorithm
+* `house_robber`: algorithm to solve the [house robber](https://leetcode.com/problems/house-robber) problem
+
+`start`, `k`, and `var` aren't needed if a built-in `func` is used, unless you want to customize them.
 
 [Maximum Subarray](https://leetcode.com/problems/maximum-subarray)
 ```python
 def maxSubArray(nums):
-    return kadane(nums, 1, 1, [nums[0], nums[0]],
-        [lambda i, x: nums[i] + max(x[0], 0), lambda i, x: max(x)],
-    )
+    return kadane(nums, func='kadane')
 ```
 
 [Decode Ways](https://leetcode.com/problems/decode-ways)
 ```python
 def numDecodings(s):
-    return kadane(s, 0, 2, [0, 0, int(bool(s)), ''],
-        [lambda i, x: x[1], lambda i, x: x[2],
+    return kadane(s, var = [0, 0, int(bool(s)), ''],
+        func = [lambda i, x: x[1], lambda i, x: x[2],
             lambda i, x: (s[i] > '0')*x[2] + (0 < int(x[3] + s[i]) <= 26)*x[0],
             lambda i, x: s[i]
-        ]
-    )
-```
-
-[Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock)
-```python
-def maxProfit(prices):
-    return kadane(prices, 1, 1, [0, 0],
-        [lambda i, x: max(x[0] + prices[i] - prices[i - 1], 0),
-            lambda i, x: max(x)
-        ]
-    )
-```
-
-[Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii)
-```python
-def maxProfit(prices):
-    return kadane(prices, 1, 0, [0],
-        [lambda i, x: x[0] + prices[i] - prices[i - 1]
-            if prices[i - 1] < prices[i]
-            else x[0]
-        ]
-    )
-```
-
-[Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii)
-```python
-def maxProfit(prices):
-    return kadane(prices, 0, 0, [0, -float('inf'), 0, -float('inf')],
-        [lambda i, x: max(x[0], x[1] + prices[i]),
-            lambda i, x: max(x[1], x[2] - prices[i]),
-            lambda i, x: max(x[2], x[3] + prices[i]),
-            lambda i, x: max(x[3], -prices[i])
         ]
     )
 ```
@@ -63,14 +34,14 @@ def maxProfit(prices):
 [Single Number](https://leetcode.com/problems/single-number)
 ```python
 def singleNumber(nums):
-    return kadane(nums, 0, 0, [0], [lambda i, x: nums[i]^x[0]])
+    return kadane(nums, var = [0], func = [lambda i, x: nums[i]^x[0]])
 ```
 
 [Single Number II](https://leetcode.com/problems/single-number-ii)
 ```python
 def singleNumber(nums):
-    return kadane(nums, 0, 0, [0, 0],
-        [lambda i, x: (nums[i]^x[0]) & ~x[1],
+    return kadane(nums, k=0, var = [0, 0],
+        func = [lambda i, x: (nums[i]^x[0]) & ~x[1],
             lambda i, x: (nums[i]^x[1]) & ~x[0]
         ]
     )
@@ -79,8 +50,8 @@ def singleNumber(nums):
 [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray)
 ```python
 def maxProduct(nums):
-    return kadane(nums, 1, 2, [0, 0, nums[0], nums[0], nums[0]],
-        [lambda i, x: max(max(nums[i]*x[3], nums[i]*x[4]), nums[i]),
+    return kadane(nums, start=1, k=2, var = [0, 0, nums[0], nums[0], nums[0]],
+        func = [lambda i, x: max(max(nums[i]*x[3], nums[i]*x[4]), nums[i]),
             lambda i, x: min(min(nums[i]*x[3], nums[i]*x[4]), nums[i]),
             lambda i, x: max(x[0], x[2]), lambda i, x: x[0], lambda i, x: x[1]
         ]
@@ -90,21 +61,13 @@ def maxProduct(nums):
 [House Robber](https://leetcode.com/problems/house-robber)
 ```python
 def rob(nums):
-    return kadane(nums, 0, 1, [0, 0, 0],
-        [lambda i, x: x[1], lambda i, x: max(x[1], nums[i] + x[2]),
-            lambda i, x: x[0]
-        ]
-    )
+    return kadane(nums, func='house_robber')
 ```
 
 [House Robber II](https://leetcode.com/problems/house-robber-ii)
 ```python
 def rob(nums):
-    rob1 = lambda start: kadane(nums, start, 1, [0, 0, 0],
-        [lambda i, x: x[1], lambda i, x: max(x[1], nums[i] + x[2]),
-            lambda i, x: x[0]
-        ]
-    )
+    rob1 = lambda j: kadane(nums, start=j, func='house_robber')
     money = rob1(1)
     nums.pop()
     return max(money, rob1(0))
@@ -113,7 +76,7 @@ def rob(nums):
 [Single Number III](https://leetcode.com/problems/single-number-iii)
 ```python
 def singleNumber(nums):
-    reduce = lambda f: kadane(nums, 0, 0, [0], [f])
+    reduce = lambda f: kadane(nums, var = [0], var = [f])
     mask = reduce(lambda i, x: nums[i]^x[0])
     mask &= -mask
     g = lambda intersect: reduce(
@@ -125,7 +88,7 @@ def singleNumber(nums):
 [Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown)
 ```python
 def maxProfit(prices):
-    return kadane(prices, 1, 3, [0, -prices[0], 0, 0],
+    return kadane(prices, start=1, k=3, [0, -prices[0], 0, 0],
         [lambda i, x: x[1], lambda i, x: max(x[2] - prices[i], x[0]),
             lambda i, x: x[3], lambda i, x: max(x[0] + prices[i], x[2])
         ]
@@ -135,8 +98,8 @@ def maxProfit(prices):
 [Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee)
 ```python
 def maxProfit(prices, fee):
-    return kadane(prices, 0, 1, [0, 0, -float('inf')],
-        [lambda i, x: x[1], lambda i, x: max(x[1], x[2] + prices[i] - fee),
+    return kadane(prices, k=1, var = [0, 0, -float('inf')],
+        func = [lambda i, x: x[1], lambda i, x: max(x[1], x[2] + prices[i] - fee),
             lambda i, x: max(x[2], x[0] - prices[i])
         ]
     )
@@ -145,19 +108,65 @@ def maxProfit(prices, fee):
 [Bitwise ORs of Subarrays](https://leetcode.com/problems/bitwise-ors-of-subarrays)
 ```python
 def subarrayBitwiseORs(A):
-    return len(kadane(A, 0, 1, [set(), set()],
-        [lambda i, x: {A[i]|y for y in x[0]}|{A[i]}, lambda i, x: x[0]|x[1]]
+    return len(kadane(A, var = [set(), set()],
+        func = [lambda i, x: {A[i]|y for y in x[0]}|{A[i]}, lambda i, x: x[0]|x[1]]
     ))
 ```
 
 [Maximum Sum Circular Subarray](https://leetcode.com/problems/maximum-sum-circular-subarray)
 ```python
 def maxSubarraySumCircular(A):
-    extreme_sum = lambda func: kadane(A, 1, 1, [A[0], A[0]],
-        [lambda i, x: A[i] + func(x[0], 0), lambda i, x: func(x)]
+    max_sum = kadane(A, func='kadane')
+    return max(max_sum,
+        sum(A) - kadane(A, var = [0, A[0]],
+        func = [lambda i, x: A[i] + min(x[0], 0), lambda i, x: min(x)]
+    )) if max_sum > 0 else max_sum
+```
+
+[Maximum Sum of Two Non-Overlapping Arrays](https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays)
+```python
+def maxSumTwoNoOverlap(A, L, M):
+    for i in range(1, len(A)): A[i] += A[i - 1]
+    n = L + M
+    return kadane(A, start=n, k=2,
+        var = [A[L - 1], A[M - 1], A[n - 1]],
+        func = [lambda i, x: max(x[0], A[i - M] - A[i - n]),
+            lambda i, x: max(x[1], A[i - L] - A[i - n]),
+            lambda i, x: max(x[2], x[0] + A[i] - A[i - M],
+                x[1] + A[i] - A[i - L]
+            )
+        ]
     )
-    max_sum = extreme_sum(max)
-    return max(max_sum, sum(A) - extreme_sum(min)) if max_sum > 0 else max_sum
+```
+
+### [dynamic_programming.**max_profit**(*prices*, *k=float('inf')*)](/dynamic_programming.py)
+
+Solves the problem:
+
+> Say you have an array for which the `i`th element is the price of a given stock on day `i`. Design an algorithm to find the maximum profit. You may complete at most `k` transactions. You may not engage in multiple transactions at the same time (i.e. you must sell the stock before you buy again).
+
+[Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock)
+```python
+def maxProfit(prices):
+    return max_profit(prices, k=1)
+```
+
+[Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii)
+```python
+def maxProfit(prices):
+    return max_profit(prices)
+```
+
+[Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii)
+```python
+def maxProfit(prices):
+    return max_profit(prices, k=2)
+```
+
+[Best Time to Buy and Sell Stock IV](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv)
+```python
+def maxProfit(k, prices):
+    return max_profit(prices, k=k)
 ```
 
 ### [dynamic_programming.**wagner_fischer**(*matrix*, *base*, *left*, *top*, *each_cell*)](/dynamic_programming.py)
@@ -264,8 +273,8 @@ def largest1BorderedSquare(grid):
         lambda j: vert_each_cell(0, j), vert_each_cell
     )
     side_len = 0
-    for i in range(n - 1, -1, -1):
-        for j in range(m - 1, -1, -1):
+    for i in reversed(range(n)):
+        for j in reversed(range(m)):
             k = min(horizontal[i][j], vertical[i][j])
             while k >= side_len:
                 if min(horizontal[i - k + 1][j], vertical[i][j - k + 1]) >= k:
@@ -332,9 +341,7 @@ def minDistance(word1, word2):
         return hirschberg(word1, word2, int(word1[0] != word2[0]),
             lambda dp, x, y, i: max(dp[0][0] + int(x[i] != y[0]), i),
             lambda dp, x, y, j: max(dp[0][j - 1] + int(x[0] != y[j]), j),
-            lambda dp, x, y, i, j: min(dp[0][j - 1],
-                dp[0][j],
-                dp[1][j - 1]
+            lambda dp, x, y, i, j: min(dp[0][j - 1], dp[0][j], dp[1][j - 1]
                 ) + 1 if x[i] != y[j] else dp[0][j - 1]
             )
     return len(word1 + word2)
@@ -346,8 +353,7 @@ def longestPalindromeSubseq(s):
     n = len(s)
     r = range(n + 1)
     return hirschberg(r, r, 0, lambda dp, x, y, i: 0, lambda dp, x, y, j: 0,
-        lambda dp, x, y, i, j: max(dp[0][j],
-            dp[1][j - 1]
+        lambda dp, x, y, i, j: max(dp[0][j], dp[1][j - 1]
         ) if x[0] != s[n - j] else dp[0][j - 1] + 1
     )
 ```
@@ -369,7 +375,7 @@ def minDistance(word1, word2):
 ```python
 def minimumDeleteSum(s1, s2):
     return sum(map(ord, s1 + s2)) - 2*hirschberg(s1, s2,
-        0 if s1[0] != s2[0] else ord(s1[0]),
+        ord(s1[0])*(s1[0] == s2[0]),
         lambda dp, x, y, i: dp[0][0] if x[i] != y[0] else ord(x[i]),
         lambda dp, x, y, j: dp[0][j - 1] if x[0] != y[j] else ord(y[j]),
         lambda dp, x, y, i, j: max(dp[0][j],
@@ -380,7 +386,7 @@ def minimumDeleteSum(s1, s2):
 [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence)
 ```python
 def longestCommonSubsequence(text1, text2):
-    return hirschberg(text1, text2, int(x[0] == y[0]),
+    return hirschberg(text1, text2, int(text1[0] == text2[0]),
         lambda dp, x, y, i: max(dp[0][0], int(x[i] == y[0])),
         lambda dp, x, y, j: max(dp[0][j - 1], int(x[0] == y[j])),
         lambda dp, x, y, i, j: max(dp[0][j], dp[1][j - 1],

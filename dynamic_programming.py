@@ -1,8 +1,35 @@
-def kadane(arr, start, i, var, func):
-    for j in range(start, len(arr)):
-        for k in range(len(var)):
-            var[k] = func[k](j, var)
-    return var[i]
+import functools
+
+
+def kadane(arr, start=0, k=-1, var = [0, -float('inf')], func='kadane'):
+    if func == 'kadane':
+        var = [0, -float('inf')]
+        func = [lambda i, x: arr[i] + max(x[0], 0), lambda i, x: max(x)]
+    elif func == 'house_robber':
+        k = 1
+        var = [0, 0, 0]
+        func = [lambda i, x: x[1], lambda i, x: max(x[1], nums[i] + x[2]),
+            lambda i, x: x[0]]
+    for i in range(start, len(arr)):
+        for j, f in enumerate(func):
+            var[j] = f(i, var)
+    return var[k]
+
+
+def max_profit(k, prices):
+    if k < len(prices)//2:
+        var = [0, -float('inf')]*k + [0]
+        for i, price in enumerate(prices):
+            for j in range(1, 2*k, 2):
+                var[j - 1] =  max(var[j - 1], var[j] + price)
+                var[j] = max(var[j], var[j + 1] - price)
+        return var[0]
+    return kadane(prices, 1, var = [0],
+        func = [lambda i, x: x[0] + prices[i] - prices[i - 1]
+            if prices[i - 1] < prices[i]
+            else x[0]
+        ]
+    )
 
 
 def wagner_fischer(matrix, base, left, top, each_cell):
@@ -32,11 +59,3 @@ def hirschberg(x, y, base, left, top, each_cell, flexible=True):
             dp[1][j] = each_cell(dp, x, y, i, j)
         dp[0] = dp[1][:]
     return dp[1][-1]
-
-
-def knapsack(items, capacity, base, a, b, c):
-    each_cell = lambda dp, x, y, i, j: b(dp, i, j) if a(i, j) else c(dp, i, j)
-    return hirschberg(items, range(capacity + 1), base,
-        lambda dp, x, y, i: base,
-        lambda dp, x, y, j: each_cell(dp, x, y, 0, j), each_cell, False
-    )

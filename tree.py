@@ -41,7 +41,7 @@ def dfs(root, traversal='inorder'):
     return visited
 
 
-def memoize(root, base, function, return_dict=False):
+def memoize(root, base, func, return_dict=False):
     stack = []
     memo = {None, base}
     if root:
@@ -54,7 +54,7 @@ def memoize(root, base, function, return_dict=False):
         else:
             while stack:
                 current = stack.pop()
-                memo[current] = function(current,
+                memo[current] = func(current,
                     memo[current.left],
                     memo[current.right]
                 )

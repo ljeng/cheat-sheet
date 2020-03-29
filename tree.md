@@ -49,9 +49,9 @@ def getAllElements(root1, root2):
     return itertools.chain(*lists)
 ```
 
-### [tree.**memoize**(*root*, *base*, *function*)](/tree.py)
+### [tree.**memoize**(*root*, *base*, *func*)](/tree.py)
 
-Applies a `function(x, L, R)` to a tree binary tree node `root` where `x` is the root, `L` is the output of `function` applied to `root.left`', and `R` is the output of `function` applied to `root.right`. Sets the base case to `function(x = None) = base`.
+Applies a `func(x, L, R)` to a tree binary tree node `root` where `x` is the root, `L` is the output of `func` applied to `root.left`', and `R` is the output of `func` applied to `root.right`. Sets the base case to `func(x = None) = base`.
 
 [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree)
 ```python
@@ -113,7 +113,7 @@ def rob(root):
 ```python
 def sumOfLeftLeaves(root):
 
-    def function(x, L, R):
+    def func(x, L, R):
         s = R
         if x.left:
             if x.left.left == x.left.right == None:
@@ -122,7 +122,7 @@ def sumOfLeftLeaves(root):
                 s += L
         return s
 
-    return memoize(root, 0, function)
+    return memoize(root, 0, func)
 ```
 
 [Most Frequent Subtree Sum](https://leetcode.com/problems/most-frequent-subtree-sum)
@@ -158,7 +158,7 @@ def findTilt(root):
 ```python
 def tree2str(t):
 
-    def function(x, L, R):
+    def func(x, L, R):
         s = str(x.val)
         if x.left:
             s += parenthesize(L)
@@ -169,14 +169,14 @@ def tree2str(t):
         return s
 
     parenthesize = lambda y: '(' + y + ')'
-    return memoize(t, '()', function) if t else ''
+    return memoize(t, '()', func) if t else ''
 ```
 
 [Trim a Binary Search Tree](https://leetcode.com/problems/trim-a-binary-search-tree)
 ```python
 def trimBST(root, L, R):
 
-    def function(x, _L, _R):
+    def func(x, _L, _R):
         if x.val < L:
             return _R
         elif x.val > R:
@@ -184,14 +184,14 @@ def trimBST(root, L, R):
         x.left, x.right = _L, _R
         return x
 
-    return memoize(root, None, function)
+    return memoize(root, None, func)
 ```
 
 [Second Minimum Node in a Binary Tree](https://leetcode.com/problems/second-minimum-node-in-a-binary-tree)
 ```python
 def findSecondMinimumValue(root):
 
-    def function(x, L, R):
+    def func(x, L, R):
         if x.left == x.right == None:
             return -1
         a = x.left.val if x.left.val != x.val else L
@@ -203,14 +203,14 @@ def findSecondMinimumValue(root):
         else:
             return b
 
-    return memoize(root, -1, function)
+    return memoize(root, -1, func)
 ```
 
 [Longest Univalue Path](https://leetcode.com/problems/longest-univalue-path)
 ```python
 def longestUnivaluePath(root):
 
-    def function(root, L, R):
+    def func(root, L, R):
         left_same = is_same(root, root.left)
         right_same = is_same(root, root.right)
         return max((L + R + 2)*left_same*right_same,
@@ -218,25 +218,25 @@ def longestUnivaluePath(root):
         )
 
     is_same = lambda parent, child: bool(child and child.val == parent.val)
-    return memoize(root, 0, function)
+    return memoize(root, 0, func)
 ```
 
 [Binary Tree Pruning](https://leetcode.com/problems/binary-tree-pruning)
 ```python
 def pruneTree(root):
 
-    def function(x, L, R):
+    def func(x, L, R):
         x.left, x.right = L, R
         return None if x.val == 0 and x.left == x.right == None else x
 
-    return memoize(root, None, function)
+    return memoize(root, None, func)
 ```
 
 [Smallest Subtree with all the Deepest Nodes](https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes)
 ```python
 def subtreeWithAllDeepest(root):
 
-    def function(x, L, R):
+    def func(x, L, R):
         if L[0] > R[0]:
             return L[0] + 1, L[1]
         elif L[0] < R[0]:
@@ -244,14 +244,14 @@ def subtreeWithAllDeepest(root):
         else:
             return L[0] + 1, x
 
-    return memoize(root, (0, None), function)[1]
+    return memoize(root, (0, None), func)[1]
 ```
 
 [Range Sum of BST](https://leetcode.com/problems/range-sum-of-bst)
 ```python
 def rangeSumBST(root, L, R):
 
-    def function(x, _L, _R):
+    def func(x, _L, _R):
         if x.val < L:
             return _R
         elif x.val > R:
@@ -259,7 +259,7 @@ def rangeSumBST(root, L, R):
         else:
             return x.val + _L + _R
 
-    return memoize(root, 0, function)
+    return memoize(root, 0, func)
 ```
 
 [Univalued Binary Tree](https://leetcode.com/problems/univalued-binary-tree)
@@ -272,7 +272,7 @@ def isUnivalTree(root):
 ```python
 def lcaDeepestLeaves(root):
 
-    def function(x, L, R):
+    def func(x, L, R):
         if L[0] > R[0]:
             return L[0] + 1, L[1]
         elif L[0] < R[0]:
@@ -280,7 +280,7 @@ def lcaDeepestLeaves(root):
         else:
             return L[0] + 1, x
 
-    return memoize(root, (0, None), function)[1]
+    return memoize(root, (0, None), func)[1]
 ```
 
 ```python
@@ -308,14 +308,14 @@ def sumEvenGrandparent(root):
 ```python
 def removeLeafNodes(root):
 
-    def function(x, L, R):
+    def func(x, L, R):
         if x.left:
             x.left = L
         if x.right:
             x.right = R
         return None if x.left == x.right and x.val == target else x
 
-    return memoize(root, None, function)
+    return memoize(root, None, func)
 ```
 
 [Maximum Product of Splitted Binary Tree](https://leetcode.com/problems/maximum-product-of-splitted-binary-tree)

@@ -1,6 +1,6 @@
 ## binary_search
 
-### [binary_search.**binary_search**(*function*, *lo*, *hi*)](/binary_search.py)
+### [binary_search.**binary_search**(*lo*, *hi*, *function*)](/binary_search.py)
 
 Finds the first index `i` where `lo <= i <= hi` that satisfies `function`.
 
@@ -77,7 +77,7 @@ def search(nums, target):
             lo += 1
         while hi and nums[hi] == nums[-1]:
             hi -= 1
-        i = binary_search(lambda x: nums[x - 1] > nums[x], lo, hi)
+        i = binary_search(lo, hi, lambda x: nums[x - 1] > nums[x])
         return nums[binary_search(i, i + m,
             lambda y: nums[y%n] >= target
         )%n] == target
@@ -143,9 +143,7 @@ def splitArray(nums, m):
         return True
 
     array_sum = sum(nums)
-    return binary_search(max(nums),
-        array_sum
-        is_valid
+    return binary_search(max(nums), array_sum is_valid
     ) if m > 1 else array_sum
 ```
 
