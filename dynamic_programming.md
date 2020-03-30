@@ -2,7 +2,7 @@
 
 ### [dynamic_programming.**kadane**(*arr*, *start=0*, *k=-1*, *var = [0, -float('inf')]*, *func='kadane'*)](/dynamic_programming.py)
 
-Solves a dynamic programming problem with input `arr` using a generalized form of Kadane's algorithm by doing the following steps:
+Solve a dynamic programming problem with input `arr` using a generalized form of Kadane's algorithm by doing the following steps:
 
 1. Iterate through `arr` starting from index `start`. For each iteration do:
     * For each index `j` in `range(len(var))`, apply `func[j]` to `var[j]`.
@@ -141,7 +141,7 @@ def maxSumTwoNoOverlap(A, L, M):
 
 ### [dynamic_programming.**max_profit**(*prices*, *k=float('inf')*)](/dynamic_programming.py)
 
-Solves the problem:
+Solve the problem:
 
 > Say you have an array for which the `i`th element is the price of a given stock on day `i`. Design an algorithm to find the maximum profit. You may complete at most `k` transactions. You may not engage in multiple transactions at the same time (i.e. you must sell the stock before you buy again).
 
@@ -171,7 +171,7 @@ def maxProfit(k, prices):
 
 ### [dynamic_programming.**wagner_fischer**(*matrix*, *base*, *left*, *top*, *each_cell*)](/dynamic_programming.py)
 
-Solves a dynamic programming problem with input `matrix` using a generalized form of the Wagner-Fischer algorithm by doing the following steps:
+Solve a dynamic programming problem with input `matrix` using a generalized form of the Wagner-Fischer algorithm by doing the following steps:
 
 1. Fill the top-left cell with `base`.
 1. Update the top row with `top`, where `top` is a function in the form of `lambda j: [function]` and `j` is the column number.
@@ -323,7 +323,7 @@ def matrixBlockSum(mat, K):
 
 ### [dynamic_programming.**hirschberg**(*x*, *y*, *base*, *left*, *top*, *each_cell*, *flexible=True*)](/dynamic_programming.py)
 
-Solves a dynamic programming problem with inputs `x` and `y` using a generalized form of Hirschberg's algorithm by doing the following steps:
+Solve a dynamic programming problem with inputs `x` and `y` using a generalized form of Hirschberg's algorithm by doing the following steps:
 
 1. Fill the top-left cell with `base`.
 1. Fill the top row with `top`, where `top` is a function in the form of `lambda x, y, j: [function]` and `j` is the column number.

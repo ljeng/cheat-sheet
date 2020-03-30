@@ -2,7 +2,7 @@
 
 ### [tree.**dfs**(*root*, *traversal='inorder'*)](/tree.py)
 
-Returns the preorder, inorder, or postorder traversal of a binary tree `root`.
+Return the preorder, inorder, or postorder traversal of a binary tree `root`.
 
 [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal)
 ```python
@@ -51,7 +51,7 @@ def getAllElements(root1, root2):
 
 ### [tree.**memoize**(*root*, *base*, *func*)](/tree.py)
 
-Applies a `func(x, L, R)` to a tree binary tree node `root` where `x` is the root, `L` is the output of `func` applied to `root.left`', and `R` is the output of `func` applied to `root.right`. Sets the base case to `func(x = None) = base`.
+Apply the function `func(x, L, R)` to a tree binary tree node `root` where `x` is the root, `L` is the output of `func` applied to `root.left`', and `R` is the output of `func` applied to `root.right`. Set the base case to `func(x = None) = base`.
 
 [Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree)
 ```python
@@ -338,7 +338,7 @@ def longestZigZag(root):
 ```
 ### [tree.**level_order**(*root*)](/tree.py)
 
-Returns the level-order traversal of a binary tree `root`, row by row.
+Return the level-order traversal of a binary tree `root`, row by row.
 
 [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal)
 ```python

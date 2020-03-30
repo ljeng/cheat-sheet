@@ -2,7 +2,7 @@
 
 ### [binary_search.**binary_search**(*lo*, *hi*, *function*)](/binary_search.py)
 
-Finds the first index `i` where `lo <= i <= hi` that satisfies `function`.
+Find the first index `i` where `lo <= i <= hi` that satisfies `function`.
 
 [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays)
 ```python

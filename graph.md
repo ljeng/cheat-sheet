@@ -1,0 +1,149 @@
+## graph
+
+### [class graph.**Graph**(*V=set()*, *E=dict()*, *matrix=[]*, *directed=True*)](/graph.py)
+
+A `Graph` is a mathematical structure defined by either:
+
+* a set of vertices `V` connected by edges `E`, where the distance from vertext `u` to vertex `v` is `E[u][v]` or
+* an adjacency `matrix` where the distance from vertex `u` to vertext `v` is `matrix[u][v]`.
+
+A `Graph` can be `directed` or undirected. `Graph` objects support the following methods:
+
+**dijkstra**(*source*, *trace=False*)
+
+Apply Dijkstra's algorithm. Return a dictionary in the form of `{u: distance}` where there is some `distance` from vertex `source` to vertex `u`. If `trace` is `True`, instead return a dictionary in the form of `{u: [[source...u]]}` where each list in the value is a path from `source` to `u`.
+
+[Network Delay Time](https://leetcode.com/problems/network-delay-time)
+```python
+import collections
+
+
+def networkDelayTime(times, N, K):
+    E = collections.defaultdict(dict)
+    for u, v, w in times:
+        E[u][v] = w
+    time = max(Graph(V = set(range(1, N + 1)), E=E, directed=True
+    ).dijkstra(K).values())
+    return int(time) if time < float('inf') else -1
+```
+
+[Bus Routes](https://leetcode.com/problems/bus-routes)
+```python
+import collections
+import itertools
+
+
+def numBusesToDestination(routes, S, T):
+    E = collections.defaultdict(dict)
+    for route in routes:
+        for u, v in itertools.product(route, route):
+            if u != v:
+                E[u][v] = 1
+    dist = Graph(V = set(itertools.chain(*routes)), E=E).dijkstra(S)
+    return dist[T] if T in dist and T < float('inf') else -1
+```
+
+[Shortest Path Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix)
+```python
+import collections
+import itertools
+
+
+def shortestPathBinaryMatrix(grid):
+    N = len(grid)
+    r = range(N)
+    V = {(i, j) for i in r for j in r if grid[i][j] == 0}
+    E = collections.defaultdict(dict)
+    for i, j in V:
+        for row, col in itertools.product(
+            range(i - 1, i + 2), range(j - 1, j + 2)
+        ):
+            if (0 <= row < N and 0 <= col < N and
+                grid[row][col] == 0 and (row != i or col != j)):
+                E[(i, j)][(row, col)] = 1
+    dist = Graph(V=V, E=E).dijkstra((0, 0))
+    m = N - 1
+    k = m, m
+    return dist[k] + 1 if k in dist and dist[k] < float('inf') else -1
+```
+
+[Shortest Path with Alternating Colors](https://leetcode.com/problems/shortest-path-with-alternating-colors)
+```python
+import collections
+
+
+def shortestAlternatingPaths(n, red_edges, blue_edges):
+    r = range(n)
+    V = set()
+    for X in r:
+        V.add((X, 'red'))
+        V.add((X, 'blue'))
+    E = collections.defaultdict(dict)
+    for u, v in red_edges:
+        E[(u, 'red')][(v, 'blue')] = 1
+    for u, v in blue_edges:
+        E[(u, 'blue')][(v, 'red')] = 1
+    graph = Graph(V=V, E=E)
+    start_red, start_blue = graph.dijkstra((0, 'red')), graph.dijkstra((0, 'blue'))
+    answer = []
+    for X in r:
+        length = min(start_red[(X, 'red')], start_red[(X, 'blue')],
+            start_blue[(X, 'red')], start_blue[(X, 'blue')]
+        )
+        answer += [length if length < float('inf') else -1]
+    return answer
+```
+
+[Jump Game III](https://leetcode.com/problems/jump-game-iii)
+```python
+import collections
+
+
+def canReach(arr, start):
+    E = collections.defaultdict(dict)
+    for i, x in enumerate(arr):
+        j = i + x
+        if j < len(arr):
+            E[i][j] = 1
+        j = i - x
+        if 0 <= j:
+            E[i][j] = 1
+    dist = Graph(V = set(range(V)), E=E).dijstra(start)
+    return any(x == 0 and dist[x] < float('inf') for i, x in arr)
+```
+
+**bellman_ford**(*source*)
+
+Apply the Bellman-Ford algorithm. Return a `collections.defaultdict(dict)` object in the form of `defaultdict(<class 'dict'>, {u: distance})` where there is some `distance` from vertex `source` to vertex `u`.
+
+**floyd_warshall**()
+
+Apply the Floyd-Warshall algorithm. Return a `collections.defaultdict(dict)` object in the form of `defaultdict(<class 'dict'>, {u: {v: distance}})` where there is some `distance` from vertex `u` to vertex `v`.
+
+### [**word_ladder**(*start*, *end*, *bank*, *trace=False*)](/graph.py)
+
+Solve the problem:
+
+> Given two words `start` and `end` and a word list `bank`, find the least number of transformations from `start` to `end`, such that only one letter can be changed at a time and each transformed word must exist in `bank`. `start` isn't necessarily a transformed word. All words have the same length.
+
+If `trace` is `True`, this method will instead output all transformation sequences from `start` to `end`.
+
+[Word Ladder II](https://leetcode.com/problems/word-ladder-ii)
+```python
+def findLadders(beginWord, endWord, wordList):
+    return word_ladder(beginWord, endWord, wordList, trace=True)
+```
+
+[Word Ladder](https://leetcode.com/problems/word-ladder)
+```python
+def findLadderLength(beginWord, endWord, wordList):
+    length = word_ladder(beginWord, endWord, wordList)
+    return (length + 1) * (length < float('inf'))
+```
+
+[Minimum Genetic Mutation](https://leetcode.com/problems/minimum-genetic-mutation)
+```python
+def minMutation(start, end, bank):
+    mutations = word_ladder(start, end, bank)
+    return mutations if mutations < float('inf') else -1
+```
