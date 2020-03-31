@@ -1,13 +1,33 @@
 ## graph
 
-### [class graph.**Graph**(*V=set()*, *E=dict()*, *matrix=[]*, *directed=True*)](/graph.py)
+### [class graph.**Graph**(*V*, *E*, *directed=True*)](/graph.py)
 
-A `Graph` is a mathematical structure defined by either:
+A `Graph` is a mathematical structure defined by a set of vertices `V` connected by edges `E`, where the distance from vertext `u` to vertex `v` is `E[u][v]`. A `Graph` can be `directed` or undirected. `Graph` objects support the following methods:
 
-* a set of vertices `V` connected by edges `E`, where the distance from vertext `u` to vertex `v` is `E[u][v]` or
-* an adjacency `matrix` where the distance from vertex `u` to vertext `v` is `matrix[u][v]`.
+**count_components**()
 
-A `Graph` can be `directed` or undirected. `Graph` objects support the following methods:
+Return the number of connected components.
+
+[Number of Islands](https://leetcode.com/problems/number-of-islands/)
+```python
+def numIslands(grid):
+    return to_graph(grid, node='1').count_components()
+```
+
+[Friend Circles](https://leetcode.com/problems/friend-circles/)
+```python
+import collections
+import itertools
+
+
+def findCircleNum(M):
+    V = set(range(len(M)))
+    E = collections.defaultdict(dict)
+    for i, j in itertools.permutations(V, 2):
+        if M[i][j]:
+            E[i][j] = 1
+    return Graph(V, E, directed=False).count_components()
+```
 
 **dijkstra**(*source*, *trace=False*)
 
@@ -22,8 +42,7 @@ def networkDelayTime(times, N, K):
     E = collections.defaultdict(dict)
     for u, v, w in times:
         E[u][v] = w
-    time = max(Graph(V = set(range(1, N + 1)), E=E, directed=True
-    ).dijkstra(K).values())
+    time = max(Graph(set(range(1, N + 1))).dijkstra(K).values())
     return int(time) if time < float('inf') else -1
 ```
 
@@ -36,33 +55,42 @@ import itertools
 def numBusesToDestination(routes, S, T):
     E = collections.defaultdict(dict)
     for route in routes:
-        for u, v in itertools.product(route, route):
+        for u, v in itertools.permutations(route, 2):
             if u != v:
                 E[u][v] = 1
-    dist = Graph(V = set(itertools.chain(*routes)), E=E).dijkstra(S)
+    dist = Graph(set(itertools.chain(*routes)), E).dijkstra(S)
     return dist[T] if T in dist and T < float('inf') else -1
+```
+
+[Snakes and Ladders](https://leetcode.com/problems/snakes-and-ladders/)
+```python
+import collections
+
+
+def snakesAndLadders(board):
+    arr = []
+    while board:
+        arr += board.pop()
+        if board: arr += board.pop()[::-1]
+    m = len(arr)
+    V = set(range(m))
+    E = collections.defaultdict(dict)
+    for u in V:
+        for i in range(1, 7):
+            v = u + i
+            if v < m:
+                if arr[v] == -1:
+                    E[u][v] = 1
+                else: E[u][arr[v] - 1] = 1
+    moves = Graph(V, E).dijkstra(0)[m - 1]
+    return moves if moves < float('inf') else -1
 ```
 
 [Shortest Path Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix)
 ```python
-import collections
-import itertools
-
-
 def shortestPathBinaryMatrix(grid):
-    N = len(grid)
-    r = range(N)
-    V = {(i, j) for i in r for j in r if grid[i][j] == 0}
-    E = collections.defaultdict(dict)
-    for i, j in V:
-        for row, col in itertools.product(
-            range(i - 1, i + 2), range(j - 1, j + 2)
-        ):
-            if (0 <= row < N and 0 <= col < N and
-                grid[row][col] == 0 and (row != i or col != j)):
-                E[(i, j)][(row, col)] = 1
-    dist = Graph(V=V, E=E).dijkstra((0, 0))
-    m = N - 1
+    dist = to_graph(grid, node=0, directional=8).dijkstra((0, 0))
+    m = len(grid) - 1
     k = m, m
     return dist[k] + 1 if k in dist and dist[k] < float('inf') else -1
 ```
@@ -83,13 +111,12 @@ def shortestAlternatingPaths(n, red_edges, blue_edges):
         E[(u, 'red')][(v, 'blue')] = 1
     for u, v in blue_edges:
         E[(u, 'blue')][(v, 'red')] = 1
-    graph = Graph(V=V, E=E)
+    graph = Graph(V, E)
     start_red, start_blue = graph.dijkstra((0, 'red')), graph.dijkstra((0, 'blue'))
     answer = []
     for X in r:
-        length = min(start_red[(X, 'red')], start_red[(X, 'blue')],
-            start_blue[(X, 'red')], start_blue[(X, 'blue')]
-        )
+        u, v = (X, 'red'), (X, 'blue')
+        length = min(start_red[u], start_red[v], start_blue[u], start_blue[v])
         answer += [length if length < float('inf') else -1]
     return answer
 ```
@@ -108,8 +135,23 @@ def canReach(arr, start):
         j = i - x
         if 0 <= j:
             E[i][j] = 1
-    dist = Graph(V = set(range(V)), E=E).dijstra(start)
-    return any(x == 0 and dist[x] < float('inf') for i, x in arr)
+    dist = Graph(set(range(len(arr))), E).dijkstra(start)
+    return any(dist[i] < float('inf') and x == 0 for i, x in enumerate(arr))
+```
+
+[Time Needed to Inform All Employees](https://leetcode.com/problems/time-needed-to-inform-all-employees)
+```python
+import collections
+
+
+def numOfMinutes(n, headID, manager, informTime):
+    E = collections.defaultdict(dict)
+    for i, x in enumerate(manager):
+        E[x][i] = float('inf')
+    for employee in V:
+        for subordinate in E[employee]:
+            E[employee][subordinate] = informTime[employee]
+    return max(Graph(set(range(n)), E).dijkstra(headID).values())
 ```
 
 **bellman_ford**(*source*)
@@ -118,9 +160,55 @@ Apply the Bellman-Ford algorithm. Return a `collections.defaultdict(dict)` objec
 
 **floyd_warshall**()
 
-Apply the Floyd-Warshall algorithm. Return a `collections.defaultdict(dict)` object in the form of `defaultdict(<class 'dict'>, {u: {v: distance}})` where there is some `distance` from vertex `u` to vertex `v`.
+Apply the Floyd-Warshall algorithm. Return a dictionary in the form of `{u: {v: distance}}` where there is some `distance` from vertex `u` to vertex `v`.
 
-### [**word_ladder**(*start*, *end*, *bank*, *trace=False*)](/graph.py)
+[Find the City With the Smallest Number of Neighbors at a Threshold Distance](https://leetcode.com/contest/weekly-contest-173/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/)
+```python
+import collections
+
+
+def findTheCity(n, edges, distanceThreshold):
+    V = set(range(n))
+    E = collections.defaultdict(dict)
+    for from_, to_, weight in edges:
+        E[from_][to_] = weight
+    dist = Graph(V, E, directed=False).floyd_warshall()
+    return min(V, key = lambda y: (sum(map(
+        lambda x: x <= distanceThreshold, dist[y].values()
+    )), -y))
+```
+
+### [graph.**get_neighbors**(*matrix*, *i*, *j*, *node=1*, *directional=4*)](/graph.py)]
+
+In a `matrix`, `node`s are marked as such and are 4- or 8-`directional`ly connected. Given a node at `(i, j)`, return its neighbors.
+
+[Minesweeper](https://leetcode.com/problems/minesweeper/)
+```python
+def updateBoard(board, click):
+    i, j = click
+    if board[i][j] == 'M':
+        board[i][j] = 'X'
+    elif board[i][j] == 'E':
+        stack = [(i, j)]
+        visited = set()
+        while stack:
+            i, j = stack.pop()
+            visited.add((i, j))
+            m = len(get_neighbors(board, i, j, 'M', directional=8))
+            if m:
+                board[i][j] = str(m)
+            else:
+                board[i][j] = 'B'
+                for u in get_neighbors(board, i, j, 'E', directional=8):
+                    if u not in visited:
+                        stack += [u]
+    return board
+```
+### [graph.**to_graph**(*matrix*, *node=1*, *directional=4*)](/graph.py)]
+
+Convert a `matrix` to a `Graph`. Each node is denoted by `node` and can be connected 4- or 8-`directional`ly connected to its neighbors.
+
+### [graph.**word_ladder**(*start*, *end*, *bank*, *trace=False*)](/graph.py)
 
 Solve the problem:
 
@@ -138,7 +226,7 @@ def findLadders(beginWord, endWord, wordList):
 ```python
 def findLadderLength(beginWord, endWord, wordList):
     length = word_ladder(beginWord, endWord, wordList)
-    return (length + 1) * (length < float('inf'))
+    return length + 1 if length < float('inf') else 0
 ```
 
 [Minimum Genetic Mutation](https://leetcode.com/problems/minimum-genetic-mutation)

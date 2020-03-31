@@ -141,9 +141,7 @@ def maxSumTwoNoOverlap(A, L, M):
 
 ### [dynamic_programming.**max_profit**(*prices*, *k=float('inf')*)](/dynamic_programming.py)
 
-Solve the problem:
-
-> Say you have an array for which the `i`th element is the price of a given stock on day `i`. Design an algorithm to find the maximum profit. You may complete at most `k` transactions. You may not engage in multiple transactions at the same time (i.e. you must sell the stock before you buy again).
+Solve [Best Time to Buy and Sell Stock IV](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv).
 
 [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock)
 ```python
