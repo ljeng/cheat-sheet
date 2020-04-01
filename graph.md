@@ -2,19 +2,19 @@
 
 ### [class graph.**Graph**(*V*, *E*, *directed=True*)](/graph.py)
 
-A `Graph` is a mathematical structure defined by a set of vertices `V` connected by edges `E`, where the distance from vertext `u` to vertex `v` is `E[u][v]`. A `Graph` can be `directed` or undirected. `Graph` objects support the following methods:
+A `Graph` is a mathematical structure defined by a set of vertices `V` connected by edges `E`, where the distance from vertex `u` to vertex `v` is `E[u][v]`. A `Graph` can be `directed` or undirected. `Graph` objects support the following methods:
 
 **count_components**()
 
 Return the number of connected components.
 
-[Number of Islands](https://leetcode.com/problems/number-of-islands/)
+[Number of Islands](https://leetcode.com/problems/number-of-islands)
 ```python
 def numIslands(grid):
-    return to_graph(grid, node='1').count_components()
+    return to_graph(grid, color='1').count_components()
 ```
 
-[Friend Circles](https://leetcode.com/problems/friend-circles/)
+[Friend Circles](https://leetcode.com/problems/friend-circles)
 ```python
 import collections
 import itertools
@@ -62,7 +62,7 @@ def numBusesToDestination(routes, S, T):
     return dist[T] if T in dist and T < float('inf') else -1
 ```
 
-[Snakes and Ladders](https://leetcode.com/problems/snakes-and-ladders/)
+[Snakes and Ladders](https://leetcode.com/problems/snakes-and-ladders)
 ```python
 import collections
 
@@ -89,7 +89,7 @@ def snakesAndLadders(board):
 [Shortest Path Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix)
 ```python
 def shortestPathBinaryMatrix(grid):
-    dist = to_graph(grid, node=0, directional=8).dijkstra((0, 0))
+    dist = to_graph(grid, color=0, k=8).dijkstra((0, 0))
     m = len(grid) - 1
     k = m, m
     return dist[k] + 1 if k in dist and dist[k] < float('inf') else -1
@@ -162,7 +162,7 @@ Apply the Bellman-Ford algorithm. Return a `collections.defaultdict(dict)` objec
 
 Apply the Floyd-Warshall algorithm. Return a dictionary in the form of `{u: {v: distance}}` where there is some `distance` from vertex `u` to vertex `v`.
 
-[Find the City With the Smallest Number of Neighbors at a Threshold Distance](https://leetcode.com/contest/weekly-contest-173/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/)
+[Find the City With the Smallest Number of Neighbors at a Threshold Distance](https://leetcode.com/contest/weekly-contest-173/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance)
 ```python
 import collections
 
@@ -178,11 +178,69 @@ def findTheCity(n, edges, distanceThreshold):
     )), -y))
 ```
 
-### [graph.**get_neighbors**(*matrix*, *i*, *j*, *node=1*, *directional=4*)](/graph.py)]
+**bipartite**()
 
-In a `matrix`, `node`s are marked as such and are 4- or 8-`directional`ly connected. Given a node at `(i, j)`, return its neighbors.
+Return whether the graph is bipartite.
 
-[Minesweeper](https://leetcode.com/problems/minesweeper/)
+[Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite)
+```python
+import collections
+
+
+def isBipartite(graph):
+    E = collections.defaultdict(dict)
+    for u, x in enumerate(graph):
+        for v in x:
+            E[u][v] = 1
+    return Graph(set(range(len(graph))), E, directed=False).bipartite()
+```
+
+[Possible Bipartition](https://leetcode.com/problems/possible-bipartition)
+```python
+import collections
+
+
+def possibleBipartition(N, dislikes):
+    E = collections.defaultdict(dict)
+    for u, v in dislikes:
+        E[u][v] = 1
+    return Graph(set(range(1, N + 1)), E, directed=False).bipartite()
+```
+
+**toposort**()
+
+Return a topological sort of the graph. If the graph has cycles, return `None`.
+
+[Course Schedule](https://leetcode.com/problems/course-schedule)
+```python
+import collections
+
+
+def canFinish(numCourses, prerequisites):
+    E = collections.defaultdict(dict)
+    for v, u in prerequisites:
+        E[u][v] = 1
+    return Graph(set(range(numCourses)), E).toposort() != None
+```
+
+[Course Schedule II](https://leetcode.com/problems/course-schedule-ii)
+```python
+import collections
+
+
+def findOrder(numCourses, prerequisites):
+    E = collections.defaultdict(dict)
+    for v, u in prerequisites:
+        E[u][v] = 1
+    ordering = Graph(set(range(numCourses)), E).toposort()
+    return ordering if ordering != None else []
+```
+
+### [graph.**get_neighbors**(*matrix*, *i*, *j*, *color=None*, *k=4*)](/graph.py)]
+
+In a `matrix`, nodes are marked `color` and are `k`-directionally connected to their neighbors, where `k` can be 4 or 8. Given a node at `(i, j)`, return its neighbors.
+
+[Minesweeper](https://leetcode.com/problems/minesweeper)
 ```python
 def updateBoard(board, click):
     i, j = click
@@ -194,19 +252,49 @@ def updateBoard(board, click):
         while stack:
             i, j = stack.pop()
             visited.add((i, j))
-            m = len(get_neighbors(board, i, j, 'M', directional=8))
+            m = len(get_neighbors(board, i, j, color='M', k=8))
             if m:
                 board[i][j] = str(m)
             else:
                 board[i][j] = 'B'
-                for u in get_neighbors(board, i, j, 'E', directional=8):
+                for u in get_neighbors(board, i, j, color='E', k=8):
                     if u not in visited:
                         stack += [u]
     return board
 ```
-### [graph.**to_graph**(*matrix*, *node=1*, *directional=4*)](/graph.py)]
 
-Convert a `matrix` to a `Graph`. Each node is denoted by `node` and can be connected 4- or 8-`directional`ly connected to its neighbors.
+### [graph.**to_graph**(*matrix*, *color=1*, *k=4*)](/graph.py)
+
+Convert a `matrix` to a `Graph`. Each node is marked `color` and are `k`-directionally connected to its neighbors, where `k` can be 4 or 8.
+
+### [graph.**flood_fill**(*matrix*, *i*, *j*, *color*, *k=4*)](/graph.py)
+
+Flood fill a `matrix` in-place at coordinate `(i, j)` with `color`. Update `(i, j)` with `color`. Recursively update all `k`-directionally connected neighbors of `(i, j)` of the original color with `color`.
+
+[Flood Fill](https://leetcode.com/problems/flood-fill)
+```python
+def floodFill(image, sr, sc, newColor):
+    flood_fill(image, sr, sc, newColor)
+    return image
+```
+
+### [graph.**flood_fill_border**(*matrix*, *color*, *k=4*)](/graph.py)
+
+Flood fill the border of a `matrix` with `color`, where the nodes are `k`-directionally connected.
+
+[Number of Enclaves](https://leetcode.com/problems/number-of-enclaves)
+```python
+def numEnclaves(A):
+    flood_fill_border(A, 0)
+    return sum(map(sum, A))
+```
+
+[Number of Closed Islands](https://leetcode.com/problems/number-of-closed-islands)
+```python
+def closedIsland(grid):
+    flood_fill_border(grid, 1)
+    return to_graph(grid, color=0).count_components()
+```
 
 ### [graph.**word_ladder**(*start*, *end*, *bank*, *trace=False*)](/graph.py)
 

@@ -1,19 +1,27 @@
-import functools
+import itertools
 
 
-def kadane(arr, start=0, k=-1, var = [0, -float('inf')], func='kadane'):
-    if func == 'kadane':
-        var = [0, -float('inf')]
-        func = [lambda i, x: arr[i] + max(x[0], 0), lambda i, x: max(x)]
-    elif func == 'house_robber':
-        k = 1
-        var = [0, 0, 0]
-        func = [lambda i, x: x[1], lambda i, x: max(x[1], nums[i] + x[2]),
-            lambda i, x: x[0]]
-    for i in range(start, len(arr)):
-        for j, f in enumerate(func):
-            var[j] = f(i, var)
-    return var[k]
+def kadane(arr, func, answer='a'):
+    a = b = 0
+    for element in arr:
+        if func == 'max_subarray':
+            a = max(a + element, 0)
+            b = max(a, b)
+        elif func == 'house_robber':
+            a, b = max(a, b + house), a
+        else:
+            a = func[0](a, b)
+            b = func[0](a, b)
+    if func == 'max_subarray':
+        answer = 'b'
+    return {'a': a, 'b': b}[answer]
+
+
+def rob(houses):
+    previous = current = 0
+    for house in houses:
+        previous, current = max(previous, current + house), previous
+    return previous
 
 
 def max_profit(k, prices):
@@ -32,6 +40,18 @@ def max_profit(k, prices):
     )
 
 
+def single_number(arr, k=2):
+    m = len(bin(max(arr))) - 2
+    counter = [0]*m
+    single = 0
+    for integer, i in itertools.product(arr, range(m)):
+        if integer & 1<<i: counter[i] += 1
+    for i, x in enumerate(counter):
+        if x%k:
+            single |= 1<<i
+    return single
+
+
 def wagner_fischer(matrix, base, left, top, each_cell):
     matrix[0][0] = base
     r = range(1, len(matrix))
@@ -42,6 +62,25 @@ def wagner_fischer(matrix, base, left, top, each_cell):
     for i in r:
         for j in range(1, len(matrix[i])):
             matrix[i][j] = each_cell(i, j)
+
+
+def construct_prefix_sum(matrix):
+    if matrix:
+        prefix_sum = [[0] * (len(matrix[0]) + 1)
+            for i in range(len(matrix) + 1)
+        ]
+        wagner_fischer(prefix_sum, 0, lambda i: 0, lambda j: 0,
+            lambda i, j: (matrix[i - 1][j - 1] - prefix_sum[i - 1][j - 1]
+                + prefix_sum[i - 1][j] + prefix_sum[i][j - 1]
+            )
+        )
+        return prefix_sum
+    return [[0]]
+
+
+range_sum = lambda prefix_sum, r1, r2, c1, c2: (prefix_sum[r1][c1]
+    - prefix_sum[r1][c2] - prefix_sum[r2][c1] + prefix_sum[r2][c2]
+)
 
 
 def hirschberg(x, y, base, left, top, each_cell, flexible=True):
@@ -59,3 +98,22 @@ def hirschberg(x, y, base, left, top, each_cell, flexible=True):
             dp[1][j] = each_cell(dp, x, y, i, j)
         dp[0] = dp[1][:]
     return dp[1][-1]
+
+
+def lcs(x, y):
+    return hirschberg(x, y, int(x[0] == y[0]),
+        lambda dp, x, y, i: max(dp[0][0], int(x[i] == y[0])),
+        lambda dp, x, y, j: max(dp[0][j - 1], int(x[0] == y[j])),
+        lambda dp, x, y, i, j: max(dp[0][j], dp[1][j - 1],
+            dp[0][j - 1] + int(x[i] == y[j])
+        )
+    )
+
+
+def lps(s):
+    r = range(len(s) + 1)
+    return hirschberg(r, r, 0, lambda dp, x, y, i: 0,
+        lambda dp, x, y, j: 0,
+        lambda dp, x, y, i, j: max(dp[0][j], dp[1][j - 1]
+        ) if s[i - 1] != s[-j] else dp[0][j - 1] + 1
+    )

@@ -1,61 +1,18 @@
 ## dynamic_programming
 
-### [dynamic_programming.**kadane**(*arr*, *start=0*, *k=-1*, *var = [0, -float('inf')]*, *func='kadane'*)](/dynamic_programming.py)
+### [dynamic_programming.**kadane**(*arr*, *func*)](/dynamic_programming.py)
 
-Solve a dynamic programming problem with input `arr` using a generalized form of Kadane's algorithm by doing the following steps:
+Solve a dynamic programming problem with input `arr` using a generalized form of Kadane's algorithm. `func` can either be a function in the form of `lambda i, x: [function]` or one of the following built-in algorithms:
 
-1. Iterate through `arr` starting from index `start`. For each iteration do:
-    * For each index `j` in `range(len(var))`, apply `func[j]` to `var[j]`.
-1. Return `var[k]`.
-
-`func` can either be a function in the form of `lambda i, x: [function]` or one of the following built-in algorithms:
 * `kadane`: Kadane's algorithm
 * `house_robber`: algorithm to solve the [house robber](https://leetcode.com/problems/house-robber) problem
 
-`start`, `k`, and `var` aren't needed if a built-in `func` is used, unless you want to customize them.
+`k` isn't needed if a built-in `func` is used, unless you want to override it.
 
 [Maximum Subarray](https://leetcode.com/problems/maximum-subarray)
 ```python
 def maxSubArray(nums):
-    return kadane(nums, func='kadane')
-```
-
-[Decode Ways](https://leetcode.com/problems/decode-ways)
-```python
-def numDecodings(s):
-    return kadane(s, var = [0, 0, int(bool(s)), ''],
-        func = [lambda i, x: x[1], lambda i, x: x[2],
-            lambda i, x: (s[i] > '0')*x[2] + (0 < int(x[3] + s[i]) <= 26)*x[0],
-            lambda i, x: s[i]
-        ]
-    )
-```
-
-[Single Number](https://leetcode.com/problems/single-number)
-```python
-def singleNumber(nums):
-    return kadane(nums, var = [0], func = [lambda i, x: nums[i]^x[0]])
-```
-
-[Single Number II](https://leetcode.com/problems/single-number-ii)
-```python
-def singleNumber(nums):
-    return kadane(nums, k=0, var = [0, 0],
-        func = [lambda i, x: (nums[i]^x[0]) & ~x[1],
-            lambda i, x: (nums[i]^x[1]) & ~x[0]
-        ]
-    )
-```
-
-[Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray)
-```python
-def maxProduct(nums):
-    return kadane(nums, start=1, k=2, var = [0, 0, nums[0], nums[0], nums[0]],
-        func = [lambda i, x: max(max(nums[i]*x[3], nums[i]*x[4]), nums[i]),
-            lambda i, x: min(min(nums[i]*x[3], nums[i]*x[4]), nums[i]),
-            lambda i, x: max(x[0], x[2]), lambda i, x: x[0], lambda i, x: x[1]
-        ]
-    ) if nums else 0
+    return kadane(nums, func='max_subarray')
 ```
 
 [House Robber](https://leetcode.com/problems/house-robber)
@@ -67,76 +24,16 @@ def rob(nums):
 [House Robber II](https://leetcode.com/problems/house-robber-ii)
 ```python
 def rob(nums):
-    rob1 = lambda j: kadane(nums, start=j, func='house_robber')
-    money = rob1(1)
-    nums.pop()
-    return max(money, rob1(0))
-```
-
-[Single Number III](https://leetcode.com/problems/single-number-iii)
-```python
-def singleNumber(nums):
-    reduce = lambda f: kadane(nums, var = [0], var = [f])
-    mask = reduce(lambda i, x: nums[i]^x[0])
-    mask &= -mask
-    g = lambda intersect: reduce(
-        lambda i, x: nums[i]^x[0] if bool(mask&nums[i]) == intersect else x[0]
-    )
-    return g(True), g(False)
-```
-
-[Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown)
-```python
-def maxProfit(prices):
-    return kadane(prices, start=1, k=3, [0, -prices[0], 0, 0],
-        [lambda i, x: x[1], lambda i, x: max(x[2] - prices[i], x[0]),
-            lambda i, x: x[3], lambda i, x: max(x[0] + prices[i], x[2])
-        ]
-    ) if prices else 0
-```
-
-[Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee)
-```python
-def maxProfit(prices, fee):
-    return kadane(prices, k=1, var = [0, 0, -float('inf')],
-        func = [lambda i, x: x[1], lambda i, x: max(x[1], x[2] + prices[i] - fee),
-            lambda i, x: max(x[2], x[0] - prices[i])
-        ]
-    )
-```
-
-[Bitwise ORs of Subarrays](https://leetcode.com/problems/bitwise-ors-of-subarrays)
-```python
-def subarrayBitwiseORs(A):
-    return len(kadane(A, var = [set(), set()],
-        func = [lambda i, x: {A[i]|y for y in x[0]}|{A[i]}, lambda i, x: x[0]|x[1]]
-    ))
+    r = kadane(nums, func='house_robber')
+    return max(r(nums[:-1]), r(nums[1:]))
 ```
 
 [Maximum Sum Circular Subarray](https://leetcode.com/problems/maximum-sum-circular-subarray)
 ```python
 def maxSubarraySumCircular(A):
-    max_sum = kadane(A, func='kadane')
-    return max(max_sum,
-        sum(A) - kadane(A, var = [0, A[0]],
-        func = [lambda i, x: A[i] + min(x[0], 0), lambda i, x: min(x)]
-    )) if max_sum > 0 else max_sum
-```
-
-[Maximum Sum of Two Non-Overlapping Arrays](https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays)
-```python
-def maxSumTwoNoOverlap(A, L, M):
-    for i in range(1, len(A)): A[i] += A[i - 1]
-    n = L + M
-    return kadane(A, start=n, k=2,
-        var = [A[L - 1], A[M - 1], A[n - 1]],
-        func = [lambda i, x: max(x[0], A[i - M] - A[i - n]),
-            lambda i, x: max(x[1], A[i - L] - A[i - n]),
-            lambda i, x: max(x[2], x[0] + A[i] - A[i - M],
-                x[1] + A[i] - A[i - L]
-            )
-        ]
-    )
+    max_sum = kadane(A, func='max_subarray')
+    return max(max_sum, sum(A) + kadane([-x for x in A], func='max_subarray')
+    ) if max_sum > 0 else max_sum
 ```
 
 ### [dynamic_programming.**max_profit**(*prices*, *k=float('inf')*)](/dynamic_programming.py)
@@ -165,6 +62,39 @@ def maxProfit(prices):
 ```python
 def maxProfit(k, prices):
     return max_profit(prices, k=k)
+```
+
+### [dynamic_programming.**single_number**(*arr*, *k=2*)](/dynamic_programming.py)
+
+Solve the problem:
+
+> Given a non-empty array `arr` of integers, every element appears `k` times except for one, which appears exactly once. Find that single one.
+
+[Single Number](https://leetcode.com/problems/single-number)
+```python
+def singleNumber(nums):
+    return single_number(nums)
+```
+
+[Single Number II](https://leetcode.com/problems/single-number-ii)
+```python
+def singleNumber(nums):
+    return single_number(nums, k=3)
+```
+
+[Single Number III](https://leetcode.com/problems/single-number-iii)
+```python
+import functools
+def singleNumber(nums):
+    mask = single_number(nums)
+    mask &= -mask
+    x = y = 0
+    for num in nums:
+        if num & mask:
+            x ^= num
+        else:
+            y ^= num
+    return x, y
 ```
 
 ### [dynamic_programming.**wagner_fischer**(*matrix*, *base*, *left*, *top*, *each_cell*)](/dynamic_programming.py)
@@ -234,27 +164,6 @@ def maximalSquare(matrix):
     )
     return max(map(max, matrix))**2 if matrix else 0
 ```
-[Range Sum Query 2D - Immutable](https://leetcode.com/problems/range-sum-query-2d-immutable)
-```python
-class NumMatrix:
-
-    def __init__(self, matrix):
-        n, m = len(matrix), len(matrix[0])
-        self.prefix_sum = [[0] * (m+1) for i in range(n + 1)]
-        wagner_fischer(self.prefix_sum, 0, lambda i: 0, lambda j: 0,
-            lambda i, j: (
-                matrix[i - 1][j - 1]
-                - self.prefix_sum[i - 1][j - 1] + self.prefix_sum[i - 1][j]
-                + self.prefix_sum[i][j - 1]
-            )
-        )
-
-    def sumRegion(self, row1, col1, row2, col2):
-        return (self.prefix_sum[row1][col1] - self.prefix_sum[row1][col2 + 1]
-            - self.prefix_sum[row2 + 1][col1]
-            + self.prefix_sum[row2 + 1][col2 + 1]
-        )
-```
 
 [Largest 1-Bordered Square](https://leetcode.com/problems/largest-1-bordered-square)
 ```python
@@ -292,26 +201,36 @@ def countSquares(matrix):
     return sum(map(sum, matrix))
 ```
 
+### [dynamic_programming.**construct_prefix_sum**(*matrix*)](/dynamic_programming.py)
+
+Construct a matrix where each cell `(i, j)` is the prefix sum of submatrix `matrix[:i][:j]`.
+
+[Range Sum Query 2D - Immutable](https://leetcode.com/problems/range-sum-query-2d-immutable)
+```python
+class NumMatrix:
+
+    def __init__(self, matrix):
+        self.prefix_sum = construct_prefix_sum(matrix)
+
+    def sumRegion(self, row1, col1, row2, col2):
+        return range_sum(self.prefix_sum, row1, row2 + 1, col1, col2 + 1)
+```
+
+### [dynamic_programming.**range_sum**(*prefix_sum*, *r1*, *c1*, *r2*, *c2*)]
+
+Given a matrix `prefix_sum`, which is the prefix sum matrix of some matrix *M*, return the sum of values in submatrix `M[r1:r2][c1:c2]`.
+
 [Matrix Block Sum](https://leetcode.com/problems/matrix-block-sum)
 ```python
 def matrixBlockSum(mat, K):
 
     def each_cell(i, j):
-        r1 = max(i - K, 0)
-        c1 = max(j - K, 0)
-        r2 = min(i + K + 1, m)
-        c2 = min(j + K + 1, n)
-        return (prefix_sum[r1][c1] - prefix_sum[r1][c2] - prefix_sum[r2][c1]
-            + prefix_sum[r2][c2]
+        return range_sum(prefix_sum, max(i - K, 0), min(i + K + 1, m),
+            max(j - K, 0), min(j + K + 1, n)
         )
-
+    
     n, m = len(mat), len(mat[0])
-    prefix_sum = [[0]*(m+1) for i in range(n + 1)]
-    wagner_fischer(prefix_sum, 0, lambda i: 0, lambda j: 0,
-        lambda i, j: (mat[i - 1][j - 1] - prefix_sum[i - 1][j - 1]
-            + prefix_sum[i - 1][j] + prefix_sum[i][j - 1]
-        )
-    )
+    prefix_sum = construct_prefix_sum(mat)
     answer = [[0]*m for i in range(n)]
     wagner_fischer(answer, each_cell(0, 0), lambda i: each_cell(i, 0),
         lambda j: each_cell(0, j), each_cell
@@ -345,30 +264,6 @@ def minDistance(word1, word2):
     return len(word1 + word2)
 ```
 
-[Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence)
-```python
-def longestPalindromeSubseq(s):
-    n = len(s)
-    r = range(n + 1)
-    return hirschberg(r, r, 0, lambda dp, x, y, i: 0, lambda dp, x, y, j: 0,
-        lambda dp, x, y, i, j: max(dp[0][j], dp[1][j - 1]
-        ) if x[0] != s[n - j] else dp[0][j - 1] + 1
-    )
-```
-
-[Delete Operation for Two Strings](https://leetcode.com/problems/delete-operation-for-two-strings)
-```python
-def minDistance(word1, word2):
-    return len(word1 + word2) - hirschberg(word1, word2,
-        int(word1[0] == word2[0]),
-        lambda dp, x, y, i: max(dp[0][0], int(x[i] == y[0])),
-        lambda dp, x, y, j: max(dp[0][j - 1], int(x[0] == y[j])),
-        lambda dp, x, y, i, j: max(dp[0][j], dp[1][j - 1],
-            dp[0][j - 1] + int(x[i] == y[j])
-        )
-    )
-```
-
 [Minimum ASCII Delete Sum for Two Strings](https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings)
 ```python
 def minimumDeleteSum(s1, s2):
@@ -381,26 +276,33 @@ def minimumDeleteSum(s1, s2):
     )
 ```
 
+### [dynamic_programming.**lcs**(*x*, *y*)](/dynamic_programming.py)
+
+Find the length of the longest common subsequence of `x` and `y`.
+
+[Delete Operation for Two Strings](https://leetcode.com/problems/delete-operation-for-two-strings)
+```python
+def minDistance(word1, word2):
+    return len(word1 + word2) - lcs(word1, word2)
+```
 [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence)
 ```python
 def longestCommonSubsequence(text1, text2):
-    return hirschberg(text1, text2, int(text1[0] == text2[0]),
-        lambda dp, x, y, i: max(dp[0][0], int(x[i] == y[0])),
-        lambda dp, x, y, j: max(dp[0][j - 1], int(x[0] == y[j])),
-        lambda dp, x, y, i, j: max(dp[0][j], dp[1][j - 1],
-            dp[0][j - 1] + int(x[i] == y[j])
-        )
-    )
+    return lcs(text1, text2)
+```
+
+### [dynamic_programming.**lps**(*s*)](/dynamic_programming.py)
+
+Find the length of the longest palindromic subsequence of `s`.
+
+[Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence)
+```python
+def longestPalindromeSubseq(s):
+    return lps(s)
 ```
 
 [Minimum Insertion Steps to Make String a Palindrome](https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome)
 ```python
 def minInsertions(s):
-    n = len(s)
-    r = range(n + 1)
-    return n - hirschberg(r, r, 0, lambda dp, x, y, i: 0,
-        lambda dp, x, y, j: 0,
-        lambda dp, x, y, i, j: max(dp[0][j], dp[1][j - 1]
-        ) if s[i - 1] != s[-j] else dp[0][j - 1] + 1
-    )
+    return len(s) - lps(s)
 ```
