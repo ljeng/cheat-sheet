@@ -2,12 +2,10 @@
 
 ### [dynamic_programming.**kadane**(*arr*, *func*)](/dynamic_programming.py)
 
-Solve a dynamic programming problem with input `arr` using a generalized form of Kadane's algorithm. `func` can either be a function in the form of `lambda i, x: [function]` or one of the following built-in algorithms:
+Solve a dynamic programming problem with input `arr` using a generalized form of Kadane's algorithm. `func` can be one of the following algorithms:
 
 * `kadane`: Kadane's algorithm
 * `house_robber`: algorithm to solve the [house robber](https://leetcode.com/problems/house-robber) problem
-
-`k` isn't needed if a built-in `func` is used, unless you want to override it.
 
 [Maximum Subarray](https://leetcode.com/problems/maximum-subarray)
 ```python
@@ -84,7 +82,6 @@ def singleNumber(nums):
 
 [Single Number III](https://leetcode.com/problems/single-number-iii)
 ```python
-import functools
 def singleNumber(nums):
     mask = single_number(nums)
     mask &= -mask
@@ -216,7 +213,7 @@ class NumMatrix:
         return range_sum(self.prefix_sum, row1, row2 + 1, col1, col2 + 1)
 ```
 
-### [dynamic_programming.**range_sum**(*prefix_sum*, *r1*, *c1*, *r2*, *c2*)]
+### [dynamic_programming.**range_sum**(*prefix_sum*, *r1*, *c1*, *r2*, *c2*)](/dynamic_programming.py)
 
 Given a matrix `prefix_sum`, which is the prefix sum matrix of some matrix *M*, return the sum of values in submatrix `M[r1:r2][c1:c2]`.
 

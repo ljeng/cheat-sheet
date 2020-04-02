@@ -1,7 +1,7 @@
 import itertools
 
 
-def kadane(arr, func, answer='a'):
+def kadane(arr, func):
     a = b = 0
     for element in arr:
         if func == 'max_subarray':
@@ -9,12 +9,9 @@ def kadane(arr, func, answer='a'):
             b = max(a, b)
         elif func == 'house_robber':
             a, b = max(a, b + house), a
-        else:
-            a = func[0](a, b)
-            b = func[0](a, b)
     if func == 'max_subarray':
         answer = 'b'
-    return {'a': a, 'b': b}[answer]
+    return b if func == 'max_subarray' else a
 
 
 def rob(houses):
