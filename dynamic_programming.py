@@ -23,17 +23,14 @@ def rob(houses):
 
 def max_profit(k, prices):
     if k < len(prices)//2:
-        var = [0, -float('inf')]*k + [0]
+        profit = [0, -float('inf')]*k + [0]
         for i, price in enumerate(prices):
             for j in range(1, 2*k, 2):
-                var[j - 1] =  max(var[j - 1], var[j] + price)
-                var[j] = max(var[j], var[j + 1] - price)
-        return var[0]
-    return kadane(prices, 1, var = [0],
-        func = [lambda i, x: x[0] + prices[i] - prices[i - 1]
-            if prices[i - 1] < prices[i]
-            else x[0]
-        ]
+                profit[j - 1] =  max(profit[j - 1], profit[j] + price)
+                profit[j] = max(profit[j], profit[j + 1] - price)
+        return profit[0]
+    return sum(prices[i] - prices[i - 1] for i in range(1, prices)
+        if prices[i - 1] < prices[i]
     )
 
 
