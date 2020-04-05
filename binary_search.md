@@ -9,7 +9,8 @@ Find the first index `i` where `lo <= i <= hi` that satisfies `function`.
 def findMedianSortedArrays(nums1, nums2):
 
     def median(a, b, extrema):
-        k, half = -1 if extrema == max else 0, []
+        k = -1 * (extrema == max)
+        half = []
         if a:
             half += [nums2[j + k]]
         if b:
@@ -143,7 +144,7 @@ def splitArray(nums, m):
         return True
 
     array_sum = sum(nums)
-    return binary_search(max(nums), array_sum is_valid
+    return binary_search(max(nums), is_valid(array_sum)
     ) if m > 1 else array_sum
 ```
 
