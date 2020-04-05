@@ -327,6 +327,7 @@ def maxProduct(root):
     ) % (10**9 + 7)
 ```
 
+[Longest Zigzag Path in a Binary Tree](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/)
 ```python
 def longestZigZag(root):
     return memoize(root, (-1, -1, -1),
@@ -336,6 +337,7 @@ def longestZigZag(root):
         )
     )[2]
 ```
+
 ### [tree.**level_order**(*root*)](/tree.py)
 
 Return the level-order traversal of a binary tree `root`, row by row.
