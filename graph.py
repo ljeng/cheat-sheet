@@ -91,6 +91,23 @@ class Graph:
                                 return False
         return True
 
+    def kruskal(self):
+        forest = [{u} for u in self.V]
+        enum = {list(u)[0]: i for i, u in enumerate(forest)}
+        MST = collections.defaultdict(dict)
+        for u, v, weight in sorted(
+            [(u, v, self.E[u][v]) for u in self.E for v in self.E[u]],
+            key = lambda x: x[2]
+        ):
+            if enum[u] != enum[v]:
+                u, v = sorted([u, v], key = lambda x: len(forest[enum[x]]))
+                for w in list(forest[enum[u]]):
+                    forest[enum[u]].discard(w)
+                    forest[enum[v]].discard(w)
+                    enum[w] = enum[v]
+                    MST[u][v] = weight
+        return MST
+
     def toposort(self):
         E, F = collections.defaultdict(dict), collections.defaultdict(dict)
         for u in self.E:

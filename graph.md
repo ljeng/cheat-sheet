@@ -207,6 +207,10 @@ def possibleBipartition(N, dislikes):
     return Graph(set(range(1, N + 1)), E, directed=False).bipartite()
 ```
 
+**kruskal**()
+
+Apply Kruskal's algorithm to an undirected graph. Return a minimum spanning tree `MST` in the form of a `collections.defaultdict(dict)` object, where the distance from vertex `u` to vertex `v` is `MST[u][v]`.
+
 **toposort**()
 
 Return a topological sort of the graph. If the graph has cycles, return `None`.

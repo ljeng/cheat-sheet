@@ -394,4 +394,3 @@ def averageOfLevels(root):
 ```python
 def deepestLeavesSum(root):
     return sum(x.val for x in level_order(root)[-1])
-```
