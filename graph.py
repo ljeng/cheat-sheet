@@ -1,7 +1,7 @@
 import collections
 import itertools
 import heapq
-
+import math
 
 class Graph:
 
@@ -127,6 +127,30 @@ class Graph:
         if not any(E.values()):
             return order
 
+    def prim(self):
+        MST = collections.defaultdict(dict)
+        visited = []
+        start_node = self.V.copy().pop()
+
+        MST[start_node] = 0
+        visited.append(start_node)
+        edges = [
+            (weight, dest) for dest, weight in self.E[start_node].items() if not math.isnan(weight) and not math.isinf(weight)
+        ]
+        heapq.heapify(edges)
+
+        while len(visited) < len(self.V):
+            if (len(edges) == 0):
+                return {}
+            (weight, dest) = heapq.heappop(edges)
+            if dest not in visited:
+                visited.append(dest)
+                MST[dest] = weight
+                for u, d in self.E[dest].items():
+                    if not math.isnan(d) and not math.isinf(d) and u not in visited:
+                        heapq.heappush(edges, (d, u))
+
+        return MST
 
 r3 = lambda k: range(k - 1, k + 2)
 
