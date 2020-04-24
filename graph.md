@@ -42,7 +42,7 @@ def networkDelayTime(times, N, K):
     E = collections.defaultdict(dict)
     for u, v, w in times:
         E[u][v] = w
-    time = max(Graph(set(range(1, N + 1))).dijkstra(K).values())
+    time = max(Graph(set(range(1, N + 1)), E).dijkstra(K).values())
     return int(time) if time < float('inf') else -1
 ```
 
@@ -239,6 +239,23 @@ def findOrder(numCourses, prerequisites):
     ordering = Graph(set(range(numCourses)), E).toposort()
     return ordering if ordering != None else []
 ```
+
+**prim**()
+
+Apply Prim's algorithm to an undirected graph. Return a minimum spanning tree MST in the form of a collections.defaultdict(dict) object MST.
+
+[Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
+```python
+import collections
+
+def findCheapestPrice(n, flights):
+    E = collections.defaultdict(dict)
+    for u, v, w in flights:
+        E[u][v] = w
+    ordering = Graph(set(range(n)), E, False).prim()
+    return sum(ordering.values())
+```
+        
 
 ### [graph.**get_neighbors**(*matrix*, *i*, *j*, *color=None*, *k=4*)](/graph.py)]
 
