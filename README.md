@@ -11,7 +11,7 @@ This cheat sheet contains templates for common data structures and algorithms in
 * Search
     * [Binary search](https://github.com/ljeng/cheat-sheet/blob/master/binary_search.md)
     * Knuth-Morris-Pratt
-    * Rabin-Karp
+    * [Rabin-Karp](https://github.com/ljeng/cheat-sheet/blob/master/search.md)
     * Aho-Corasick
 * [Sorting](https://github.com/ljeng/cheat-sheet/blob/master/sorting.md)
     * Counting sort
