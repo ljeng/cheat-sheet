@@ -1,6 +1,6 @@
 ## Search
 
-### [search.**binary_search**(*lo*, *hi*, *function*)](/search.py)
+### [search.**binary**(*lo*, *hi*, *function*)](/search.py)
 
 Find the first index `i` where `lo <= i <= hi` that satisfies `function`.
 
@@ -21,7 +21,7 @@ def findMedianSortedArrays(nums1, nums2):
     m, n = len(nums1), len(nums2)
     sum_len = m + n
     mean_len = (sum_len + 1)//2
-    i = binary_search(0, m,
+    i = binary(0, m,
         lambda x: x and nums1[x - 1] > nums2[mean_len - x]
     )
     j = sum_len - i
@@ -36,8 +36,8 @@ def search(nums, target):
     if nums:
         n = len(nums)
         m = n - 1
-        i = binary_search(0, m, lambda x: nums[x - 1] > nums[x])
-        j = binary_search(i, i + m, lambda y: nums[y%n] == target)%n
+        i = binary(0, m, lambda x: nums[x - 1] > nums[x])
+        j = binary(i, i + m, lambda y: nums[y%n] == target)%n
         return j if nums[j] == target else -1
     return -1
 ```
@@ -47,9 +47,9 @@ def search(nums, target):
 def searchRange(nums, target):
     if nums:
         n = len(nums) - 1
-        i = binary_search(0, n - 1, lambda x: nums[x] >= target)
+        i = binary(0, n - 1, lambda x: nums[x] >= target)
         if nums[i] == target:
-            j = binary_search(i, n, lambda y: nums[y] > target) - 1
+            j = binary(i, n, lambda y: nums[y] > target) - 1
             return [i, j]
         else:
             return [-1, -1]
@@ -60,7 +60,7 @@ def searchRange(nums, target):
 ```python
 def searchMatrix(matrix, target):
     m = len(matrix[0])
-    i = binary_search(0, len(matrix)*m - 1,
+    i = binary(0, len(matrix)*m - 1,
         lambda x: matrix[x//m][x%m] >= target
     )
     return matrix[i//m][i%m] == target
@@ -78,8 +78,8 @@ def search(nums, target):
             lo += 1
         while hi and nums[hi] == nums[-1]:
             hi -= 1
-        i = binary_search(lo, hi, lambda x: nums[x - 1] > nums[x])
-        return nums[binary_search(i, i + m,
+        i = binary(lo, hi, lambda x: nums[x - 1] > nums[x])
+        return nums[binary(i, i + m,
             lambda y: nums[y%n] >= target
         )%n] == target
     return False
@@ -88,7 +88,7 @@ def search(nums, target):
 [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array)
 ```python
 def findMin(nums):
-    return nums[binary_search(0, len(nums) - 1,
+    return nums[binary(0, len(nums) - 1,
         lambda x: nums[x - 1] > nums[x]
     )]
 ```
@@ -98,7 +98,7 @@ def findMin(nums):
 def findPeakElement(nums):
     n = len(nums)
     if n > 2:
-        i = binary_search(1, n - 2,
+        i = binary(1, n - 2,
             lambda x: nums[x - 1] < nums[x] > nums[x + 1]
         )
         return nums[i]
@@ -110,7 +110,7 @@ def findPeakElement(nums):
 ```python
 def hIndex(citations):
     n = len(citations)
-    return binary_search(0, n - 1, lambda x: citations[x] >= n - x)
+    return binary(0, n - 1, lambda x: citations[x] >= n - x)
 ```
 
 [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence)
@@ -118,7 +118,7 @@ def hIndex(citations):
 def lengthOfLIS(nums):
     tails, size = [0]*len(nums), 0
     for num in nums:
-        i = binary_search(0, size, lambda x: tails[x] >= num)
+        i = binary(0, size, lambda x: tails[x] >= num)
         tails[i], size = num, max(i + 1, size)
     return size
 ```
@@ -126,7 +126,7 @@ def lengthOfLIS(nums):
 [Valid Perfect Square](https://leetcode.com/problems/valid-perfect-square)
 ```python
 def isPerfectSquare(num):
-    return binary_search(1, num, lambda x: x**2 >= num)**2 == num
+    return binary(1, num, lambda x: x**2 >= num)**2 == num
 ```
 
 [Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum)
@@ -144,7 +144,7 @@ def splitArray(nums, m):
         return True
 
     array_sum = sum(nums)
-    return binary_search(max(nums), is_valid(array_sum)
+    return binary(max(nums), is_valid(array_sum)
     ) if m > 1 else array_sum
 ```
 
@@ -160,7 +160,7 @@ def minEatingSpeed(piles, H):
                 hours += 1
         return hours <= H
 
-    return binary_search(1, max(piles), can_eat)
+    return binary(1, max(piles), can_eat)
 ```
 
 [Find Positive Integer Solution for a Given Equation](https://leetcode.com/problems/find-positive-integer-solution-for-a-given-equation)
@@ -170,7 +170,7 @@ def findSolution(customfunction, z):
     pairs = []
     for x in range(1, 1001):
         if not customfunction.f(x, lo) < customfunction.f(x, hi) < z:
-            y = binary_search(lo, hi, lambda b: customfunction.f(x, b) >= z)
+            y = binary(lo, hi, lambda b: customfunction.f(x, b) >= z)
             value = customfunction.f(x, y)
             if value >= z:
                 if value == z: pairs += [[x, y]]
@@ -183,7 +183,7 @@ def findSolution(customfunction, z):
 [Find the Smallest Divisor Given a Threshold](https://leetcode.com/problems/find-the-smallest-divisor-given-a-threshold)
 ```python
 def smallestDivisor(nums, threshold):
-    return binary_search(1, max(nums),
+    return binary(1, max(nums),
         lambda x: sum((i + x - 1)//x for i in nums) <= threshold
     )
 ```
@@ -194,11 +194,9 @@ Apply Rabin-Karp's algorithm to an input string, given a pattern. Return an arra
 [Implement strStr()](https://leetcode.com/problems/implement-strstr/)
 ```python
 def strStr(haystack: str, needle: str):
-	matches = Search().rabin_karp(haystack, needle)
+	matches = rabin_karp(needle, haystack)
 	if (len(matches) == 0):
-		print(-1)
 		return -1
 	else:
-		print(matches[0])
-		return matches[0]
+		return matches
 ```

@@ -9,7 +9,7 @@ This cheat sheet contains templates for common data structures and algorithms in
     * Line sweep
     * Reservoir sampling
 * [Search](https://github.com/ljeng/cheat-sheet/blob/master/search.md)
-    * [Binary search](https://github.com/ljeng/cheat-sheet/blob/master/search.md#searchbinary_searchlo-hi-function)
+    * [Binary search](https://github.com/ljeng/cheat-sheet/blob/master/search.md#searchbinarylo-hi-function)
     * Knuth-Morris-Pratt
     * [Rabin-Karp](https://github.com/ljeng/cheat-sheet/blob/master/search.md#searchrabin_karppattern-s)
     * Aho-Corasick
