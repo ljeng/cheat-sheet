@@ -189,14 +189,11 @@ def smallestDivisor(nums, threshold):
 ```
 
 ### [search.**rabin_karp**(*pattern*, *s*)](/search.py)
-Apply Rabin-Karp's algorithm to an input string, given a pattern. Return an array of match index's in the input string.
+Apply the Rabin-Karp algorithm to an input string given a pattern. Return an array of match indices.
 
-[Implement strStr()](https://leetcode.com/problems/implement-strstr/)
+[Implement strStr()](https://leetcode.com/problems/implement-strstr)
 ```python
-def strStr(haystack: str, needle: str):
-	matches = rabin_karp(needle, haystack)
-	if (len(matches) == 0):
-		return -1
-	else:
-		return matches
+def strStr(haystack, needle):
+	m = search.rabin_karp(needle, haystack)
+	return m[0] if m else -1
 ```
