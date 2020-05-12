@@ -8,10 +8,10 @@ This cheat sheet contains templates for common data structures and algorithms in
     * Fibonacci sequence
     * Line sweep
     * Reservoir sampling
-* Search
-    * [Binary search](https://github.com/ljeng/cheat-sheet/blob/master/binary_search.md)
+* [Search](https://github.com/ljeng/cheat-sheet/blob/master/search.md)
+    * [Binary search](https://github.com/ljeng/cheat-sheet/blob/master/search.md#searchbinarylo-hi-function)
     * Knuth-Morris-Pratt
-    * Rabin-Karp
+    * [Rabin-Karp](https://github.com/ljeng/cheat-sheet/blob/master/search.md#searchrabin_karppattern-s)
     * Aho-Corasick
 * [Sorting](https://github.com/ljeng/cheat-sheet/blob/master/sorting.md)
     * Counting sort
