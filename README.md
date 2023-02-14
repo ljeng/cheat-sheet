@@ -1,6 +1,6 @@
 # cheat-sheet
 
-This cheat sheet contains templates for common data structures and algorithms in Python.
+This comprehensive Python cheat sheet contains templates for the most common data structures and algorithms used in Python programming. It provides an easy-to-understand guide for beginners, as well as quick reference for experienced coders. It covers the essential elements of Python programming, including data structures, functions, classes, tuples, dictionaries, list comprehensions, and more. With this cheat sheet, you'll be able to quickly find and apply the Python code you need to solve complex programming problems.
 
 ## Table of Contents
 
