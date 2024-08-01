@@ -1,4 +1,4 @@
-## 65. Valid Number
+## Valid Number
 
 Given a string `s`, return whether `s` is a valid number.
 
@@ -6,16 +6,17 @@ For example, all the following are valid numbers: `["2", "0089", "-0.1", "+3.14"
 
 Formally, a **valid number** is defined using one of the following definitions:
 
-1. An **integer number** followed by an optional exponent.
-2. A **decimal number** followed by an optional exponent.
+ 1. An **integer number** followed by an optional exponent.
+ 2. A **decimal number** followed by an optional exponent.
 
 An **integer number** is defined with an optional sign (`-` or `+`) followed by digits.
 
 A **decimal number** is defined with an optional sign (`-` or `+`) followed by one of the following definitions:
-1. Digits followed by a dot (`.`).
-2. Digits followed by a dot (`.`) followed by digits.
-3. A dot (`.`) followed by digits.
+ 1. Digits followed by a dot (`.`).
+ 2. Digits followed by a dot (`.`) followed by digits.
+ 3. A dot (`.`) followed by digits.
 
 An exponent is defined with an exponent notation (`e` or `E`) followed by an integer number.
 
 The digits are defined as one or more digits.
+
