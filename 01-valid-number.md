@@ -12,6 +12,7 @@ Formally, a **valid number** is defined using one of the following definitions:
 An **integer number** is defined with an optional sign (`-` or `+`) followed by digits.
 
 A **decimal number** is defined with an optional sign (`-` or `+`) followed by one of the following definitions:
+
  2. Digits followed by a dot (`.`).
  2. Digits followed by a dot (`.`) followed by digits.
  2. A dot (`.`) followed by digits.
@@ -19,4 +20,3 @@ A **decimal number** is defined with an optional sign (`-` or `+`) followed by o
 An exponent is defined with an exponent notation (`e` or `E`) followed by an integer number.
 
 The digits are defined as one or more digits.
-
