@@ -7,7 +7,7 @@ For example, all the following are valid numbers: `["2", "0089", "-0.1", "+3.14"
 Formally, a **valid number** is defined using one of the following definitions:
 
  1. An **integer number** followed by an optional exponent.
- 2. A **decimal number** followed by an optional exponent. 
+ 1. A **decimal number** followed by an optional exponent. 
 
 An **integer number** is defined with an optional sign (`-` or `+`) followed by digits.
 
