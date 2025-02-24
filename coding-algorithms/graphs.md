@@ -1,4 +1,4 @@
-## graph
+## graphs
 
 ### [class graph.**Graph**(*V*, *E*, *directed=True*)](/graph.py)
 
