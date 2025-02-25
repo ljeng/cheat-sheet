@@ -3,46 +3,45 @@
 ## Table of Contents
 
 - Coding & Algorithms
-    - Coding
-        - C++
-        - APIs
-        - Object-Oriented Design and Programming
-        - Testing Your Code
-        - Corner Cases and Edge Cases
-    - Algorithms
-        - Searching
-            - Binary Search
-        - Divide-and-conquer
-        - Greediness
-        - Big-O Notation
-        - Dijkstra's
-        - A\*
+    - [Coding](coding-algorithms/coding.md)
+        - [C++](coding-algorithms/c.md)
+        - [APIs](coding-algorithms/coding.md#apis)
+        - [Object-Oriented Design and Programming](coding-algorithms/.md#object-oriented-design-and-programming)
+        - [How to Test Your Code](coding-algorithms/coding.md#how-to-test-your-code)
+        - [Corner Cases and Edge Cases](coding-algorithms/coding.md#corner-cases-and-edge-cases)
+    - [Algorithms](coding-algorithms/algorithms.md)
+        - [Searching](coding-algorithms/algorithms.md#searching)
+            - [Binary Search](coding-algorithms/algorithms.md#binary-search)
+        - [Divide-and-conquer](coding-algorithms/algorithms.md#divide-and-conquer)
+        - [Greediness](coding-algorithms/algorithms.md#greediness)
+        - [Big-O Notation](coding-algorithms/algorithms.md#big-o-notation)
+        - [Dijkstra's](coding-algorithms/algorithms.md#dijkstras)
+        - [A\*](coding-algorithms/algorithms.md#a)
     - Sorting
         - Insertion Sort
         - Radix Sort
         - Quicksort
         - Merge Sort
         - Heapsort
-    - Data Structures
-        - Lists
-            - Arrays
-            - Linked Lists
-            - Stacks
-            - Queues
-        - Hash
-            - Sets
-            - Maps
-            - Tables
-            - Dictionary
-        - Trees
-            - Binary
-            - Heaps
-        - Graphs
-    - Mathematics
-        - Counting
-        - Probability
-        - Discrete
-        - Combinatorics
+    - [Data Structures](coding-algorithms/data-structures.md)
+        - [Lists](coding-algorithms/data-structures.md#lists)
+            - [Arrays](coding-algorithms/data-structures.md#arrays)
+            - [Linked Lists](coding-algorithms/data-structures.md#linked-lists)
+            - [Stacks](coding-algorithms/data-structures.md#stacks)
+            - [Queues](coding-algorithms/data-structures.md#queues)
+        - [Hash](coding-algorithms/data-structures.md#hash)
+            - [Sets](coding-algorithms/data-structures.md#sets)
+            - [Maps](coding-algorithms/data-structures.md#maps)
+            - [Tables](coding-algorithms/data-structures.md#tables)
+            - [Dictionary](coding-algorithms/data-structures.md#dictionary)
+        - [Trees](coding-algorithms/data-structures.md#trees)
+            - [Binary](coding-algorithms/data-structures.md#binary)
+            - [Heaps](coding-algorithms/data-structures.md#heaps)
+    - [Mathematics](coding-algorithms/mathematics.md)
+        - [Counting](coding-algorithms/mathematics.md#counting)
+        - [Probability](coding-algorithms/mathematics.md#probability)
+        - [Discrete Math](coding-algorithms/mathematics.md#discrete-math)
+        - [Combinatorics](coding-algorithms/mathematics.md#combinatorics)
     - Graphs
         - Algorithms
             - Distance
@@ -56,7 +55,7 @@
         - Traversal Algorithms
         - Breadth-first Search
         - Depth-first Search
-    - Recursion
+    - [Recursion](coding-algorithms/recursion.md)
 - Large-scale Design
     - System Design
         - Feature Sets
