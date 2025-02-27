@@ -1,33 +1,27 @@
-## graphs
+# Graphs
 
-### [class graph.**Graph**(*V*, *E*, *directed=True*)](/graph.py)
+## Table of Contents
+
+- [Algorithms](#algorithms)
+    - [Distance](#distance)
+    - [Search](#search)
+    - [Connectivity](#connectivity)
+    - [Cycle Detection](#cycle-detection)
+- [Ways to Represent a Graph in Memory](#ways-to-represent-a-graph-in-memory)
+    - [Objects and Pointers](#objects-and-pointers)
+    - [Matrix](#matrix)
+    - [Adjacency List](#adjacency-list)
+- [Traversal Algorithms](traversal-algorithms)
+    - [Breadth-first Search](#breadth-first-search)
+    - [Depth-first Search](#depth-first-search)
+
+### [class graph.**Graph**(*V*, *E*, *directed=True*)](code/graph.py)
 
 A `Graph` is a mathematical structure defined by a set of vertices `V` connected by edges `E`, where the distance from vertex `u` to vertex `v` is `E[u][v]`. A `Graph` can be `directed` or undirected. `Graph` objects support the following methods:
 
-**count_components**()
+## Algorithms
 
-Return the number of connected components.
-
-[Number of Islands](https://leetcode.com/problems/number-of-islands)
-```python
-def numIslands(grid):
-    return to_graph(grid, color='1').count_components()
-```
-
-[Friend Circles](https://leetcode.com/problems/friend-circles)
-```python
-import collections
-import itertools
-
-
-def findCircleNum(M):
-    V = set(range(len(M)))
-    E = collections.defaultdict(dict)
-    for i, j in itertools.permutations(V, 2):
-        if M[i][j]:
-            E[i][j] = 1
-    return Graph(V, E, directed=False).count_components()
-```
+### Distance
 
 **dijkstra**(*source*, *trace=False*)
 
@@ -178,6 +172,57 @@ def findTheCity(n, edges, distanceThreshold):
     )), -y))
 ```
 
+### Search
+
+### Connectivity
+
+**count_components**()
+
+Return the number of connected components.
+
+[Number of Islands](https://leetcode.com/problems/number-of-islands)
+```python
+def numIslands(grid):
+    return to_graph(grid, color='1').count_components()
+```
+
+[Friend Circles](https://leetcode.com/problems/friend-circles)
+```python
+import collections
+import itertools
+
+
+def findCircleNum(M):
+    V = set(range(len(M)))
+    E = collections.defaultdict(dict)
+    for i, j in itertools.permutations(V, 2):
+        if M[i][j]:
+            E[i][j] = 1
+    return Graph(V, E, directed=False).count_components()
+```
+
+**kruskal**()
+
+Apply Kruskal's algorithm to an undirected graph. Return a minimum spanning tree `MST` in the form of a `collections.defaultdict(dict)` object, where the distance from vertex `u` to vertex `v` is `MST[u][v]`.
+
+**prim**()
+
+Apply Prim's algorithm to an undirected graph. Return a minimum spanning tree MST in the form of a collections.defaultdict(dict) object MST.
+
+[Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
+```python
+import collections
+
+def findCheapestPrice(n, flights):
+    E = collections.defaultdict(dict)
+    for u, v, w in flights:
+        E[u][v] = w
+    ordering = Graph(set(range(n)), E, False).prim()
+    return sum(ordering.values())
+```
+
+### Cycle Detection
+
 **bipartite**()
 
 Return whether the graph is bipartite.
@@ -207,9 +252,78 @@ def possibleBipartition(N, dislikes):
     return Graph(set(range(1, N + 1)), E, directed=False).bipartite()
 ```
 
-**kruskal**()
+## Ways to Represent a Graph in Memory
 
-Apply Kruskal's algorithm to an undirected graph. Return a minimum spanning tree `MST` in the form of a `collections.defaultdict(dict)` object, where the distance from vertex `u` to vertex `v` is `MST[u][v]`.
+### Objects and Pointers
+
+### Matrix
+
+#### [graph.**to_graph**(*matrix*, *color=1*, *k=4*)](code/graph.py)
+
+Convert a `matrix` to a `Graph`. Each node is marked `color` and are `k`-directionally connected to its neighbors, where `k` can be 4 or 8.
+
+### Adjacency List
+
+#### [graph.**get_neighbors**(*matrix*, *i*, *j*, *color=None*, *k=4*)](code/graph.py)]
+
+In a `matrix`, nodes are marked `color` and are `k`-directionally connected to their neighbors, where `k` can be 4 or 8. Given a node at `(i, j)`, return its neighbors.
+
+[Minesweeper](https://leetcode.com/problems/minesweeper)
+```python
+def updateBoard(board, click):
+    i, j = click
+    if board[i][j] == 'M':
+        board[i][j] = 'X'
+    elif board[i][j] == 'E':
+        stack = [(i, j)]
+        visited = set()
+        while stack:
+            i, j = stack.pop()
+            visited.add((i, j))
+            m = len(get_neighbors(board, i, j, color='M', k=8))
+            if m:
+                board[i][j] = str(m)
+            else:
+                board[i][j] = 'B'
+                for u in get_neighbors(board, i, j, color='E', k=8):
+                    if u not in visited:
+                        stack += [u]
+    return board
+```
+
+## Traversal Algorithms
+
+### Breadth-first Search
+
+#### [graph.**word_ladder**(*start*, *end*, *bank*, *trace=False*)](code/graph.py)
+
+Solve the problem:
+
+> Given two words `start` and `end` and a word list `bank`, find the least number of transformations from `start` to `end`, such that only one letter can be changed at a time and each transformed word must exist in `bank`. `start` isn't necessarily a transformed word. All words have the same length.
+
+If `trace` is `True`, this method will instead output all transformation sequences from `start` to `end`.
+
+[Word Ladder II](https://leetcode.com/problems/word-ladder-ii)
+```python
+def findLadders(beginWord, endWord, wordList):
+    return word_ladder(beginWord, endWord, wordList, trace=True)
+```
+
+[Word Ladder](https://leetcode.com/problems/word-ladder)
+```python
+def findLadderLength(beginWord, endWord, wordList):
+    length = word_ladder(beginWord, endWord, wordList)
+    return length + 1 if length < float('inf') else 0
+```
+
+[Minimum Genetic Mutation](https://leetcode.com/problems/minimum-genetic-mutation)
+```python
+def minMutation(start, end, bank):
+    mutations = word_ladder(start, end, bank)
+    return mutations if mutations < float('inf') else -1
+```
+
+### Depth-first Search
 
 **toposort**()
 
@@ -240,55 +354,7 @@ def findOrder(numCourses, prerequisites):
     return ordering if ordering != None else []
 ```
 
-**prim**()
-
-Apply Prim's algorithm to an undirected graph. Return a minimum spanning tree MST in the form of a collections.defaultdict(dict) object MST.
-
-[Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
-```python
-import collections
-
-def findCheapestPrice(n, flights):
-    E = collections.defaultdict(dict)
-    for u, v, w in flights:
-        E[u][v] = w
-    ordering = Graph(set(range(n)), E, False).prim()
-    return sum(ordering.values())
-```
-        
-
-### [graph.**get_neighbors**(*matrix*, *i*, *j*, *color=None*, *k=4*)](/graph.py)]
-
-In a `matrix`, nodes are marked `color` and are `k`-directionally connected to their neighbors, where `k` can be 4 or 8. Given a node at `(i, j)`, return its neighbors.
-
-[Minesweeper](https://leetcode.com/problems/minesweeper)
-```python
-def updateBoard(board, click):
-    i, j = click
-    if board[i][j] == 'M':
-        board[i][j] = 'X'
-    elif board[i][j] == 'E':
-        stack = [(i, j)]
-        visited = set()
-        while stack:
-            i, j = stack.pop()
-            visited.add((i, j))
-            m = len(get_neighbors(board, i, j, color='M', k=8))
-            if m:
-                board[i][j] = str(m)
-            else:
-                board[i][j] = 'B'
-                for u in get_neighbors(board, i, j, color='E', k=8):
-                    if u not in visited:
-                        stack += [u]
-    return board
-```
-
-### [graph.**to_graph**(*matrix*, *color=1*, *k=4*)](/graph.py)
-
-Convert a `matrix` to a `Graph`. Each node is marked `color` and are `k`-directionally connected to its neighbors, where `k` can be 4 or 8.
-
-### [graph.**flood_fill**(*matrix*, *i*, *j*, *color*, *k=4*)](/graph.py)
+#### [graph.**flood_fill**(*matrix*, *i*, *j*, *color*, *k=4*)](code/graph.py)
 
 Flood fill a `matrix` in-place at coordinate `(i, j)` with `color`. Update `(i, j)` with `color`. Recursively update all `k`-directionally connected neighbors of `(i, j)` of the original color with `color`.
 
@@ -299,7 +365,7 @@ def floodFill(image, sr, sc, newColor):
     return image
 ```
 
-### [graph.**flood_fill_border**(*matrix*, *color*, *k=4*)](/graph.py)
+#### [graph.**flood_fill_border**(*matrix*, *color*, *k=4*)](code/graph.py)
 
 Flood fill the border of a `matrix` with `color`, where the nodes are `k`-directionally connected.
 
@@ -315,32 +381,4 @@ def numEnclaves(A):
 def closedIsland(grid):
     flood_fill_border(grid, 1)
     return to_graph(grid, color=0).count_components()
-```
-
-### [graph.**word_ladder**(*start*, *end*, *bank*, *trace=False*)](/graph.py)
-
-Solve the problem:
-
-> Given two words `start` and `end` and a word list `bank`, find the least number of transformations from `start` to `end`, such that only one letter can be changed at a time and each transformed word must exist in `bank`. `start` isn't necessarily a transformed word. All words have the same length.
-
-If `trace` is `True`, this method will instead output all transformation sequences from `start` to `end`.
-
-[Word Ladder II](https://leetcode.com/problems/word-ladder-ii)
-```python
-def findLadders(beginWord, endWord, wordList):
-    return word_ladder(beginWord, endWord, wordList, trace=True)
-```
-
-[Word Ladder](https://leetcode.com/problems/word-ladder)
-```python
-def findLadderLength(beginWord, endWord, wordList):
-    length = word_ladder(beginWord, endWord, wordList)
-    return length + 1 if length < float('inf') else 0
-```
-
-[Minimum Genetic Mutation](https://leetcode.com/problems/minimum-genetic-mutation)
-```python
-def minMutation(start, end, bank):
-    mutations = word_ladder(start, end, bank)
-    return mutations if mutations < float('inf') else -1
 ```

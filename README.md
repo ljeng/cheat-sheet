@@ -4,9 +4,9 @@
 
 - Coding & Algorithms
     - [Coding](coding-algorithms/coding.md)
-        - [C++](coding-algorithms/c.md)
+        - [C++](coding-algorithms/coding.md#c)
         - [APIs](coding-algorithms/coding.md#apis)
-        - [Object-Oriented Design and Programming](coding-algorithms/.md#object-oriented-design-and-programming)
+        - [Object-Oriented Design and Programming](coding-algorithms/coding.md#object-oriented-design-and-programming)
         - [How to Test Your Code](coding-algorithms/coding.md#how-to-test-your-code)
         - [Corner Cases and Edge Cases](coding-algorithms/coding.md#corner-cases-and-edge-cases)
     - [Algorithms](coding-algorithms/algorithms.md)
@@ -42,19 +42,19 @@
         - [Probability](coding-algorithms/mathematics.md#probability)
         - [Discrete Math](coding-algorithms/mathematics.md#discrete-math)
         - [Combinatorics](coding-algorithms/mathematics.md#combinatorics)
-    - Graphs
-        - Algorithms
-            - Distance
-            - Search
-            - Connectivity
-            - Cycle-detection
-        - Ways to Represent a Graph in Memory
-            - Objects and Pointers
-            - Matrix
-            - Adjacency List
-        - Traversal Algorithms
-        - Breadth-first Search
-        - Depth-first Search
+    - [Graphs](coding-algorithms/graphs.md)
+        - [Algorithms](coding-algorithms/graphs.md#algorithms)
+            - [Distance](coding-algorithms/graphs.md#distance)
+            - [Search](coding-algorithms/graphs.md#search)
+            - [Connectivity](coding-algorithms/graphs.md#connectivity)
+            - [Cycle-detection](coding-algorithms/graphs.md#cycle-detection)
+        - [Ways to Represent a Graph in Memory](coding-algorithms/graphs.md#ways-to-represent-a-graph-in-memory)
+            - [Objects and Pointers](coding-algorithms/graphs.md#objects-and-pointers)
+            - [Matrix](coding-algorithms/graphs.md#matrix)
+            - [Adjacency List](coding-algorithms/graphs.md#adjacency-list)
+        - [Traversal Algorithms](coding-algorithms/graphs.md#traversal-algorithms)
+            - [Breadth-first Search](coding-algorithms/graphs.md#breadth-first-search)
+            - [Depth-first Search](coding-algorithms/graphs.md#depth-first-search)
     - [Recursion](coding-algorithms/recursion.md)
 - Large-scale Design
     - System Design
@@ -78,7 +78,7 @@
         - Resource Estimation with Real Systems
         - The Big Product Design Picture
         - Translation of an Abstract Problem to a System
-        - API
+        - API Discussion
         - Binary Trees
         - Cache
         - MapReduce
