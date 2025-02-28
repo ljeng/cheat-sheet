@@ -57,37 +57,37 @@
             - [Depth-first Search](coding-algorithms/graphs.md#depth-first-search)
     - [Recursion](coding-algorithms/recursion.md)
 - Large-scale Design
-    - System Design
-        - Feature Sets
-        - Interfaces
-        - Class Hierarchies
-        - Distributed Systems
-        - Designing a System Under Certain Constraints
-        - Simplicity
-        - Limitations
-        - Robustness
-        - Tradeoffs
-        - How the Internet Works
-            - Routers
-            - Domain Name Servers
-            - Load Balancers
-            - Firewalls
-        - Traversing a Graph
-        - Run-time Complexity of Graphs
-        - Distributed Hash Table System
-        - Resource Estimation with Real Systems
-        - The Big Product Design Picture
-        - Translation of an Abstract Problem to a System
-        - API Discussion
-        - Binary Trees
-        - Cache
-        - MapReduce
-        - For Loop Problems
-        - Index
-        - Reverse Linked List
-        - Compilers
-        - Memory Cache
-        - Networks
+    - [System Design](large-scale-design/system-design.md)
+        - [Feature Sets](large-scale-design/system-design.md#feature-sets)
+        - [Interfaces](large-scale-design/system-design.md#interfaces)
+        - [Class Hierarchies](large-scale-design/system-design.md#class-hierarchies)
+        - [Distributed Systems](large-scale-design/system-design.md#distributed-systems)
+        - [Designing a System Under Certain Constraints](large-scale-design/system-design.md#designing-a-system-under-certain-constraints)
+        - [Simplicity](large-scale-design/system-design.md#simplicity)
+        - [Limitations](large-scale-design/system-design.md#limitations)
+        - [Robustness](large-scale-design/system-design.md#robustness)
+        - [Tradeoffs](large-scale-design/system-design.md#tradeoffs)
+        - [How the Internet Works](large-scale-design/system-design.md#how-the-internet-works)
+            - [Routers](large-scale-design/system-design.md#routers)
+            - [Domain Name Servers](large-scale-design/system-design.md#domain-name-servers)
+            - [Load Balancers](large-scale-design/system-design.md#load-balancers)
+            - [Firewalls](large-scale-design/system-design.md#firewalls)
+        - [Traversing a Graph](large-scale-design/system-design.md#traversing-a-graph)
+        - [Run-time Complexity of Graphs](large-scale-design/system-design.md#run-time-complexity-of-graphs)
+        - [Distributed Hash Table System](large-scale-design/system-design.md#distributed-hash-table-system)
+        - [Resource Estimation with Real Systems](large-scale-design/system-design.md#resource-estimation-with-real-systems)
+        - [The Big Product Design Picture](large-scale-design/system-design.md#the-big-product-design-picture)
+        - [Translation of an Abstract Problem to a System](large-scale-design/system-design.md#translation-of-an-abstract-problem-to-a-system)
+        - [API Discussion](large-scale-design/system-design.md#api-discussion)
+        - [Binary Trees](large-scale-design/system-design.md#binary-trees)
+        - [Cache](large-scale-design/system-design.md#cache)
+        - [MapReduce](large-scale-design/system-design.md#mapreduce)
+        - [For Loop Problems](large-scale-design/system-design.md#for-loop-problems)
+        - [Index](large-scale-design/system-design.md#index)
+        - [Reverse Linked List](large-scale-design/system-design.md#reverse-linked-list)
+        - [Compilers](large-scale-design/system-design.md#compilers)
+        - [Memory Cache](large-scale-design/system-design.md#memory-cache)
+        - [Networks](large-scale-design/system-design.md#networks)
     - Operating Systems
         - Execution
             - Processes
