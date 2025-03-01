@@ -88,22 +88,22 @@
         - [Compilers](large-scale-design/system-design.md#compilers)
         - [Memory Cache](large-scale-design/system-design.md#memory-cache)
         - [Networks](large-scale-design/system-design.md#networks)
-    - Operating Systems
-        - Execution
-            - Processes
-            - Threads
-        - Synchronization
-            - Locks
-            - Mutexes
-            - Semaphores
-            - Monitors
-        - Concurrency Issues
-            - Deadlock
-            - Livelock
-        - Context Switching
-            - How It Works
-            - How It's Initiated by the Operating System
-            - Underlying Hardware
-        - Scheduling
-        - Modern Concurrency Constructs
+    - [Operating Systems](large-scale-design/operating-systems.md)
+        - [Execution](large-scale-design/operating-systems.md#execution)
+            - [Processes](large-scale-design/operating-systems.md#processes)
+            - [Threads](large-scale-design/operating-systems.md#threads)
+        - [Synchronization](large-scale-design/operating-systems.md#synchronization)
+            - [Locks](large-scale-design/operating-systems.md#locks)
+            - [Mutexes](large-scale-design/operating-systems.md#mutexes)
+            - [Semaphores](large-scale-design/operating-systems.md#semaphores)
+            - [Monitors](large-scale-design/operating-systems.md#monitors)
+        - [Concurrency Issues](large-scale-design/operating-systems.md#concurrency-issues)
+            - [Deadlock](large-scale-design/operating-systems.md#deadlock)
+            - [Livelock](large-scale-design/operating-systems.md#livelock)
+        - [Context Switching](large-scale-design/operating-systems.md#context-switching)
+            - [How It Works](large-scale-design/operating-systems.md#how-it-works)
+            - [How It's Initiated by the Operating System](large-scale-design/operating-systems.md#how-its-initiated-by-the-operating-system)
+            - [Underlying Hardware](large-scale-design/operating-systems.md#underlying-hardware)
+        - [Scheduling](large-scale-design/operating-systems.md#scheduling)
+        - [Modern Concurrency Constructs](large-scale-design/operating-systems.md#modern-concurrency-constructs)
 - Research Science
