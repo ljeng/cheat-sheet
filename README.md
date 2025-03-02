@@ -74,7 +74,7 @@
             - [Firewalls](large-scale-design/system-design.md#firewalls)
         - [Traversing a Graph](large-scale-design/system-design.md#traversing-a-graph)
         - [Run-time Complexity of Graphs](large-scale-design/system-design.md#run-time-complexity-of-graphs)
-        - [Distributed Hash Table System](large-scale-design/system-design.md#distributed-hash-table-system)
+        - [A Distributed Hash Table System](large-scale-design/system-design.md#a-distributed-hash-table-system)
         - [Resource Estimation with Real Systems](large-scale-design/system-design.md#resource-estimation-with-real-systems)
         - [The Big Product Design Picture](large-scale-design/system-design.md#the-big-product-design-picture)
         - [Translation of an Abstract Problem to a System](large-scale-design/system-design.md#translation-of-an-abstract-problem-to-a-system)
