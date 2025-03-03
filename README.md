@@ -78,7 +78,7 @@
         - [Resource Estimation with Real Systems](large-scale-design/system-design.md#resource-estimation-with-real-systems)
         - [The Big Product Design Picture](large-scale-design/system-design.md#the-big-product-design-picture)
         - [Translation of an Abstract Problem to a System](large-scale-design/system-design.md#translation-of-an-abstract-problem-to-a-system)
-        - [API Discussion](large-scale-design/system-design.md#api-discussion)
+        - [API Discussions](large-scale-design/system-design.md#api-discussions)
         - [Binary Trees](large-scale-design/system-design.md#binary-trees)
         - [Cache](large-scale-design/system-design.md#cache)
         - [MapReduce](large-scale-design/system-design.md#mapreduce)
