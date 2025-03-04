@@ -235,6 +235,139 @@ Physics yields minimum-energy solutions; a similar science must be developed for
 
 ## MapReduce
 
+### The Programming Model
+
+MapReduce is a programming model and associated implementation designed for processing and generating large datasets that may not fit in the memory of a single machine. It simplifies distributed data processing by handling the complexities of parallelization, data distribution, fault tolerance, and load balancing. It allows programmers to utilize resources on large clusters of commodity machines without any experience in distributed systems. Users specify two functions, `map` and `reduce`.
+
+A computation takes a set of input key-value pairs and produces a set of output key-value pairs. The user expresses the computation as two functions:
+
+- **`map`**, written by the user, takes an input pair and produces intermediate key-value pairs. Think of this as transforming and extracting relevant data from each input record.
+- The **`reduce`** function merges together all intermediate values associated with the same intermediate key, typically aggregating, summarizing, or filtering them, to produce zero one output values.
+
+Programs written in this functional style are automatically parallelized and are fault-tolerant. Many real-world tasks, such as counting word occurrences in a large document collection, building inverted indexes, or analyzing web server logs, are expressible in this model. Although MapReduce's importance is declining, it provides a clear picture of why and how batch processing is useful. It was a major step forward in terms of the scale of processing that could be achieved on commodity hardware.
+
+### Example: Word Count
+
+```c++
+map(String docName, String docContent):
+  for each word w in docContent:
+    EmitIntermediate(w, "1");
+
+reduce(String word, Iterator values):
+  int result = 0;
+  for each v in values:
+    result += ParseInt(v);
+  Emit(AsString(result));
+
+```
+
+The `map` function emits each word plus a count of `1` in this example. The `reduce` function sums together all counts emitted for a particular word.
+
+### Types
+
+Even though the previous pseudocode is written in terms of string inputs and outputs, the `map` and `reduce` functions have associated types:
+
+- `map (k1, v1) -> list(k2, v2)`
+- `reduce (k2, list(v2)) -> list(v2)`
+
+That is, the input keys and values `(k1, v1)` are drawn from a different domain than the output keys and values. The intermediate keys and values `(k2, v2)` are from the same domain as the output keys and values. The C++ implementation leaves it to the user code to convert between string and appropriate types.
+
+### More Examples
+
+* *Distributed Grep:* `map` emits a line if it matches a pattern; `reduce` is the identity function[^mr01].
+* *Count of URL Access Frequency:* `map` outputs `<URL, 1>`; `reduce` adds the values for the same URL.
+* *Reverse Web-Link Graph:* `map` outputs `<target, source>` for each link; `reduce` concatenates the list of source URLs associated with a target.
+* *Term-Vector per Host:* `map` emits `<hostname, term_vector>`; `reduce` adds the term vectors together for a given host.
+* *Inverted Index:* map emits `<word, documentID>`; `reduce` sorts corresponding document IDs and emits `<word, list(documentID)>`.
+* *Distributed Sort:* `map` emits `<key, record>`; `reduce` emits all pairs unchanged[^mr02].
+
+### Implementation and Execution
+
+An implementation of MapReduce is targeted to large clusters of commodity PCs connected via switched Ethernet. in the environment:
+
+1. Machines are typically dual-processor x86 machines with 2-4 GB of RAM running Linux.
+1. Commodity hardware[^mr03] is used, averaging less overall bisection bandwidth.
+1. A cluster contains hundreds or thousands of machines, and therefore failures are common.
+1. Storage is provided by inexpensive IDE disks directly attached to machines, managed by a distributed file system that uses replication for fault tolerance.
+1. Users submit jobs to a scheduling system that maps tasks to available machines.
+
+### Execution Overview
+
+```mermaid
+flowchart TB
+    A((User Program))
+    B((Master))
+    subgraph Input Files
+        I0((split 0))
+        I1((split 1))
+        I2((split 2))
+        I3((split 3))
+        I4((split 4))
+    end
+    subgraph Map Phase
+        W0((worker))
+        W1((worker))
+        W2((worker))
+        W3((worker))
+        W4((worker))
+    end
+    subgraph Intermediate Files
+        IF((Intermediate files on local disks))
+    end
+    subgraph Reduce Phase
+        R0((worker))
+        R1((worker))
+    end
+    subgraph Output Files
+        O0((output file 0))
+        O1((output file 1))
+    end
+    A -- "(1) fork" --> A
+    A -- "(1) fork" --> B
+    B -- "(2) assign map" --> W0
+    B -- "(2) assign map" --> W1
+    B -- "(2) assign map" --> W2
+    B -- "(2) assign map" --> W3
+    B -- "(2) assign map" --> W4
+    I0 -- "read" --> W0
+    I1 -- "read" --> W1
+    I2 -- "read" --> W2
+    I3 -- "read" --> W3
+    I4 -- "read" --> W4
+    W0 -- "(4) local write" --> IF
+    W1 -- "(4) local write" --> IF
+    W2 -- "(4) local write" --> IF
+    W3 -- "(4) local write" --> IF
+    W4 -- "(4) local write" --> IF
+    B -- "(3) assign reduce" --> R0
+    B -- "(3) assign reduce" --> R1
+    R0 -- "(5) remote read" --> IF
+    R1 -- "(5) remote read" --> IF
+    R0 -- "(6) write" --> O0
+    R1 -- "(6) write" --> O1
+
+```
+
+*Figure MR-1*
+
+The execution of a MapReduce operation proceeds as follows[^mr04]:
+
+1. The input data[^mr05] is split into *M*[^mr06] independent chunks. This allows for parallel processing. It then starts multiple copies of the program on the cluster. One copy is the master, which assigns tasks to worker processes.
+2. The library creates *M* `map` tasks and *R* `reduce` tasks. These tasks are assigned to worker machines in a cluster. A worker assigned a `map` task reads the corresponding input split, parses key-value pairs, and calls the user-defined `map` function for each pair. Intermediate key-value pairs are buffered in memory.
+3. The master assigns idle workers either a `map` or a `reduce` task.
+4. Periodically, buffered pairs are written to the worker's local disk, partitioned into *R* regions[^mr07]. The locations of these files are sent to the master.
+5. When a `reduce` worker is notified by the master about the locations of intermediate files, it uses remote procedure calls to read the data from the `map` workers' local disks. After reading all its intermediate data, the `reduce` worker sorts it by the intermediate keys. If the data is too large for memory, an external sort is used.
+6. Each `reduce` task receives an intermediate key and an iterator over the set of values associated with that key. The `reduce` worker iterates over the sorted intermediate data. The iterator allows processing of value lists that are too large to fit in memory. The user-defined `reduce` function is applied to produce the final output. For each unique key, it passes the key and the corresponding set of values to the user's `reduce` function. The output of the `reduce` function is appended to a final output file for that `reduce` partition. When all `map` and `reduce` tasks are complete, the master wakes up the user program. The output is available in *R* output files[^mr08]. These files are often used as input to another MapReduce job or another distributed application.
+
+[^mr01]: simply passes the input through
+[^mr02]: relying on MapReduce's partitioning and ordering
+[^mr03]: 100 Mbits/s or 1Gbit/s at the machine level is used
+[^mr04]: referring to the numbered steps in Figure MR-1
+[^mr05]: often stored in file
+[^mr06]: typically 16-64 MB each
+[^mr07]: determined by a partitioning function, often `hash(key) mod R`
+[^mr08]: once per reduce task
+
 ## For Loop Problems
 
 ## Index
