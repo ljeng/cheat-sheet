@@ -62,7 +62,7 @@
         - [Interfaces](large-scale-design/system-design.md#interfaces)
         - [Class Hierarchies](large-scale-design/system-design.md#class-hierarchies)
         - [Distributed Systems](large-scale-design/system-design.md#distributed-systems)
-        - [Designing a System Under Certain Constraints](large-scale-design/system-design.md#designing-a-system-under-certain-constraints)
+        - [Designing a System under Certain Constraints](large-scale-design/system-design.md#designing-a-system-under-certain-constraints)
         - [Simplicity](large-scale-design/system-design.md#simplicity)
         - [Limitations](large-scale-design/system-design.md#limitations)
         - [Robustness](large-scale-design/system-design.md#robustness)
