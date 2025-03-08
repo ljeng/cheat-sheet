@@ -62,11 +62,11 @@ def numberToWords(num):
             subqueue = deque()
             if mod >= 100:
                 div, mod = divmod(mod, 100)
-                subqueue.extendleft([self.ONES[div], 'Hundred'])
+                subqueue.extendleft([ONES[div], 'Hundred'])
             if mod >= 20:
                 div, mod = divmod(mod, 10)
-                subqueue.appendleft(self.TENS[div])
-            subqueue.extendleft([self.ONES[mod], self.POWER1000[i]])
+                subqueue.appendleft(TENS[div])
+            subqueue.extendleft([ONES[mod], POWER1000[i]])
             superqueue.extendleft(subqueue)
         i += 1
     if superqueue:
@@ -92,11 +92,11 @@ def numberToWords(num):
 
 #### Word Search
 
+#### Palindrome Pairs
+
 #### *k*th Smallest in Lexicographical Order
 
 #### Reverse Pairs
-
-#### Palindrome Pairs
 
 ### Binary
 
@@ -105,3 +105,47 @@ def numberToWords(num):
 ### Heaps
 
 ## Graphs
+
+#### Longest Duplicate Substring
+
+Given a string `s`, consider all duplicated substrings: (contiguous) substrings of `s` that occur 2 or more times. The occurrences may overlap. Return any duplicated substring that has the longest possible length. If `s` does not have a duplicated substring, the answer is `""`.
+
+```python
+class State:
+    def __init__(self, link=-1):
+        self.link = link
+        self.word = ''
+        self.next = dict()
+
+def longestDupSubstring(s):
+    states = [State()]
+    last = 0
+    lds = ''
+    for x in s:
+        last, p = len(states), last
+        states.append(State())
+        states[last].word = states[p].word + x
+        while p != -1 and x not in states[p].next:
+            states[p].next[x] = last
+            p = states[p].link
+        if p >= 0:
+            q = states[p].next[x]
+            if len(states[q].word) == len(states[p].word) + 1:
+                states[last].link = q
+                lds = max([lds, states[q].word], key=len)
+            else:
+                states.append(State(states[q].link))
+                last += 1
+                states[last].next = states[q].next.copy()
+                states[last].word = states[p].word + x
+                lds = max([lds, states[last].word], key=len)
+                while p >= 0 and states[p].next.get(x, None) == q:
+                    states[p].next[x] = last
+                    p = states[p].link
+                last -= 1
+                states[q].link = states[last].link = last + 1
+        else:
+            states[last].link = 0
+    return lds
+
+```
