@@ -1,14 +1,21 @@
-## Sorting
-### Quickselect
-```python
-def quickselect(arr, k):
-    smaller, larger = [element for element in arr if element < arr[0]], [element for element in arr if element > arr[0]]
-    n = len(arr) - len(larger)
-    if k <= len(smaller): return quickselect(smaller, k)
-    elif k > n: return quickselect(larger, k - n)
-    else: return arr[0]
-```
-### Radix Sort
+# Sorting
+
+## Table of Contents
+
+- [Insertion Sort](#insertion-sort)
+- [Radix Sort](#radix-sort)
+- [Quicksort](#quicksort)
+    - [Quickselect](#quickselect)
+- [Merge Sort](#merge-sort)
+- [Heapsort](#heapsort)
+
+#### First Missing Positive
+
+#### Contains Duplicate
+
+## Insertion Sort
+
+## Radix Sort
 
 ```python
 import math
@@ -23,3 +30,24 @@ def radix_sort(arr, w):
         arr = list(itertools.chain(*buckets))
     return [element for element in arr if element < 0] + [element for element in arr if element >= 0]
 ```
+
+## Quicksort
+
+### Quickselect
+
+```python
+def quickselect(arr, k):
+    smaller, larger = [element for element in arr if element < arr[0]], [element for element in arr if element > arr[0]]
+    n = len(arr) - len(larger)
+    if k <= len(smaller): return quickselect(smaller, k)
+    elif k > n: return quickselect(larger, k - n)
+    else: return arr[0]
+```
+
+## Merge Sort
+
+#### Reverse Pairs
+
+#### Count of Smaller Numbers After Self
+
+## Heapsort
