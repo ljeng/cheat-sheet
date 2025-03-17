@@ -12,6 +12,32 @@
 
 #### Longest Valid Parentheses
 
+Given a string containing just the characters `(` and `)`, return the length of the longest valid (well-formed) parentheses substring[^1].
+
+```c++
+#include <algorithm>
+#include <stack>
+#include <string>
+
+using namespace std;
+
+int longestValidParentheses(string s) {
+  stack<int> index;
+  index.push(-1);
+  int m = 0;
+  for (int i = 0; i < s.length(); i++) {
+    if (s[i] == '(') index.push(i);
+    else {
+      index.pop();
+      if (index.empty()) index.push(i);
+      else m = max(m, i - index.top());
+    }
+  }
+  return m;
+}
+
+```
+
 ### Queues
 
 #### Integer to English Words
@@ -21,7 +47,7 @@ Convert a non-negative integer `num` to its English words representation.
 ```python
 from collections import deque
 
-ONES = ['',
+one = ['',
     'One',
     'Two',
     'Three',
@@ -41,7 +67,7 @@ ONES = ['',
     'Seventeen',
     'Eighteen',
     'Nineteen']
-TENS = ['',
+ten = ['',
     'Ten',
     'Twenty',
     'Thirty',
@@ -51,7 +77,7 @@ TENS = ['',
     'Seventy',
     'Eighty',
     'Ninety']
-POWER1000 = ['', 'Thousand', 'Million', 'Billion']
+power1000 = ['', 'Thousand', 'Million', 'Billion']
 
 def numberToWords(num):
     superqueue = deque()
@@ -62,17 +88,15 @@ def numberToWords(num):
             subqueue = deque()
             if mod >= 100:
                 div, mod = divmod(mod, 100)
-                subqueue.extendleft([ONES[div], 'Hundred'])
+                subqueue.extendleft([one[div], 'Hundred'])
             if mod >= 20:
                 div, mod = divmod(mod, 10)
-                subqueue.appendleft(TENS[div])
-            subqueue.extendleft([ONES[mod], POWER1000[i]])
+                subqueue.appendleft(ten[div])
+            subqueue.extendleft([one[mod], power1000[i]])
             superqueue.extendleft(subqueue)
         i += 1
-    if superqueue:
-        return ' '.join(word for word in superqueue if word)
-    else:
-        return 'Zero'
+    if superqueue: return ' '.join(word for word in superqueue if word)
+    else: return 'Zero'
 
 ```
 
@@ -82,9 +106,9 @@ def numberToWords(num):
 
 ### Maps
 
-### Tables
-
 #### Substring with Concatenation of All Words
+
+### Tables
 
 ### Dictionary
 
@@ -118,34 +142,35 @@ class State:
         self.next = dict()
 
 def longestDupSubstring(s):
-    states = [State()]
+    automaton = [State()]
     last = 0
     lds = ''
     for x in s:
-        last, p = len(states), last
-        states.append(State())
-        states[last].word = states[p].word + x
-        while p != -1 and x not in states[p].next:
-            states[p].next[x] = last
-            p = states[p].link
+        last, p = len(automaton), last
+        automaton.append(State())
+        automaton[last].word = automaton[p].word + x
+        while p >= 0 and x not in automaton[p].next:
+            automaton[p].next[x] = last
+            p = automaton[p].link
         if p >= 0:
-            q = states[p].next[x]
-            if len(states[q].word) == len(states[p].word) + 1:
-                states[last].link = q
-                lds = max([lds, states[q].word], key=len)
+            q = automaton[p].next[x]
+            if len(automaton[q].word) == len(automaton[p].word) + 1:
+                automaton[last].link = q
+                lds = max([lds, automaton[q].word], key=len)
             else:
-                states.append(State(states[q].link))
+                automaton.append(State(automaton[q].link))
                 last += 1
-                states[last].next = states[q].next.copy()
-                states[last].word = states[p].word + x
-                lds = max([lds, states[last].word], key=len)
-                while p >= 0 and states[p].next.get(x, None) == q:
-                    states[p].next[x] = last
-                    p = states[p].link
+                automaton[last].word = automaton[p].word + x
+                automaton[last].next = automaton[q].next.copy()
+                lds = max([lds, automaton[last].word], key=len)
+                while p >= 0 and automaton[p].next.get(x, None) == q:
+                    automaton[p].next[x] = last
+                    p = automaton[p].link
                 last -= 1
-                states[q].link = states[last].link = last + 1
-        else:
-            states[last].link = 0
+                automaton[q].link = automaton[last].link = last + 1
+        else: automaton[last].link = 0
     return lds
 
 ```
+
+[^1]: A *substring* is a contiguous *non-empty* sequence of characters within a string.
