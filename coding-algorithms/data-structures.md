@@ -8,6 +8,86 @@
 
 ### Linked Lists
 
+#### All $\Theta(1)$ Data Structure
+
+Design a data structure to store the strings' count with the ability to return the strings with minimum and maximum counts.
+
+Implement the `AllOne` class:
+
+- `AllOne()` Initializes the object of the data structure.
+- `inc(String key)` Increments the count of the string `key` by `1`. If `key` does not exist in the data structure, insert it with count `1`.
+- `dec(String key)` Decrements the count of the string `key` by `1`. If the count of `key` is `0` after the decrement, remove it from the data structure. It is guaranteed that `key` exists in the data structure before the decrement.
+- `getMaxKey()` Returns one of the keys with the maximal count. If no element exists, return an empty string `""`.
+- `getMinKey()` Returns one of the keys with the minimum count. If no element exists, return an empty string `""`.
+
+Each function must run in $\Theta(1)$ time complexity.
+
+```c++
+#include <iterator>
+#include <list>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+
+using namespace std;
+
+struct Node {
+  int count;
+  unordered_set<string> keys;
+};
+
+class AllOne {
+public:
+  list<Node> nodes;
+  unordered_map<string, list<Node>::iterator> key_node;
+
+  AllOne() {}
+  
+  void inc(string key) {
+    if (key_node.count(key)) {
+      auto left = key_node[key];
+      auto right = next(left);
+      int count = left->count + 1;
+      if (right == nodes.end() || right->count != count)
+        right = nodes.insert(right, {count, {}});
+      left->keys.erase(key);
+      right->keys.insert(key);
+      key_node[key] = right;
+      if (left->keys.empty()) nodes.erase(left);
+    }
+    else {
+      if (nodes.empty() || nodes.front().count > 1) nodes.push_front({1, {}});
+      nodes.front().keys.insert(key);
+      key_node[key] = nodes.begin();
+    }
+  }
+  
+  void dec(string key) {
+    auto right = key_node[key];
+    int count = right->count - 1;
+    right->keys.erase(key);
+    if (count) {
+      auto left = (right == nodes.begin()) ? nodes.end() : prev(right);
+      if (left->count != count || right == nodes.begin())
+        left = nodes.insert(right, {count, {}});
+      left->keys.insert(key);
+      key_node[key] = left;
+    }
+    else key_node.erase(key);
+    if (right->keys.empty()) nodes.erase(right);
+  }
+  
+  string getMaxKey() {
+    return nodes.empty() ? "" : *(prev(nodes.end())->keys.begin());
+  }
+  
+  string getMinKey() {
+        return nodes.empty() ? "" : *(nodes.front().keys.begin());
+  }
+};
+
+```
+
 ### Stacks
 
 #### Longest Valid Parentheses
