@@ -11,6 +11,25 @@
 
 #### First Missing Positive
 
+Given an unsorted integer array `nums`. Return the smallest positive integer that is not present in `nums`. You must implement an algorithm that runs in $\Theta(n)$ time and uses $\Theta(1)$ auxiliary space.
+
+```c++
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+int firstMissingPositive(vector<int>& nums) {
+  int n = nums.size();
+  for (int i = 0; i < n; i++)
+    while (0 < nums[i] && nums[i] <= n && nums[i] != nums[nums[i] - 1])
+      swap(nums[i], nums[nums[i] - 1]);
+  for (int i = 1; i <= n; i++) if (i != nums[i - 1]) return i;
+  return ++n;
+}
+
+```
+
 #### Contains Duplicate
 
 ## Insertion Sort

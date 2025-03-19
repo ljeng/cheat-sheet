@@ -17,12 +17,12 @@
         - [Big-O Notation](coding-algorithms/algorithms.md#big-o-notation)
         - [Dijkstra's](coding-algorithms/algorithms.md#dijkstras)
         - [A\*](coding-algorithms/algorithms.md#a)
-    - Sorting
-        - Insertion Sort
-        - Radix Sort
-        - Quicksort
-        - Merge Sort
-        - Heapsort
+    - [Sorting](coding-algorithms/sorting.md)
+        - [Insertion Sort](coding-algorithms/algorithms.md#insertion-sort)
+        - [Radix Sort](coding-algorithms/algorithms.md#radix-sort)
+        - [Quicksort](coding-algorithms/algorithms.md#quicksort)
+        - [Merge Sort](coding-algorithms/algorithms.md#merge-sort)
+        - [Heapsort](coding-algorithms/algorithms.md#heapsort)
     - [Data Structures](coding-algorithms/data-structures.md)
         - [Lists](coding-algorithms/data-structures.md#lists)
             - [Arrays](coding-algorithms/data-structures.md#arrays)
