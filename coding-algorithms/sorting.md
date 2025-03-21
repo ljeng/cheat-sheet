@@ -32,6 +32,32 @@ int firstMissingPositive(vector<int>& nums) {
 
 #### Contains Duplicate
 
+You are given an integer array nums and two integers `indexDiff` and `valueDiff`. Find a pair of indices `(i, j)` such that:
+
+- `i != j`
+- `abs(i - j) <= indexDiff`
+- `abs(nums[i] - nums[j]) <= valueDiff`
+
+Return `true` if such pair exists or `false` otherwise.
+
+```python
+import collections
+import sys
+
+def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
+    valueDiff += 1
+    buckets = collections.defaultdict(lambda: sys.maxsize)
+    for i, num in enumerate(nums):
+        k = num // valueDiff
+        if buckets[k] < sys.maxsize or min(abs(num - buckets[k - 1]),
+            abs(num - buckets[k + 1])) < valueDiff:
+            return True
+        buckets[k] = num
+        if i >= indexDiff: del buckets[nums[i - indexDiff] // valueDiff]
+    return False
+
+```
+
 ## Insertion Sort
 
 ## Radix Sort
@@ -66,6 +92,44 @@ def quickselect(arr, k):
 ## Merge Sort
 
 #### Reverse Pairs
+
+Given an integer array `nums`, return the number of *reverse pairs* in the array. A *reverse pair* is a pair `(i, j)` where:
+
+- `0 <= i < j < nums.length` and
+- `nums[i] > 2 * nums[j]`.
+
+```c++
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+int reversePairs(vector<int>& nums) {
+  int n = nums.size();
+  int i, j;
+  int counter = 0;
+  for (int width = 1; width < n; width *= 2)
+    for (int start = 0; start < n; start += 2 * width) {
+      int mid = start + width - 1;
+      int end = min(width + mid, n - 1);
+      if (mid >= n) break;
+      j = ++mid;
+      for (i = start; i < mid; i++) {
+        while (j <= end && nums[i] > 2LL * nums[j]) j++;
+        counter += j - mid;
+      }
+      i = start, j = mid;
+      vector<int> merged;
+      while (i < mid && j <= end)
+        merged.push_back(nums[i] > nums[j] ? nums[j++] : nums[i++]);
+      while (i < mid) merged.push_back(nums[i++]);
+      while (j <= end) merged.push_back(nums[j++]);
+      copy(merged.begin(), merged.end(), nums.begin() + start);
+    }
+  return counter;
+}
+
+```
 
 #### Count of Smaller Numbers After Self
 
