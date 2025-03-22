@@ -45,15 +45,15 @@ public:
   
   void inc(string key) {
     if (key_node.count(key)) {
-      auto left = key_node[key];
-      auto right = next(left);
-      int count = left->count + 1;
-      if (right == nodes.end() || right->count != count)
-        right = nodes.insert(right, {count, {}});
-      left->keys.erase(key);
-      right->keys.insert(key);
-      key_node[key] = right;
-      if (left->keys.empty()) nodes.erase(left);
+      auto it_current = key_node[key];
+      auto it_next = next(it_current);
+      int count = it_current->count + 1;
+      if (it_next == nodes.end() || it_next->count != count)
+        it_next = nodes.insert(it_next, {count, {}});
+      it_current->keys.erase(key);
+      it_next->keys.insert(key);
+      key_node[key] = it_next;
+      if (it_current->keys.empty()) nodes.erase(it_current);
     }
     else {
       if (nodes.empty() || nodes.front().count > 1) nodes.push_front({1, {}});
@@ -63,18 +63,20 @@ public:
   }
   
   void dec(string key) {
-    auto right = key_node[key];
-    int count = right->count - 1;
-    right->keys.erase(key);
+    auto it_current = key_node[key];
+    int count = it_current->count - 1;
+    it_current->keys.erase(key);
     if (count) {
-      auto left = (right == nodes.begin()) ? nodes.end() : prev(right);
-      if (left->count != count || right == nodes.begin())
-        left = nodes.insert(right, {count, {}});
-      left->keys.insert(key);
-      key_node[key] = left;
+      auto it_prev = it_current == nodes.begin()
+        ? nodes.end()
+        : prev(it_current);
+      if (it_prev->count != count || it_current == nodes.begin())
+        it_prev = nodes.insert(it_current, {count, {}});
+      it_prev->keys.insert(key);
+      key_node[key] = it_prev;
     }
     else key_node.erase(key);
-    if (right->keys.empty()) nodes.erase(right);
+    if (it_current->keys.empty()) nodes.erase(it_current);
   }
   
   string getMaxKey() {
@@ -82,7 +84,7 @@ public:
   }
   
   string getMinKey() {
-        return nodes.empty() ? "" : *(nodes.front().keys.begin());
+    return nodes.empty() ? "" : *(nodes.front().keys.begin());
   }
 };
 
@@ -160,22 +162,22 @@ ten = ['',
 power1000 = ['', 'Thousand', 'Million', 'Billion']
 
 def numberToWords(num):
-    superqueue = deque()
+    superwords = deque()
     i = 0
     while num:
         num, mod = divmod(num, 1000)
         if mod:
-            subqueue = deque()
+            subwords = deque()
             if mod >= 100:
                 div, mod = divmod(mod, 100)
-                subqueue.extendleft([one[div], 'Hundred'])
+                subwords.extendleft([one[div], 'Hundred'])
             if mod >= 20:
                 div, mod = divmod(mod, 10)
-                subqueue.appendleft(ten[div])
-            subqueue.extendleft([one[mod], power1000[i]])
-            superqueue.extendleft(subqueue)
+                subwords.appendleft(ten[div])
+            subwords.extendleft([one[mod], power1000[i]])
+            superwords.extendleft(subwords)
         i += 1
-    if superqueue: return ' '.join(word for word in superqueue if word)
+    if superwords: return ' '.join(word for word in superwords if word)
     else: return 'Zero'
 
 ```
@@ -205,6 +207,30 @@ def numberToWords(num):
 ### Binary
 
 #### Binary Tree Maximum Path Sum
+
+A *path* in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence *at most once*. Note that the path does not need to pass through the root. The *path sum* of a path is the sum of the node's values in the path. Given the `root` of a binary tree, return the maximum *path sum* of any *non-empty path*.
+
+```python
+import sys
+
+def maxPathSum(root):
+    stack = [(root, False)]
+    path_sum = -sys.maxsize
+    node_sum = dict()
+    while stack:
+        node, visited = stack.pop()
+        if visited:
+            left = max(node_sum.get(node.left, 0), 0)
+            right = max(node_sum.get(node.right, 0), 0)
+            path_sum = max(path_sum, node.val + left + right)
+            node_sum[node] = node.val + max(left, right)
+        else:
+            stack.append((node, True))
+            for child in (node.left, node.right):
+                if child: stack.append((child, False))
+    return path_sum
+
+```
 
 ### Heaps
 
