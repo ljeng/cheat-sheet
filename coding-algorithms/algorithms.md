@@ -19,7 +19,7 @@ string shortestPalindrome(string s) {
   int m = superstring.length();
   vector<int> lps(m);
   for (int t = 0, j = 1; j < m; lps[j++] = t) {
-    for (; t && superstring[j] != superstring[t]; t = lps[--t]);
+    while (t && superstring[j] != superstring[t]) t = lps[--t];
     t += superstring[j] == superstring[t];
   }
   return reversed.substr(0, s.length() - lps.back()) + s;
@@ -49,6 +49,24 @@ def findMedianSortedArrays(nums1, nums2):
 
 ```
 
+#### Russian Doll Envelopes
+
+You are given a 2-D array of integers envelopes where `envelopes[i] = [w[i], h[i]]` represents the width and the height of an envelope. One envelope can fit into another if and only if both the width and height of one envelope are greater than the other envelope's width and height. Return the maximum number of envelopes you can Russian doll[^2]. You cannot rotate an envelope.
+
+```python
+import bisect
+
+def maxEnvelopes(envelopes):
+    lis = []
+    for w, h in sorted(envelopes, key = lambda x: (x[0], -x[1])):
+        i = bisect.bisect_left(lis, h)
+        if i < len(lis): lis[i] = h
+        else: lis.append(h)
+    return len(lis)
+
+```
+
+
 ## Divide-and-conquer
 
 ## Greediness
@@ -68,8 +86,8 @@ The matching should cover the entire input string[^3].
 using namespace std;
 
 bool isMatch(string s, string p) {
-  int m = s.size(), n = p.size();
   int i = 0, j = 0, k = 0, asterisk = -1;
+  int m = s.size(), n = p.size();
   while (i < m) {
     if (j < n && (p[j] == s[i] || p[j] == '?')) i++, j++;
     else if (j < n && p[j] == '*') k = i, asterisk = j++;
@@ -95,5 +113,6 @@ bool isMatch(string s, string p) {
 ## A\*
 
 [^1]: A *palindrome* is a string that reads the same forward and backward.
-[^2]: including the empty sequence
-[^3]: not partial
+[^2]: put one inside the other
+[^3]: including the empty sequence
+[^4]: not partial
