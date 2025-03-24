@@ -96,27 +96,17 @@ public:
 
 Given a string containing just the characters `(` and `)`, return the length of the longest valid (well-formed) parentheses substring[^1].
 
-```c++
-#include <algorithm>
-#include <stack>
-#include <string>
-
-using namespace std;
-
-int longestValidParentheses(string s) {
-  stack<int> index;
-  index.push(-1);
-  int m = 0;
-  for (int i = 0; i < s.length(); i++) {
-    if (s[i] == '(') index.push(i);
-    else {
-      index.pop();
-      if (index.empty()) index.push(i);
-      else m = max(m, i - index.top());
-    }
-  }
-  return m;
-}
+```python
+def longestValidParentheses(s):
+    index = [-1]
+    m = 0
+    for i, x in enumerate(s):
+        if x == '(': index.append(i)
+        else:
+            index.pop()
+            if index: m = max(m, i - index[-1])
+            else: index.append(i)
+    return m
 
 ```
 
@@ -189,6 +179,43 @@ def numberToWords(num):
 ### Maps
 
 #### Substring with Concatenation of All Words
+
+You are given a string `s` and an array of strings `words`. All the strings of words are of *the same length*. A *concatenated string* is a string that exactly contains all the strings of any permutation of words concatenated. For example, if `words = ["ab","cd","ef"]`, then `"abcdef"`, `"abefcd"`, `"cdabef"`, `"cdefab"`, `"efabcd"`, and `"efcdab"` are all concatenated strings. `"acdbef"` is not a concatenated string because it is not the concatenation of any permutation of words. Return an array of the starting indices of all the concatenated substrings in `s`. You can return the answer in *any order*.
+
+```c++
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+vector<int> findSubstring(string s, vector<string>& words) {
+  int m = s.length(), n = words.size(), k = words[0].length();
+  unordered_map<string, int> supercount;
+  for (string word : words) supercount[word]++;
+  vector<int> starting_indices;
+  if (m >= n * k) for (int j = 0; j < k; j++) {
+    int start = j, end = j, count = 0;
+    unordered_map<string, int> subcount;
+    while (end + k <= m) {
+      string substring = s.substr(end, k);
+      end += k;
+      if (supercount.count(substring)) {
+        count++ subcount[substring]++;
+        while (subcount[substring] > supercount[substring])
+          subcount[s.substr(start, k)]--, start += k, count--;
+        if (count == n) starting_indices.push_back(start);
+      }
+      else {
+        count = 0, start = end;
+        subcount.clear();
+      }
+    }
+  }
+  return starting_indices;
+}
+
+```
 
 ### Tables
 
