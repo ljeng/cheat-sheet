@@ -94,7 +94,7 @@ public:
 
 #### Longest Valid Parentheses
 
-Given a string containing just the characters `(` and `)`, return the length of the longest valid (well-formed) parentheses substring[^1].
+Given a string containing just the characters `(` and `)`, return the length of the longest valid[^1] parentheses substring[^2].
 
 ```python
 def longestValidParentheses(s):
@@ -217,6 +217,35 @@ vector<int> findSubstring(string s, vector<string>& words) {
 
 ```
 
+#### Minimum Window Substring
+
+Given two strings `s` and `t` of lengths `m` and `n` respectively, return the *minimum window substring*[^2] of `s` such that every character in `t`[^3] is included in the window. If there is no such substring, return the empty string `""`. The input will be generated such that the answer is *unique.*
+
+```c++
+#include <climits>
+#include <string>
+#include <unordered_map>
+
+using namespace std;
+
+string minWindow(string source, string target) {
+  int i = 0, j = 0;
+  int n = target.size();
+  unordered_map<char, int> character_count;
+  for (char x : target) character_count[x]++;
+  int pos = 0, len = INT_MAX;
+  while (j < source.size()) {
+    n -= character_count[source[j++]]-- > 0;
+    while (!n) {
+      if (j - i < len) len = j - (pos = i);
+      n += !character_count[source[i++]]++;
+    }
+  }
+  return len < INT_MAX ? source.substr(pos, len) : "";
+}
+
+```
+
 ### Tables
 
 ### Dictionary
@@ -306,4 +335,6 @@ def longestDupSubstring(s):
 
 ```
 
-[^1]: A *substring* is a contiguous *non-empty* sequence of characters within a string.
+[^1]: well-formed
+[^2]: A *substring* is a contiguous *non-empty* sequence of characters within a string.
+[^3]: *including duplicates*
