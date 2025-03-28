@@ -75,9 +75,9 @@ def maxEnvelopes(envelopes):
 Given an input string `s` and a pattern `p`, implement wildcard pattern matching with support for `?` and `*` where:
 
 - `?` Matches any single character.
-- `*` Matches any sequence of characters[^2].
+- `*` Matches any sequence of characters[^3].
 
-The matching should cover the entire input string[^3].
+The matching should cover the entire input string[^4].
 
 ```c++
 #include <string>
@@ -85,8 +85,7 @@ The matching should cover the entire input string[^3].
 using namespace std;
 
 bool isMatch(string s, string p) {
-  int i = 0, j = 0, k = 0, asterisk = -1;
-  int m = s.size(), n = p.size();
+  int i = 0, j = 0, k = 0, asterisk = -1, m = s.size(), n = p.size();
   while (i < m) {
     if (j < n && (p[j] == s[i] || p[j] == '?')) i++, j++;
     else if (j < n && p[j] == '*') k = i, asterisk = j++;
@@ -109,7 +108,7 @@ bool isMatch(string s, string p) {
 
 #### Insert, Delete, GetRandom $\Theta(1)$ - Duplicates Allowed
 
-`RandomizedCollection` is a data structure that contains a collection of numbers, possibly duplicates[^1]. It should support inserting and removing specific elements and also reporting a random element.
+`RandomizedCollection` is a data structure that contains a collection of numbers, possibly duplicates[^5]. It should support inserting and removing specific elements and also reporting a random element.
 
 Implement the `RandomizedCollection` class:
 
@@ -157,3 +156,4 @@ class RandomizedCollection:
 [^2]: put one inside the other
 [^3]: including the empty sequence
 [^4]: not partial
+[^5]: a multiset
