@@ -11,7 +11,7 @@
     - [Objects and Pointers](#objects-and-pointers)
     - [Matrix](#matrix)
     - [Adjacency List](#adjacency-list)
-- [Traversal Algorithms](traversal-algorithms)
+- [Traversal Algorithms](#traversal-algorithms)
     - [Breadth-first Search](#breadth-first-search)
     - [Depth-first Search](#depth-first-search)
 
@@ -303,17 +303,94 @@ Solve the problem:
 
 If `trace` is `True`, this method will instead output all transformation sequences from `start` to `end`.
 
-[Word Ladder II](https://leetcode.com/problems/word-ladder-ii)
-```python
-def findLadders(beginWord, endWord, wordList):
-    return word_ladder(beginWord, endWord, wordList, trace=True)
-```
-
 [Word Ladder](https://leetcode.com/problems/word-ladder)
 ```python
 def findLadderLength(beginWord, endWord, wordList):
     length = word_ladder(beginWord, endWord, wordList)
     return length + 1 if length < float('inf') else 0
+```
+
+#### Word Ladder II
+
+A *transformation sequence* from word `beginWord` to word `endWord` using a dictionary `wordList` is a sequence of words `beginWord -> s[1] -> s[2] -> ... -> s[k]` such that:
+
+- Every adjacent pair of words differs by a single letter.
+- Every `s[i]` for `1 <= i <= k` is in `wordList`. `beginWord` does not need to be in `wordList`.
+- `s[k] == endWord`
+
+Given two words, `beginWord` and `endWord`, and a dictionary `wordList`, return *all the shortest transformation sequences* from `beginWord` to `endWord`, or an empty list if no such sequence exists. Each sequence should be returned as a list of the words [`beginWord, s[1], s[2], ..., s[k]]`.
+
+```python
+from collections import defaultdict
+
+class Tree:
+    def __init__(self, index):
+        self.root = index
+        self.parent_children = defaultdict(set)
+        self.child_parents = defaultdict(set)
+        self.nodes, self.leaves = {index}, {index}
+
+    def intersect(self, other):
+        return self.nodes & other.nodes
+
+    def expand(self, adjacency, other):
+        parent_children = defaultdict(set)
+        for i in self.leaves:
+            for j in adjacency[i]:
+                if j not in self.nodes: parent_children[i].add(j)
+        self.leaves = set()
+        for i, children in parent_children.items():
+            self.parent_children[i].update(children)
+            for j in children: self.child_parents[j].add(i)
+            self.leaves.update(children)
+        self.nodes.update(self.leaves)
+        return not self.leaves or self.intersect(other)
+
+    def prefixes(self, other):
+        stack = [[j] for j in self.intersect(other)]
+        prefixes = []
+        while stack:
+            current = stack.pop()
+            if current[0] == self.root: prefixes.append(current)
+            for i in self.child_parents[current[0]]:
+                stack.append([i] + current)
+        return prefixes
+
+def findLadders(beginWord, endWord:, wordList):
+    indexBegin = indexEnd = -1
+    for i, word in enumerate(wordList):
+        if word == beginWord: indexBegin = i
+        elif word == endWord: indexEnd = i
+    if indexBegin == -1:
+        indexBegin = len(wordList)
+        wordList.append(beginWord)
+    if indexEnd == -1: return []
+    n, m = len(wordList), len(beginWord)
+    adjacency = [set() for _ in range(n)]
+    for i, word in enumerate(wordList):
+        for j in range(i + 1, n):
+            k = diff = 0
+            while k < m: 
+                diff += word[k] != wordList[j][k]
+                if diff > 1: break
+                k += 1
+            else:
+                adjacency[i].add(j)
+                adjacency[j].add(i)
+    begin, end = Tree(indexBegin), Tree(indexEnd)
+    while True:
+        if begin.expand(adjacency, end): break
+        if end.expand(adjacency, begin): break
+    ladders = set()
+    for suffix in end.prefixes(begin):
+        suffix.reverse()
+        for prefix in begin.prefixes(end):
+            for index, x in enumerate(suffix):
+                if x == prefix[-1]:
+                    ladders.add(tuple(prefix + suffix[index + 1:]))
+                    break
+    return [[wordList[i] for i in ladder] for ladder in ladders]
+
 ```
 
 [Minimum Genetic Mutation](https://leetcode.com/problems/minimum-genetic-mutation)
