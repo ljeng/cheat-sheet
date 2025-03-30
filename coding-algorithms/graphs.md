@@ -295,30 +295,66 @@ def updateBoard(board, click):
 
 ### Breadth-first Search
 
-#### [graph.**word_ladder**(*start*, *end*, *bank*, *trace=False*)](code/graph.py)
-
-Solve the problem:
-
-> Given two words `start` and `end` and a word list `bank`, find the least number of transformations from `start` to `end`, such that only one letter can be changed at a time and each transformed word must exist in `bank`. `start` isn't necessarily a transformed word. All words have the same length.
-
-If `trace` is `True`, this method will instead output all transformation sequences from `start` to `end`.
-
-[Word Ladder](https://leetcode.com/problems/word-ladder)
-```python
-def findLadderLength(beginWord, endWord, wordList):
-    length = word_ladder(beginWord, endWord, wordList)
-    return length + 1 if length < float('inf') else 0
-```
-
-#### Word Ladder II
+#### Word Ladder
 
 A *transformation sequence* from word `beginWord` to word `endWord` using a dictionary `wordList` is a sequence of words `beginWord -> s[1] -> s[2] -> ... -> s[k]` such that:
 
 - Every adjacent pair of words differs by a single letter.
-- Every `s[i]` for `1 <= i <= k` is in `wordList`. `beginWord` does not need to be in `wordList`.
+- Every s[i] for `1 <= i <= k` is in `wordList`. `beginWord` does not need to be in `wordList`.
 - `s[k] == endWord`
 
-Given two words, `beginWord` and `endWord`, and a dictionary `wordList`, return *all the shortest transformation sequences* from `beginWord` to `endWord`, or an empty list if no such sequence exists. Each sequence should be returned as a list of the words [`beginWord, s[1], s[2], ..., s[k]]`.
+Given two words, `beginWord` and `endWord`, and a dictionary `wordList`, return the **number of words** in the **shortest transformation sequence** from `beginWord` to `endWord`, or `0` if no such sequence exists.
+
+```python
+import itertools
+
+class Tree:
+    def __init__(self, index):
+        self.root = index
+        self.nodes, self.leaves = {index}, {index}
+
+    def intersect(self, other):
+        return self.nodes & other.nodes
+
+    def expand(self, adjacency, other):
+        self.leaves = set(itertools.chain(*(adjacency[i]
+            for i in self.leaves))) - self.nodes
+        self.nodes.update(self.leaves)
+        return not self.leaves or self.intersect(other)
+
+def ladderLength(beginWord, endWord, wordList):
+    indexBegin = indexEnd = -1
+    for i, word in enumerate(wordList):
+        if word == beginWord: indexBegin = i
+        elif word == endWord: indexEnd = i
+    if indexBegin == -1:
+        indexBegin = len(wordList)
+        wordList.append(beginWord)
+    if indexEnd == -1: return 0
+    n, m = len(wordList), len(beginWord)
+    adjacency = [set() for _ in range(n)]
+    for i, word in enumerate(wordList):
+        for j in range(i + 1, n):
+            k = diff = 0
+            while k < m: 
+                diff += word[k] != wordList[j][k]
+                if diff > 1: break
+                k += 1
+            else:
+                adjacency[i].add(j)
+                adjacency[j].add(i)
+    begin, end = Tree(indexBegin), Tree(indexEnd)
+    ladder_length = 2
+    while True:
+        if begin.expand(adjacency, end): break
+        ladder_length += 1
+        if end.expand(adjacency, begin): break
+        ladder_length += 1
+    return ladder_length if begin.intersect(end) else 0
+    
+```
+
+Return *all the shortest transformation sequences* from `beginWord` to `endWord`, or an empty list if no such sequence exists. Each sequence should be returned as a list of the words [`beginWord, s[1], s[2], ..., s[k]]`.
 
 ```python
 from collections import defaultdict
@@ -356,7 +392,7 @@ class Tree:
                 stack.append([i] + current)
         return prefixes
 
-def findLadders(beginWord, endWord:, wordList):
+def findLadders(beginWord, endWord, wordList):
     indexBegin = indexEnd = -1
     for i, word in enumerate(wordList):
         if word == beginWord: indexBegin = i
