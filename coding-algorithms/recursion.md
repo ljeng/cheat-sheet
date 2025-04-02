@@ -113,6 +113,46 @@ def maxProfit(k, prices):
 
 ```
 
+#### Expression Add Operators
+
+Given a string `num` that contains only digits and an integer `target`, return *all possibilities* to insert the binary operators `+`, `-`, and/or `*` between the digits of `num` so that the resultant expression evaluates to the `target` value. Note that operands in the returned expressions should not contain leading zeros.
+
+```python
+import collections
+
+operator = '+-*'
+State = collections.namedtuple('State',
+  ['i', 'expression', 'eval', 'multiplier'])
+
+def addOperators(num, target):
+    n = len(num)
+    x = int(num[0])
+    stack = [State(i=1, expression=num[:1], eval=x, multiplier=x)]
+    if num[0] != '0':
+        for i in range(2, n + 1):
+            expression = num[:i]
+            x = int(expression)
+            stack.append(State(i, expression, eval=x, multiplier=x))
+    possibilities = []
+    while stack:
+        u = stack.pop()
+        for i in range(u.i, n):
+            if i > u.i and num[u.i] == '0': break
+            i += 1
+            u_string = num[u.i:i]
+            u_int = int(u_string)
+            for operator, x, multiplier in zip(operator,
+                [u_int, -u_int, u.multiplier * (u_int - 1)],
+                [1, -1, u.multiplier]):
+                stack.append(State(i,
+                    expression=f'{u.expression}{operator}{u_string}',
+                    eval = u.eval + x,
+                    multiplier = multiplier * u_int))
+        if (u.i, u.eval) == (n, target): possibilities.append(u.expression)
+    return possibilities
+
+```
+
 #### Zuma Game
 
 #### Decode Ways
