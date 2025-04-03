@@ -110,6 +110,23 @@ def longestValidParentheses(s):
 
 ```
 
+#### Largest Rectangle in Histogram
+
+Given an array of integers `heights` representing the histogram's bar height where the width of each bar is `1`, return the area of the largest rectangle in the histogram.
+
+```python
+def largestRectangleArea(heights):
+    heights.append(0)
+    stack = [-1]
+    area = 0
+    for i, height in enumerate(heights):
+        while height < heights[stack[-1]]:
+            area = max(area, heights[stack.pop()] * (i - stack[-1] - 1))
+        stack.append(i)
+    return area
+
+```
+
 ### Queues
 
 #### Integer to English Words
@@ -201,7 +218,7 @@ vector<int> findSubstring(string s, vector<string>& words) {
       string substring = s.substr(end, k);
       end += k;
       if (supercount.count(substring)) {
-        count++ subcount[substring]++;
+        count++, subcount[substring]++;
         while (subcount[substring] > supercount[substring])
           subcount[s.substr(start, k)]--, start += k, count--;
         if (count == n) starting_indices.push_back(start);
@@ -229,18 +246,15 @@ Given two strings `s` and `t` of lengths `m` and `n` respectively, return the *m
 using namespace std;
 
 string minWindow(string source, string target) {
-  int i = 0, j = 0;
-  int n = target.size();
+  int i = 0, j = 0, n = target.size(), pos = 0, len = INT_MAX;
   unordered_map<char, int> character_count;
   for (char x : target) character_count[x]++;
-  int pos = 0, len = INT_MAX;
-  while (j < source.size()) {
-    n -= character_count[source[j++]]-- > 0;
-    while (!n) {
-      if (j - i < len) len = j - (pos = i);
-      n += !character_count[source[i++]]++;
-    }
-  }
+  while (j < source.size())
+      for (n -= character_count[source[j++]]-- > 0;
+        !n;
+        n += !character_count[source[i++]]++)
+        if (j - i < len)
+          len = j - (pos = i);
   return len < INT_MAX ? source.substr(pos, len) : "";
 }
 
@@ -257,8 +271,6 @@ string minWindow(string source, string target) {
 #### Palindrome Pairs
 
 #### *k*th Smallest in Lexicographical Order
-
-#### Reverse Pairs
 
 ### Binary
 
