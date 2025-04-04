@@ -8,6 +8,44 @@
 
 ## Object-Oriented Design and Programming
 
+#### Random Pick with Blacklist
+
+You are given an integer `n` and an array of *unique* integers `blacklist`. Design an algorithm to pick a random integer in the range `[0, n - 1]` that is *not* in `blacklist`. Any integer that is in the mentioned range and not in `blacklist` should be *equally likely* to be returned. Optimize your algorithm such that it minimizes the number of calls to the built-in random function of your language.
+
+Implement the `Solution` class:
+
+- `Solution(int n, int[] blacklist)` Initializes the object with the integer `n` and the blacklisted integers `blacklist`.
+- `int pick()` Returns a random integer in the range `[0, n - 1]` and not in `blacklist`.
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+class Solution {
+  Map<Integer, Integer> integerIndex;
+  int m;
+  Random random;
+
+  public Solution(int n, int[] blacklist) {
+    integerIndex = new HashMap();
+    for (int x : blacklist) integerIndex.put(x, 1);
+    m = n - integerIndex.size();
+    for (int x : blacklist) if (x < m) {
+      while (integerIndex.containsKey(n - 1)) n--;
+      integerIndex.put(x, --n);
+    }
+    random = new Random();
+  }
+  
+  public int pick() {
+    int x = random.nextInt(m);
+    return integerIndex.containsKey(x) ? integerIndex.get(x) : x;
+  }
+}
+
+```
+
 ## How to Test Your Code
 
 ## Corner Cases and Edge Cases
@@ -24,9 +62,12 @@ Implement the `myAtoi(string s)` function, which converts a string to a 32-bit s
 Return the integer as the final result.
 
 ```c++
+#include <climits>
+#include <string>
+
 int div = INT_MAX / 10, mod = INT_MAX % 10;
 
-int myAtoi(string s) {
+int myAtoi(std::string s) {
   int i, sign = 1, integer = 0;
   for (i = 0; s[i] == ' '; i++);
   if (s[i] == '-') {
