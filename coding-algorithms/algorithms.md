@@ -135,6 +135,22 @@ int candy(vector<int>& ratings) {
 
 #### Create Maximum Number
 
+#### Patching Array
+
+Given a sorted integer array `nums` and an integer `n`, add/patch elements to the array such that any number in the range `[1, n]` inclusive can be formed by the sum of some elements in the array. Return the minimum number of patches required.
+
+```c++
+#include <vector>
+
+int minPatches(std::vector<int>& nums, int n) {
+  int i = 0, patches = 0;
+  for (long m = 1; m <= n; patches++)
+    m += i < nums.size() && nums[i] <= m ? nums[i++] : m;
+  return patches - i;
+}
+
+```
+
 #### Strong Password Checker
 
 #### Find the Closest Palindrome
