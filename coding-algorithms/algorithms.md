@@ -53,7 +53,7 @@ def findMedianSortedArrays(nums1, nums2):
 
 Suppose an array of length `n` sorted in ascending order is *rotated* between `1` and `n` times. For example, the array `nums = [0, 1, 4, 4, 5, 6, 7]` might become:
 
-- [`4, 5, 6, 7, 0, 1, 4]` if it was rotated `4` times.
+- `[4, 5, 6, 7, 0, 1, 4]` if it was rotated `4` times.
 - `[0, 1, 4, 4, 5, 6, 7]` if it was rotated `7` times.
 
 Notice that *rotating* an array `[a[0], a[1], a[2], ..., a[n - 1]]` 1 time results in the array `[a[n - 1], a[0], a[1], a[2], ..., a[n - 2]]`. Given the sorted rotated array `nums` that may contain *duplicates*, return the minimum element of this array. You must decrease the overall operation steps as much as possible.
@@ -61,9 +61,7 @@ Notice that *rotating* an array `[a[0], a[1], a[2], ..., a[n - 1]]` 1 time resul
 ```c++
 #include <vector>
 
-using namespace std;
-
-int findMin(vector<int>& nums) {
+int findMin(std::vector<int>& nums) {
   int lo = 0, mid, hi = nums.size() - 1;
   while (lo < hi) {
     mid = (lo + hi) >> 1;
@@ -122,6 +120,37 @@ bool isMatch(string s, string p) {
   while (j < n && p[j] == '*') j++;
   return j == n;
 }
+
+```
+
+#### Text Justification
+
+Given an array of strings `words` and a width `maxWidth`, format the text such that each line has exactly `maxWidth` characters and is fully[^5] justified. You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces `' '` when necessary so that each line has exactly `maxWidth` characters. Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line does not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right. The last line of text should be left-justified, and no extra space is inserted between words.
+
+- A word is defined as a character sequence consisting of non-space characters only.
+- Each word's length is guaranteed to be greater than `0` and not exceed `maxWidth`.
+- The input array `words` contains at least one word.
+
+```python
+def fullJustify(words, maxWidth):
+    n = width = 0
+    line = []
+    justified = []
+    for word in words:
+        k = len(word)
+        if n + width + k > maxWidth:
+            m = n - 1 or 1
+            div, mod = divmod(maxWidth - width, m)
+            spaces = [div] * m
+            for i in range(mod): spaces[i] += 1
+            justified.append(''.join(word + ' ' * spaces[i] if i < m else word
+                for i, word in enumerate(line)))
+            n = width = 0
+            line = []
+        n += 1
+        width += k
+        line.append(word)
+    return justified + [' '.join(line).ljust(maxWidth)]
 
 ```
 
@@ -186,7 +215,7 @@ int minPatches(std::vector<int>& nums, int n) {
 
 #### Insert, Delete, GetRandom $\Theta(1)$ - Duplicates Allowed
 
-`RandomizedCollection` is a data structure that contains a collection of numbers, possibly duplicates[^5]. It should support inserting and removing specific elements and also reporting a random element.
+`RandomizedCollection` is a data structure that contains a collection of numbers, possibly duplicates[^6]. It should support inserting and removing specific elements and also reporting a random element.
 
 Implement the `RandomizedCollection` class:
 
@@ -234,4 +263,5 @@ class RandomizedCollection:
 [^2]: put one inside the other
 [^3]: including the empty sequence
 [^4]: not partial
-[^5]: a multiset
+[^5]: left and right
+[^6]: a multiset
