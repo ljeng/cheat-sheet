@@ -105,9 +105,7 @@ Given an integer array `nums`, return the number of *reverse pairs* in the array
 using namespace std;
 
 int reversePairs(vector<int>& nums) {
-  int n = nums.size();
-  int i, j;
-  int counter = 0;
+  int n = nums.size(), i, j, counter = 0;
   for (int width = 1; width < n; width *= 2)
     for (int start = 0; start < n; start += 2 * width) {
       int mid = start + width - 1;
@@ -131,6 +129,75 @@ int reversePairs(vector<int>& nums) {
 
 ```
 
-#### Count of Smaller Numbers After Self
+```python
+import sortedcontainers
+
+def reversePairs(nums):
+    sorted_nums = sortedcontainers.SortedList(key=lambda x: -x)
+    counter = 0
+    for num in nums:
+        counter += sorted_nums.bisect_left(2 * num)
+        sorted_nums.add(num)
+    return counter
+
+```
+
+#### Count of Smaller Numbers after Self
+
+Given an integer array `nums`, return an integer array `counts` where `counts[i]` is the number of smaller elements to the right of `nums[i]`.
+
+```c++
+#include <algorithm>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<int> countSmaller(vector<int>& nums) {
+  int n = nums.size();
+  vector<pair<int, int>> index_num(n);
+  for (int i = 0; i < n; i++) index_num[i] = make_pair(i, nums[i]);
+  vector<int> counts(n--);
+  for (int m = 1; m <= n; m *= 2) for (int lo = 0; lo <= n; lo += 2 * m) {
+    int mid = min(lo + m - 1, n), hi = min(lo + 2 * m - 1, n);
+    if (mid < hi) {
+      int i = lo, j = ++mid;
+      int count = 0;
+      vector<pair<int, int>> merge;
+      while (i < mid && j <= hi) {
+        if (index_num[i].second > index_num[j].second) {
+          count++;
+          merge.push_back(index_num[j++]);
+        }
+        else {
+          counts[index_num[i].first] += count;
+          merge.push_back(index_num[i++]);
+        }
+      }
+      while (i < mid) {
+        counts[index_num[i].first] += count;
+        merge.push_back(index_num[i++]);
+      }
+      copy(merge.begin(), merge.end(), index_num.begin() + lo);
+    }
+  }
+  return counts;
+}
+
+```
+
+```python
+import sortedcontainers
+
+def countSmaller(nums):
+    n = len(nums)
+    sorted_nums = sortedcontainers.SortedList()
+    counts = [0] * n
+    for i in reversed(range(n)):
+        counts[i] = sorted_nums.bisect_left(nums[i])
+        sorted_nums.add(nums[i])
+    return counts
+
+```
 
 ## Heapsort
