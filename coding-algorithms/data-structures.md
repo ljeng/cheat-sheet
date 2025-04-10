@@ -127,6 +127,45 @@ def largestRectangleArea(heights):
 
 ```
 
+#### Basic Calculator
+
+Given a string `s` representing a valid expression, implement a basic calculator to evaluate it, and return the result of the evaluation. You are *not* allowed to use any built-in function which evaluates strings as mathematical expressions, such as `eval()`.
+
+```java
+import java.util.Stack;
+
+public int calculate(String s) {
+  int sign = 1, x = 0, result = 0;
+  Stack<Integer> stack = new Stack<Integer>();
+  for (int i = 0; i < s.length(); i++){
+    char c = s.charAt(i);
+    if (Character.isDigit(c)) x = 10 * x + (int)(c - '0');
+    else if (c == '+') {
+      result += sign * x;
+      sign = 1;
+      x = 0;
+    }
+    else if (c == '-') {
+      result += sign * x;
+      sign = -1;
+      x = 0;
+    }
+    else if (c == '(') {
+      stack.push(result);
+      stack.push(sign);
+      sign = 1;
+      result = 0;
+    }
+    else if (c == ')') {
+      result = (result + sign * x) * stack.pop() + stack.pop();
+      x = 0;
+    }
+  }
+  return sign * x + result;
+}
+
+```
+
 ### Queues
 
 #### Integer to English Words
