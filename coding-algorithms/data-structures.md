@@ -6,6 +6,36 @@
 
 #### Count the Repetitions
 
+#### Sliding Window Median
+
+The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value. So the median is the mean of the two middle values.
+
+For examples, if `arr = [2,3,4]`, the median is 3.
+For examples, if `arr = [1,2,3,4]`, the median is (2 + 3) / 2 = 2.5.
+You are given an integer array nums and an integer k. There is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position.
+
+Return the median array for each window in the original array. Answers within ${10}^{-5}$ of the actual value will be accepted.
+
+```c++
+#include <iterator>
+#include <set>
+#include <vector>
+
+vector<double> medianSlidingWindow(vector<int>& nums, int k) {
+  multiset<int> window(nums.begin(), nums.begin() + k);
+  auto it = next(window.begin(), k / 2);
+  vector<double> median;
+  for (int i = k; ; i++) {
+    median.push_back((double(*it) + *prev(it, k % 2 ^ 1)) / 2);
+    if (i == nums.size()) return median;
+    window.insert(nums[i]);
+    if (nums[i] < *it) it--;
+    if (nums[i - k] <= *it) it++;
+    window.erase(window.lower_bound(nums[i - k]));
+}
+
+```
+
 ### Linked Lists
 
 #### All $\Theta(1)$ Data Structure
@@ -144,19 +174,16 @@ public int calculate(String s) {
       result += sign * x;
       sign = 1;
       x = 0;
-    }
-    else if (c == '-') {
+    } else if (c == '-') {
       result += sign * x;
       sign = -1;
       x = 0;
-    }
-    else if (c == '(') {
+    } else if (c == '(') {
       stack.push(result);
       stack.push(sign);
       sign = 1;
       result = 0;
-    }
-    else if (c == ')') {
+    } else if (c == ')') {
       result = (result + sign * x) * stack.pop() + stack.pop();
       x = 0;
     }
