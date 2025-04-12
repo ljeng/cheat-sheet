@@ -193,6 +193,49 @@ public int calculate(String s) {
 
 ```
 
+#### Tag Validator
+
+Given a string representing a code snippet, implement a tag validator to parse the code and return whether it is valid. A code snippet is valid if all the following rules hold:
+
+1. The code must be wrapped in a *valid closed tag*. Otherwise, the code is invalid.
+1. A *closed tag*[^3] has exactly the following format: `<TAG_NAME>TAG_CONTENT</TAG_NAME>`. Among them, `<TAG_NAME>` is the start tag, and `</TAG_NAME>` is the end tag. The `TAG_NAME` in start and end tags should be the same. A closed tag is *valid* if and only if the `TAG_NAME` and `TAG_CONTENT` are valid.
+1. A *valid* `TAG_NAME` only contain *upper-case letters*, and has length in range `[1, 9]`. Otherwise, the `TAG_NAME` is *invalid*.
+1. A *valid* `TAG_CONTENT` may contain other *valid closed tags*, *cdata* and any characters[^1] **except** unmatched `<`, unmatched start and end tag, and unmatched or closed tags with invalid `TAG_NAME`. Otherwise, the T`AG_CONTENT` is *invalid*.
+1. A start tag is unmatched if no end tag exists with the same `TAG_NAME`, and vice versa. However, you also need to consider the issue of unbalanced when tags are nested.
+1. A `<` is unmatched if you cannot find a subsequent `>`. And when you find a `<` or `</`, all the subsequent characters until the next `>` should be parsed as `TAG_NAME`[^3].
+1. The cdata has the following format: `<![CDATA[CDATA_CONTENT]]>`. The range of `CDATA_CONTENT` is defined as the characters between `<![CDATA[` and the *first subsequent* `]]>`.
+1. `CDATA_CONTENT` may contain *any characters*. The function of cdata is to forbid the validator to parse `CDATA_CONTENT`, so even it has some characters that can be parsed as tag[^1], you should treat it as *regular characters*.
+
+```python
+def isValid(code):
+    def parseTag(i, k):
+        j = i + k
+        i = code.find('>', j)
+        if i in {-1, j} or i - j > 9: return None, -1
+        tag_name = code[j:i]
+        if not all(x.isupper() for x in tag_name): return None, -1
+        return tag_name, i
+
+    i = 0
+    tag_names = []
+    while i < len(code):
+        if i and not tag_names: return False
+        if code.startswith('<![CDATA[', i):
+            i = code.find(']]>', i + 9)
+            if i == -1: return False
+            i += 2
+        elif code.startswith("</", i):
+            tag_name, i = parseTag(i, 2)
+            if not tag_names or tag_names.pop() != tag_name: return False
+        elif code.startswith('<', i):
+            tag_name, i = parseTag(i, 1)
+            if not tag_name: return False
+            tag_names.append(tag_name)
+        i += 1
+    return not tag_names
+
+```
+
 ### Queues
 
 #### Integer to English Words
@@ -302,7 +345,7 @@ vector<int> findSubstring(string s, vector<string>& words) {
 
 #### Minimum Window Substring
 
-Given two strings `s` and `t` of lengths `m` and `n` respectively, return the *minimum window substring*[^2] of `s` such that every character in `t`[^3] is included in the window. If there is no such substring, return the empty string `""`. The input will be generated such that the answer is *unique.*
+Given two strings `s` and `t` of lengths `m` and `n` respectively, return the *minimum window substring*[^2] of `s` such that every character in `t`[^4] is included in the window. If there is no such substring, return the empty string `""`. The input will be generated such that the answer is *unique.*
 
 ```c++
 #include <climits>
@@ -445,4 +488,5 @@ def longestDupSubstring(s):
 
 [^1]: well-formed
 [^2]: A *substring* is a contiguous *non-empty* sequence of characters within a string.
-[^3]: *including duplicates*
+[^3]: not necessarily valid
+[^4]: *including duplicates*
