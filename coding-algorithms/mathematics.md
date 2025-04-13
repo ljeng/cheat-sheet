@@ -6,11 +6,26 @@
 
 #### Largest Palindrome Product
 
+#### Reaching Points
+
+Given four integers `sx`, `sy`, `tx`, and `ty`, return `true` if it is possible to convert the point `(sx, sy)` to the point `(tx, ty)` through some operations, or `false` otherwise. The allowed operation on some point `(x, y)` is to convert it to either `(x, x + y)` or `(x + y, y)`.
+
+```python
+def reachingPoints(sx, sy, tx, ty):
+    while sx < tx and sy < ty: tx, ty = tx % ty, ty % tx
+    return all([sx == tx,
+        sy <= ty,
+        not (ty - sy) % sx]) or all([sy == ty,
+        sx <= tx,
+        not (tx - sx) % sy])
+
+```
+
 ## Counting
 
 #### Max Points on a Line
 
-Given an array of `points` where `points[i] = [xi, yi]` represents a point on the *xy*-plane, return the maximum number of points that lie on the same straight line.
+Given an array of `points` where `points[i] = [x[i], y[i]]` represents a point on the *xy*-plane, return the maximum number of points that lie on the same straight line.
 
 ```python
 import collections
