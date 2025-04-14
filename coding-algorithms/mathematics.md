@@ -63,4 +63,35 @@ def maxPoints(points):
 
 ## Combinatorics
 
+#### Permutation Sequence
+
+The set `[1, 2, 3, ..., n]` contains a total of `n!` unique permutations.
+
+By listing and labeling all of the permutations in order, we get the following sequence for `n = 3`:
+
+1. `"123"`
+1. `"132"`
+1. `"213"`
+1. `"231"`
+1. `"312"`
+1. `"321"`
+
+Given `n` and `k`, return the `k`<sup>th</sup> permutation sequence.
+
+```python
+import math
+import sortedcontainers
+
+def getPermutation(n, k):
+    k -= 1
+    set_ = sortedcontainers.SortedList(range(1, n + 1))
+    permutation = []
+    while n:
+        n -= 1
+        i, k = divmod(k, math.factorial(n))
+        permutation.append(str(set_.pop(i)))
+    return ''.join(permutation)
+
+```
+
 ## *n*-choose-*k*
