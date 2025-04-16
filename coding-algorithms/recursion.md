@@ -40,6 +40,54 @@ bool isMatch(string s, string p) {
 
 #### Scramble String
 
+#### Distinct Subsequences
+
+Given two strings `s` and `t`, return the number of distinct *subsequences* of `s` which equals `t`. The answer fits on a 32-bit signed integer.
+
+```c++
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int numDistinct(string s, string t) {
+  int m = s.size(), n = t.size();
+  if (n > m) return 0;
+  vector<unsigned long long> num_distinct(n + 1);
+  num_distinct[0] = 1;
+  for (int i = 0; i < m; i++)
+    for (int j = n; j > 0; j--)
+      if (s[i] == t[j - 1])
+        num_distinct[j] += num_distinct[j - 1];
+  return num_distinct[n];
+}
+
+```
+
+#### Distinct Subsequences
+
+Given two strings `s` and `t`, return the number of distinct *subsequences* of `s` which equals `t`. The answer fits on a 32-bit signed integer.
+
+```c++
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int numDistinct(string s, string t) {
+  int m = s.size(), n = t.size();
+  if (n > m) return 0;
+  vector<unsigned long long> num_distinct(n + 1);
+  num_distinct[0] = 1;
+  for (int i = 0; i < m; i++)
+    for (int j = n; j > 0; j--)
+      if (s[i] == t[j - 1])
+        num_distinct[j] += num_distinct[j - 1];
+  return num_distinct[n];
+}
+
+```
+
 #### Palindrome Partitioning
 
 Given a string `s`, partition `s` such that every substring[^2] of the partition is a palindrome[^3]. Return the *minimum* cuts needed for a palindrome partitioning of `s`.
@@ -97,6 +145,8 @@ int calculateMinimumHP(vector<vector<int>>& dungeon) {
 You are given an integer array `prices` where `prices[i]` is the price of a given stock on the `i`<sup>th</sup> day, and an integer `k`. Find the maximum profit you can achieve. You may complete at most `k` transactions: i.e. you may buy at most `k` times and sell at most `k` times. You may not engage in multiple transactions simultaneously[^7].
 
 ```python
+import itertools
+
 def maxProfit(k, prices):
     n = len(prices)
     if k < n >> 1:
@@ -109,7 +159,7 @@ def maxProfit(k, prices):
                 profit = max(profit, dp[0][i] - prices[i])
             dp[0] = dp[1][:]
         return dp[0][-1]
-    else: return sum(max(prices[i] - prices[i - 1], 0) for i in range(1, n))
+    else: return sum(max(b - a, 0) for a, b in itertools.pairwise(prices))
 
 ```
 
