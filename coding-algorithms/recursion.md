@@ -7,7 +7,7 @@ Given an input string `s` and a pattern `p`, implement regular expression matchi
 - `.` matches any single character.
 - `*` matches zero or more of the preceding element.
 
-The matching should cover the entire input string[^1].
+The matching should cover the entire input string[^01].
 
 ```c++
 #include <string>
@@ -64,33 +64,9 @@ int numDistinct(string s, string t) {
 
 ```
 
-#### Distinct Subsequences
-
-Given two strings `s` and `t`, return the number of distinct *subsequences* of `s` which equals `t`. The answer fits on a 32-bit signed integer.
-
-```c++
-#include <string>
-#include <vector>
-
-using namespace std;
-
-int numDistinct(string s, string t) {
-  int m = s.size(), n = t.size();
-  if (n > m) return 0;
-  vector<unsigned long long> num_distinct(n + 1);
-  num_distinct[0] = 1;
-  for (int i = 0; i < m; i++)
-    for (int j = n; j > 0; j--)
-      if (s[i] == t[j - 1])
-        num_distinct[j] += num_distinct[j - 1];
-  return num_distinct[n];
-}
-
-```
-
 #### Palindrome Partitioning
 
-Given a string `s`, partition `s` such that every substring[^2] of the partition is a palindrome[^3]. Return the *minimum* cuts needed for a palindrome partitioning of `s`.
+Given a string `s`, partition `s` such that every substring[^02] of the partition is a palindrome[^03]. Return the *minimum* cuts needed for a palindrome partitioning of `s`.
 
 ```c++
 #include <algorithm>
@@ -116,7 +92,7 @@ int minCut(string s) {
 
 #### Dungeon Game
 
-The demons had captured the princess and imprisoned her in *the bottom-right corner* of a `dungeon`. The `dungeon` consists of `m * n` rooms laid out in a 2-D grid. Our valiant knight was initially positioned in *the top-left room* and must fight his way through `dungeon` to rescue the princess. The knight has an initial health point represented by a positive integer. If at any point his health point drops to `0` or below, he dies immediately. Some of the rooms are guarded by demons[^4], so the knight loses health upon entering these rooms; other rooms are either empty[^5] or contain magic orbs that increase the knight's health[^6]. To reach the princess as quickly as possible, the knight decides to move only *rightward* or *downward* in each step. Return the knight's minimum initial health so that he can rescue the princess. Any room can contain threats or power-ups, even the first room the knight enters and the bottom-right room where the princess is imprisoned.
+The demons had captured the princess and imprisoned her in *the bottom-right corner* of a `dungeon`. The `dungeon` consists of `m * n` rooms laid out in a 2-D grid. Our valiant knight was initially positioned in *the top-left room* and must fight his way through `dungeon` to rescue the princess. The knight has an initial health point represented by a positive integer. If at any point his health point drops to `0` or below, he dies immediately. Some of the rooms are guarded by demons[^04], so the knight loses health upon entering these rooms; other rooms are either empty[^05] or contain magic orbs that increase the knight's health[^06]. To reach the princess as quickly as possible, the knight decides to move only *rightward* or *downward* in each step. Return the knight's minimum initial health so that he can rescue the princess. Any room can contain threats or power-ups, even the first room the knight enters and the bottom-right room where the princess is imprisoned.
 
 ```c++
 #include <algorithm>
@@ -142,7 +118,7 @@ int calculateMinimumHP(vector<vector<int>>& dungeon) {
 
 #### Best Time to Buy and Sell Stock
 
-You are given an integer array `prices` where `prices[i]` is the price of a given stock on the `i`<sup>th</sup> day, and an integer `k`. Find the maximum profit you can achieve. You may complete at most `k` transactions: i.e. you may buy at most `k` times and sell at most `k` times. You may not engage in multiple transactions simultaneously[^7].
+You are given an integer array `prices` where `prices[i]` is the price of a given stock on the `i`<sup>th</sup> day, and an integer `k`. Find the maximum profit you can achieve. You may complete at most `k` transactions: i.e. you may buy at most `k` times and sell at most `k` times. You may not engage in multiple transactions simultaneously[^07].
 
 ```python
 import itertools
@@ -216,7 +192,7 @@ A message containing letters from `A-Z` can be encoded into numbers using the fo
 'Z' -> "26"
 ```
 
-To *decode* an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above[^8].
+To *decode* an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above[^08].
 
 For example, `11106` can be mapped into:
 
@@ -225,7 +201,7 @@ For example, `11106` can be mapped into:
 
 The grouping `(1 11 06)` is invalid because `06` cannot be mapped into `F` since `6` is different from `06`.
 
-*In addition* to the mapping above, an encoded message may contain the `*` character, which can represent any digit from `1` to `9`[^9]. For example, the encoded message `1*` may represent any of the encoded messages `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, or `19`. Decoding `1*` is equivalent to decoding any of the encoded messages it can represent. Given a string `s` consisting of digits and `*` characters, return the *number* of ways to *decode it*. Since the answer may be very large, return it *modulo* `10^9 + 7`.
+*In addition* to the mapping above, an encoded message may contain the `*` character, which can represent any digit from `1` to `9`[^09]. For example, the encoded message `1*` may represent any of the encoded messages `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, or `19`. Decoding `1*` is equivalent to decoding any of the encoded messages it can represent. Given a string `s` consisting of digits and `*` characters, return the *number* of ways to *decode it*. Since the answer may be very large, return it *modulo* `10^9 + 7`.
 
 ```python
 import numpy as np
@@ -269,12 +245,56 @@ int numDecodings(string s) {
 
 ```
 
-[^1]: not partial
-[^2]: A *substring* is a contiguous *non-empty* sequence of characters within a string.
-[^3]: A *palindrome* is a string that reads the same forward and backward.
-[^4]: represented by negative integers
-[^5]: represented as 0
-[^6]: represented by positive integers
-[^7]: you must sell the stock before you buy again
-[^8]: there may be multiple ways
-[^9]: `0` is excluded
+#### Cherry Pickup
+
+You are given an `n * n` `grid` representing a field of cherries, each cell is one of three possible integers.
+
+- `0` means the cell is empty, so you can pass through,
+- `1` means the cell contains a cherry that you can pick up and pass through, or
+- `-1` means the cell contains a thorn that blocks your way.
+
+Return the maximum number of cherries you can collect by following the rules below:
+
+- Starting at the position `(0, 0)` and reaching `(n - 1, n - 1)` by moving right or down through valid path cells[^10].
+- After reaching `(n - 1, n - 1)`, returning to `(0, 0)` by moving left or up through valid path cells.
+- When passing through a path cell containing a cherry, you pick it up, and the cell becomes an empty cell `0`.
+- If there is no valid path between `(0, 0)` and `(n - 1, n - 1)`, then no cherries can be collected.
+
+```python
+import itertools
+
+def cherryPickup(grid):
+    n = len(grid)
+    cherries = [[-1] * n for _ in range(n)]
+    cherries[0][0] = grid[0][0]
+    for k, i1, i2 in itertools.product(range(1, 2 * n - 1),
+        reversed(range(n)),
+        reversed(range(n))):
+        j1, j2 = k - i1, k - i2
+        if not 0 <= min(j1,
+            j2) <= max(j1,
+            j2) < n or -1 in {grid[i1][j1],
+            grid[i2][j2]}:
+            cherries[i1][i2] = -1
+            continue
+        if i1: cherries[i1][i2] = max(cherries[i1][i2], cherries[i1 - 1][i2])
+        if i2: cherries[i1][i2] = max(cherries[i1][i2], cherries[i1][i2 - 1])
+        if i1 and i2:
+            cherries[i1][i2] = max(cherries[i1][i2], cherries[i1 - 1][i2 - 1])
+        if cherries[i1][i2] >= 0:
+            cherries[i1][i2] += grid[i1][j1]
+            if i1 != i2: cherries[i1][i2] += grid[i2][j2]
+    return max(cherries[-1][-1], 0)
+
+```
+
+[^01]: not partial
+[^02]: A *substring* is a contiguous *non-empty* sequence of characters within a string.
+[^03]: A *palindrome* is a string that reads the same forward and backward.
+[^04]: represented by negative integers
+[^05]: represented as 0
+[^06]: represented by positive integers
+[^07]: you must sell the stock before you buy again
+[^08]: there may be multiple ways
+[^09]: `0` is excluded
+[^10]: cells with value 0 or 1
