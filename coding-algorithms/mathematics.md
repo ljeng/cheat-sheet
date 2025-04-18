@@ -6,6 +6,30 @@
 
 #### Largest Palindrome Product
 
+#### Non-negative Integers without Consecutive Ones
+
+Given a positive integer `n`, return the number of the integers in the range `[0, n]` whose binary representations do not contain consecutive ones.
+
+```c++
+int log_max = 31;
+
+int findIntegers(int n) {
+  int fibonacci[log_max];
+  fibonacci[0] = 1, fibonacci[1] = 2;
+  for (int i = 2; i < log_max; i++) fibonacci[i] = fibonacci[i - 1] + fibonacci[i - 2];
+  int counter = 0;
+  for (int i = --log_max, bit = 0; i >= 0; i--) {
+    if (n & (1 << i)) {
+      counter += fibonacci[i];
+      if (bit) return counter;
+      bit = 1;
+    }
+    else bit = 0;
+  }
+  return ++counter;
+}
+```
+
 #### Reaching Points
 
 Given four integers `sx`, `sy`, `tx`, and `ty`, return `true` if it is possible to convert the point `(sx, sy)` to the point `(tx, ty)` through some operations, or `false` otherwise. The allowed operation on some point `(x, y)` is to convert it to either `(x, x + y)` or `(x + y, y)`.
