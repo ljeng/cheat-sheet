@@ -91,6 +91,35 @@ def maxEnvelopes(envelopes):
 
 ```
 
+# Find `k`th Smallest Pair Distance
+
+The *distance of a pair* of integers `a` and `b` is defined as the absolute difference between `a` and `b`. Given an integer array `nums` and an integer `k`, return the `k`<sup>th</sup> smallest *distance among all the pairs* `nums[i]` and `nums[j]` where `0 <= i < j < nums.length`.
+
+```c++
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+int smallestDistancePair(vector<int>& nums, int k) {
+  sort(nums.begin(), nums.end());
+  int n = nums.size();
+  int lo = 0, hi = nums[n - 1] - nums[0];
+  while (lo < hi) {
+    int mid = (lo + hi) >> 1;
+    int distance = -n;
+    for (int i = 0, j = 0; i < n; i++) {
+      while (j < n && nums[j] <= nums[i] + mid) j++;
+      distance += j - i;
+    }
+    if (distance < k) lo = ++mid;
+    else hi = mid;
+  }
+  return lo;
+}
+
+```
+
 ## Divide-and-conquer
 
 ## Greediness
@@ -139,12 +168,15 @@ def fullJustify(words, maxWidth):
     for word in words:
         k = len(word)
         if n + width + k > maxWidth:
-            m = n - 1 or 1
-            div, mod = divmod(maxWidth - width, m)
-            spaces = [div] * m
-            for i in range(mod): spaces[i] += 1
-            justified.append(''.join(word + ' ' * spaces[i] if i < m else word
-                for i, word in enumerate(line)))
+            if n > 1:
+                n -= 1
+                div, mod = divmod(maxWidth - width, n)
+                spaces = [div] * n
+                for i in range(mod): spaces[i] += 1
+                spaces.append(0)
+                justified.append(''.join(word + space * ' '
+                    for word, space in zip(line, spaces)))
+            else: justified.append(line[0].ljust(maxWidth))
             n = width = 0
             line = []
         n += 1
