@@ -90,6 +90,39 @@ def maxEnvelopes(envelopes):
     return len(lis)
 
 ```
+#### Max Sum of Rectangle No Larger than `k`
+
+Given an `m * n` matrix `matrix` and an integer `k`, return the max sum of a rectangle in the matrix such that its sum is no larger than `k`. It is *guaranteed* that there will be a rectangle with a sum no larger than `k`.
+
+```c++
+#include <algorithm>
+#include <climits>
+#include <set>
+#include <vector>
+
+using namespace std;
+
+int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
+  int m = matrix.size(), n = matrix[0].size(), max_sum = INT_MIN;
+  for (int j1 = 0; j1 < n; j1++) {
+    vector<int> prefix(m);
+    for (int j2 = j1; j2 < n; j2++) {
+      for (int i = 0; i < m; i++) prefix[i] += matrix[i][j2];
+      set<int> sums;
+      sums.insert(0);
+      int current = 0, current_max = INT_MIN;
+      for (int x : prefix) {
+        current += x;
+        auto it = sums.lower_bound(current - k);
+        if (it != sums.end()) current_max = max(current_max, current - *it);
+        sums.insert(current);
+      }
+      max_sum = max(max_sum, current_max);
+    }
+  }
+  return max_sum;
+}
+```
 
 # Find `k`th Smallest Pair Distance
 
