@@ -118,7 +118,29 @@ int calculateMinimumHP(vector<vector<int>>& dungeon) {
 
 #### Best Time to Buy and Sell Stock
 
-You are given an integer array `prices` where `prices[i]` is the price of a given stock on the `i`<sup>th</sup> day, and an integer `k`. Find the maximum profit you can achieve. You may complete at most `k` transactions: i.e. you may buy at most `k` times and sell at most `k` times. You may not engage in multiple transactions simultaneously[^07].
+You are given an array `prices` where `prices[i]` is the price of a given stock on the `i`<sup>th</sup> day. Find the maximum profit you can achieve. You may not engage in multiple transactions simultaneously[^07].
+
+You may complete *at most two transactions*.
+
+```c++
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+int maxProfit(vector<int>& prices) {
+  int state[4] = {INT_MAX, 0, INT_MAX, 0};
+  for (int price : prices) {
+    state[0] = min(state[0], price);
+    state[1] = max(state[1], price - state[0]);
+    state[2] = min(state[2], price - state[1]);
+    state[3] = max(state[3], price - state[2]);
+  }
+  return state[3];
+}
+```
+
+You may complete at most `k` transactions: i.e. you may buy at most `k` times and sell at most `k` times.
 
 ```python
 import itertools
