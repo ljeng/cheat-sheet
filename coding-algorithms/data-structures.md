@@ -257,6 +257,32 @@ def isValid(code):
 
 ### Queues
 
+#### Sliding Window Maximum
+
+You are given an array of integers `nums`, there is a sliding window of size `k` which is moving from the very left of the array to the very right. You can only see the `k` numbers in the window. Each time the sliding window moves right by one position. Return the max sliding window.
+
+```c++
+#include <vector>
+#include <deque>
+
+using namespace std;
+
+vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+  int n = nums.size();
+  deque<int> index;
+  k--;
+  vector<int> max_sliding_window;
+  for (int i = 0; i < n; i++) {
+    if (!index.empty() && index.front() < i - k) index.pop_front();
+    while (!index.empty() && nums[index.back()] < nums[i]) index.pop_back();
+    index.push_back(i);
+    if (i >= k) max_sliding_window.push_back(nums[index.front()]);
+  }
+  return max_sliding_window;
+}
+
+```
+
 #### Integer to English Words
 
 Convert a non-negative integer `num` to its English words representation.
