@@ -486,6 +486,24 @@ def getSkyline(buildings):
 
 ```
 
+#### Course Schedule
+
+There are `n` different online courses numbered from `1` to `n`. You are given an array `courses` where `courses[i] = [duration[i], lastDay[i]]` indicate that the `i`<sup>th</sup> course should be taken *continuously* for `duration[i]` days and must be finished before or on `lastDay[i]`. You will start on the `1`<sup>st</sup> day and you cannot take two or more courses simultaneously. Return the maximum number of courses that you can take.
+
+```python
+import heapq
+
+def scheduleCourse(courses):
+    days = 0
+    durations = []
+    for duration, lastDay in sorted(courses, key = lambda x: x[1]):
+        days += duration
+        heapq.heappush(durations, -duration)
+        if days > lastDay: days += heapq.heappop(durations)
+    return len(durations)
+
+```
+
 ## Graphs
 
 #### Longest Duplicate Substring
