@@ -16,7 +16,9 @@ int log_max = 31;
 int findIntegers(int n) {
   int fibonacci[log_max];
   fibonacci[0] = 1, fibonacci[1] = 2;
-  for (int i = 2; i < log_max; i++) fibonacci[i] = fibonacci[i - 1] + fibonacci[i - 2];
+  for (int i = 2;
+    i < log_max;
+    fibonacci[i++] = fibonacci[i - 1] + fibonacci[i - 2]);
   int counter = 0;
   for (int i = --log_max, bit = 0; i >= 0; i--) {
     if (n & (1 << i)) {
@@ -42,6 +44,25 @@ def reachingPoints(sx, sy, tx, ty):
         not (ty - sy) % sx]) or all([sy == ty,
         sx <= tx,
         not (tx - sx) % sy])
+
+```
+
+#### `n`th Magical Number
+
+A positive integer is magical if it is divisible by either `a` or `b`. Given the three integers `n`, `a`, and `b`, return the `n`th magical number. Since the answer may be very large, return it modulo `10^9 + 7`.
+
+```python
+import math
+from math import ceil
+
+mod = 10**9 + 7
+
+def nthMagicalNumber(n, a, b):
+    lcm = math.lcm(a, b)
+    div, m = divmod(n, lcm // a + lcm // b - 1)
+    magical_number = m / (1 / a + 1 / b)
+    return (div * lcm + min(ceil(magical_number / a) * a,
+        ceil(magical_number / b) * b)) % mod
 
 ```
 
