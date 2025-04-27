@@ -6,7 +6,67 @@
 
 ## APIs
 
-## Object-Oriented Design and Programming
+#### Object-Oriented Design and Programming
+
+Design and implement a data structure for a [Least Frequently Used (LFU)](https://en.wikipedia.org/wiki/Least_frequently_used) cache. Implement the `LFUCache` class:
+
+- `LFUCache(int capacity)` Initializes the object with the `capacity` of the data structure.
+- `int get(int key)` Gets the value of the `key` if the `key` exists in the cache. Otherwise, returns `-1`.
+- `void put(int key, int value)` Update the value of the `key` if present, or inserts the `key` if not already present. When the cache reaches its `capacity`, it should invalidate and remove the *least frequently used* key before inserting a new item. For this problem, when there is a *tie* (i.e., two or more keys with the same frequency), the *least recently used* `key` would be invalidated.
+
+To determine the least frequently used key, a *use counter* is maintained for each key in the cache. The key with the smallest *use counter* is the least frequently used key. When a key is first inserted into the cache, its *use counter* is set to `1`[^1]. The use counter for a key in the cache is incremented either a `get` or `put` operation is called on it. The functions `get` and `put` must each run in $\Theta(1)$ time complexity.
+
+```java
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+
+class LFUCache {
+  int capacity;
+  HashMap<Integer, Integer> cache;
+  HashMap<Integer, Integer> key_count;
+  HashMap<Integer, LinkedHashSet<Integer>> count_keys;
+  int min;
+
+  public LFUCache(int capacity) {
+    this.capacity = capacity;
+    cache = new HashMap<>();
+    key_count = new HashMap<>();
+    count_keys = new HashMap<>();
+    count_keys.put(1, new LinkedHashSet<>());
+  }
+  
+  public int get(int key) {
+    if (cache.containsKey(key)) {
+      int count = key_count.get(key);
+      count_keys.get(count).remove(key);
+      if (count == min && count_keys.get(count).isEmpty()) min++;
+      key_count.put(key, ++count);
+      count_keys.computeIfAbsent(count, x -> new LinkedHashSet<>()).add(key);
+      return cache.get(key);
+    }
+    return -1;
+  }
+  
+  public void put(int key, int value) {
+    if (cache.containsKey(key)) {
+      get(key);
+      cache.put(key, value);
+      return;
+    }
+    else if (cache.size() >= capacity) {
+      int lfu = count_keys.get(min).iterator().next();
+      cache.remove(lfu);
+      key_count.remove(key);
+      count_keys.get(min).remove(lfu);
+    }
+    cache.put(key, value);
+    key_count.put(key, 1);
+    count_keys.get(1).add(key);
+    min = 1;
+  }
+}
+
+```
 
 #### Random Pick with Blacklist
 
@@ -116,3 +176,5 @@ def isNumber(s):
     return digits and exponent
 
 ```
+
+[^1]: due to the `put` operation
