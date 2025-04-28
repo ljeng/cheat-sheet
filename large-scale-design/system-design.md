@@ -505,6 +505,114 @@ The execution of a MapReduce operation proceeds as follows[^mr04]:
 5. When a `reduce` worker is notified by the master about the locations of intermediate files, it uses remote procedure calls to read the data from the `map` workers' local disks. After reading all its intermediate data, the `reduce` worker sorts it by the intermediate keys. If the data is too large for memory, an external sort is used.
 6. Each `reduce` task receives an intermediate key and an iterator over the set of values associated with that key. The `reduce` worker iterates over the sorted intermediate data. The iterator allows processing of value lists that are too large to fit in memory. The user-defined `reduce` function is applied to produce the final output. For each unique key, it passes the key and the corresponding set of values to the user's `reduce` function. The output of the `reduce` function is appended to a final output file for that `reduce` partition. When all `map` and `reduce` tasks are complete, the master wakes up the user program. The output is available in *R* output files[^mr08]. These files are often used as input to another MapReduce job or another distributed application.
 
+### Master Data Structures
+
+The master keeps data structures to store the state[^mr09] and worker identity for each `map` and `reduce` task. It stores the locations and sizes of the *R* intermediate file regions produced by the completed `map` task. The information is pushed to in-progress `reduce` tasks.
+
+### Fault Tolerance
+
+MapReduce is designed to tolerate machine failures gracefully.
+
+* The master pings workers periodically. If *a worker fails*, any completed `map` tasks are reset to idle and rescheduled. In-progress `map` and `reduce` tasks on the failed worker are also reset. Completed `map` tasks are re-executed because their output is on the failed machine's local disk. Completed `reduce` tasks don't need re-execution since their output is in the global file system.
+* The master writes periodic checkpoints. *Master failure* is unlikely[^mr10]; therefore an implementation would abort the computation. Clients can retry the operation.
+* *Semantics in the Presence of Failures:* When `map` and `reduce` operators are deterministic, the output is the same as a non-faulting sequential execution. This is achieved by relying on atomic commits of task outputs. Each task writes to private temporary files. When a task completes, the worker sends a message to the master. When a `reduce` task completes, the worker atomically renames its temporary file. When operators are non-deterministic, weaker but reasonable semantics are provided.
+* Network bandwidth is a scarce resource. MapReduce conserves bandwidth by taking advantage of the fact that input data is stored on the *local* disks of the machines. The master attempts to schedule `map` tasks on machines containing a replica of the input data, or failing that, near a replica.
+* *Task Granularity:* The `map` phase is divided into *M* pieces, and the `reduce` phase into *R* pieces. Ideally, *M* and *R* should be much larger than the number of worker machines to improve load balancing and speed up recovery. There are practical bounds on *M* and *R* since the master must make $O(M + R)$ decisions and keeps $O(MR)$ state in memory.
+* *Backup Tasks:* To alleviate the problem of "stragglers"[^mr11], the master schedules backup executions of remaining in-progress tasks close to completion. The task is marked as completed when either the primary or backup execution completes.
+
+### Refinements and Extensions
+
+Although the basic MapReduce functionality is powerful, a few extensions are useful.
+
+* Users specify the number of `reduce` tasks (*R*) and, optionally, a special *partitioning function.* The default is `hash(key) mod R`, but custom functions are useful in some cases[^mr12].
+* *Ordering Guarantees:* Within a partition, intermediate key-value pairs are processed in increasing key order. This makes it easy to generate sorted output and supports efficient lookups.
+* For cases with significant repetition in intermediate keys and a commutative and associative `reduce` function[^mr13], a *combiner function* can do partial merging before data is sent over the network. This significantly reduces network traffic. The combiner function is typically the same code as the `reduce` function, but its output is written to an intermediate file.
+* Users can add support for a new *input type* by providing an implementation of a simple reader interface.
+* Users of MapReduce have found it convenient to produce auxiliary files as additional outputs. The application writer to make such *side-effects* atomic and idempotent.
+* *Skipping Bad Records:* In an optional mode, the MapReduce library detects and skips records that cause deterministic crashes. This deals with bugs. Also, sometimes it's acceptable to ignore a few records.
+* *Local Execution:* To help facilitate debugging and testing, an alternative implementation sequentially executes a MapReduce operation on a local machine.
+* *Status Information:* The master runs an internal HTTP server and exports status pages showing bytes of output, processing rates, etc. They also link to standard error/output files.
+* A *counter* facility counts occurrences of events[^mr14]. Counter values are propagated to the master and displayed on the status page. The master eliminates the effects of duplicate executions to avoid double-counting.
+
+###  Usage and Lessons Learned
+
+MapReduce has been used across a wide range of domains, including:
+
+- large-scale machine learning
+- clustering problems
+- data extraction for reports
+- large-scale graph computations
+
+MapReduce's success is attributed to its ease of use, its applicability to a large variety of problems, and its scalable implementation. Restricting the programming model makes it easy to parallelize and to make computations fault-tolerant. Network bandwidth is a scarce resource. Locality optimizations allow us to read data from local disks, and writing a single copy of the intermediate data to local disk saves network bandwidth. Redundant execution can reduce the impact of slow machines and handle failures.
+
+---
+
+```mermaid
+flowchart LR
+    A[HDFS Input Directory]
+    B[HDFS Output Directory]
+    subgraph M1[Map Task 1]
+      M1_Mapper(Mapper)
+      M1_r1(m1_r1)
+      M1_r2(m1_r2)
+      M1_r3(m1_r3)
+    end
+    subgraph M2[Map Task 2]
+      M2_Mapper(Mapper)
+      M2_r1(m2_r1)
+      M2_r2(m2_r2)
+      M2_r3(m2_r3)
+    end
+    subgraph M3[Map Task 3]
+      M3_Mapper(Mapper)
+      M3_r1(m3_r1)
+      M3_r2(m3_r2)
+      M3_r3(m3_r3)
+    end
+    subgraph R1[Reduce Task 1]
+      R1_Reducer(Reducer)
+      R1_Output(r1)
+    end
+    subgraph R2[Reduce Task 2]
+      R2_Reducer(Reducer)
+      R2_Output(r2)
+    end
+    subgraph R3[Reduce Task 3]
+      R3_Reducer(Reducer)
+      R3_Output(r3)
+    end
+    A --> M1_Mapper
+    A --> M2_Mapper
+    A --> M3_Mapper
+    M1_Mapper --> M1_r1
+    M1_Mapper --> M1_r2
+    M1_Mapper --> M1_r3
+    M2_Mapper --> M2_r1
+    M2_Mapper --> M2_r2
+    M2_Mapper --> M2_r3
+    M3_Mapper --> M3_r1
+    M3_Mapper --> M3_r2
+    M3_Mapper --> M3_r3
+    M1_r1 --> R1_Reducer
+    M1_r2 --> R2_Reducer
+    M1_r3 --> R3_Reducer
+    M2_r1 --> R1_Reducer
+    M2_r2 --> R2_Reducer
+    M2_r3 --> R3_Reducer
+    M3_r1 --> R1_Reducer
+    M3_r2 --> R2_Reducer
+    M3_r3 --> R3_Reducer
+    R1_Reducer --> R1_Output
+    R2_Reducer --> R2_Output
+    R3_Reducer --> R3_Output
+    R1_Output --> B
+    R2_Output --> B
+    R3_Output --> B
+
+```
+
+The input is typically a directory in Hadoop Distributed File System. The mapper is run for each input file. The output consists of key-value pairs. Key-value pairs are partitioned by `reducer`[^mr15], sorted, and copied from mappers to reducers, then to the distributed file system. It's common for MapReduce jobs to be chained together into workflows, such that the output of one job becomes the input to the next. Hadoop doesn't have workflow support; chaining is done implicitly by directory name. MapReduce jobs are less like Unix pipelines. Unix pipelines use small in-memory buffers.
+
 [^mr01]: simply passes the input through
 [^mr02]: relying on MapReduce's partitioning and ordering
 [^mr03]: 100 Mbits/s or 1Gbit/s at the machine level is used
@@ -513,6 +621,13 @@ The execution of a MapReduce operation proceeds as follows[^mr04]:
 [^mr06]: typically 16-64 MB each
 [^mr07]: determined by a partitioning function, often `hash(key) mod R`
 [^mr08]: once per reduce task
+[^mr09]: idle, in-progress, completed
+[^mr10]: due to there being only one master
+[^mr11]: slow tasks
+[^mr12]: ensuring all URLs from the same host go to the same reducer
+[^mr13]: like word count
+[^mr14]: total words processed
+[^mr15]: using a hash of the key
 
 ## For Loop Problems
 
