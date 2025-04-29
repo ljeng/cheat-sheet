@@ -63,17 +63,18 @@ def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
 ## Radix Sort
 
 ```python
+from itertools import chain
 import math
-import itertools
 
-
-def radix_sort(arr, w):
-    # w is the number of buckets
+def radixSort(array, w):
     for i in range(int(round(math.log(max(map(abs, arr)), w)) + 1)):
-        buckets = [[] for j in range(w)]
-        for element in arr: buckets[element//w**i%w] += [element]
-        arr = list(itertools.chain(*buckets))
-    return [element for element in arr if element < 0] + [element for element in arr if element >= 0]
+        buckets = [[] for _ in range(w)]
+        for element in array: buckets[element // w**i % w].append(element)
+        array = list(chain(*buckets))
+    concatenated_buckets = [[], []]
+    for element in array: concatenated_buckets[element > 0].append(element)
+    return list(chain(*concatenated_buckets))
+
 ```
 
 ## Quicksort
