@@ -60,6 +60,19 @@ def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
 
 ## Insertion Sort
 
+```c++
+#include <algorithm>
+#include <vector>
+
+void InsertionSort(std::vector<int>& a) {
+  for (int i = 1; i < a.size(); i++) {
+    int j = i;
+    while (j && a[j - 1] > a[j]) std::swap(a[j], a[--j]);
+  }
+}
+
+```
+
 ## Radix Sort
 
 ```python
