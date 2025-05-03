@@ -2,6 +2,36 @@
 
 ## Searching
 
+**Knuth-Morris-Pratt**
+
+```c++
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<int> KnuthMorrisPratt(string pattern, string text) {
+  int j, m = pattern.length(), t = 0, k = 0, n = text.length();
+  vector<int> lps(m + 1);
+  for (j = 1; j < m; lps[++j] = t) {
+    while (t && pattern[j] != pattern[t]) t = lps[t];
+    t += pattern[j] == pattern[t];
+  }
+  j = 0;
+  vector<int> matches;
+  while (k < n) {
+    while (j && text[k] != pattern[j]) j = lps[j];
+    j += text[k++] == pattern[j];
+    if (j == m) {
+      matches.push_back(k - j);
+      j = lps[j];
+    }
+  }
+  return matches;
+}
+
+```
+
 #### Shortest Palindrome
 
 You are given a string `s`. You can convert `s` to a palindrome[^1] by adding characters in front of it. Return the shortest palindrome you can find by performing this transformation.
@@ -235,9 +265,9 @@ Return the minimum number of candies you need to have to distribute the candies 
 using namespace std;
 
 int candy(vector<int>& ratings) {
-  int n = ratings.size();
-  vector<int> counter = {0, 0, n};
-  for (int i = 1; i < n;) {
+  int i = 1, n = ratings.size();
+  int counter[3] = {0, 0, n};
+  while (i < n) {
     if (ratings[i - 1] != ratings[i]) {
       for (counter[0] = 0;
         i < n && ratings[i - 1] < ratings[i];
