@@ -240,3 +240,32 @@ def countSmaller(nums):
 ```
 
 ## Heapsort
+
+```c++
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+void HeapSort(vector<int>& a) {
+  int count = a.size();
+  int start = count >> 1;
+  int end = count;
+  while (end > 1) {
+    if (start) start--;
+    else swap(a[0], a[--end]);
+    int root = start;
+    while (true) {
+      int child = 2 * root;
+      if (++child >= end) break;
+      child += child + 1 < end && a[child] < a[child + 1];
+      if (a[root] < a[child]) {
+        swap(a[root], a[child]);
+        root = child;
+      }
+      else break;
+    }
+  }
+}
+
+```
