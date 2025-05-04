@@ -252,6 +252,28 @@ def possibleBipartition(N, dislikes):
     return Graph(set(range(1, N + 1)), E, directed=False).bipartite()
 ```
 
+#### Alien Dictionary
+
+There is a new alien language that uses the English alphabet. However, the order of the letters is unknown to you. You are given a list of strings `words` from the alien language's dictionary. Now it is claimed that the strings in `words` are *sorted lexicographically*[^1] by the rules of this new language. If this claim is incorrect, and the given arrangement of string in `words` cannot correspond to any order of letters, return `""`. Otherwise, return a string of the unique letters in the new alien language sorted in *lexicographically increasing order* by the new language's rules. If there are multiple solutions, return *any of them*.
+
+```python
+import itertools
+import graphlib
+
+def alienOrder(words):
+    graph = {letter: set() for word in words for letter in word}
+    for word1, word2 in itertools.pairwise(words):
+        for letter1, letter2 in itertools.zip_longest(word1, word2):
+            if letter1 != letter2:
+                if letter2 is None: return ''
+                else:
+                    if letter1 is not None: graph[letter2].add(letter1)
+                    break
+    try: return ''.join(graphlib.TopologicalSorter(graph).static_order())
+    except graphlib.CycleError: return ''
+
+```
+
 ## Ways to Represent a Graph in Memory
 
 ### Objects and Pointers
@@ -310,7 +332,6 @@ import itertools
 
 class Tree:
     def __init__(self, index):
-        self.root = index
         self.nodes, self.leaves = {index}, {index}
 
     def intersect(self, other):
@@ -495,3 +516,5 @@ def closedIsland(grid):
     flood_fill_border(grid, 1)
     return to_graph(grid, color=0).count_components()
 ```
+
+[^1] **Lexicographically smaller**: A string `a` is lexicographically smaller than a string `b` if in the first position where `a` and `b` differ, string `a` has a letter that appears earlier in the alien language than the corresponding letter in `b`. If the first `min(a.length, b.length)` characters do not differ, then the shorter string is the lexicographically smaller one.
