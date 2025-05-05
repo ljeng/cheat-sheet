@@ -267,6 +267,34 @@ int numDecodings(string s) {
 
 ```
 
+#### Coin Path
+
+You are given an integer array `coins`[^10] of length `n` and an integer `maxJump`. You can jump to any index `i` of the array `coins` if `coins[i] != -1` and you have to pay `coins[i]` when you visit index `i`. In addition to that, if you are currently at index `i`, you can only jump to any index `i + k` where `i + k <= n` and `k` is a value in the range `[1, maxJump]`. You are initially positioned at index `1`[^11]. You want to find the path that reaches index `n` with the minimum cost. Return an integer array of the indices that you will visit in order so that you can reach index n with the minimum cost. If there are multiple paths with the same cost, return the *lexicographically smallest* such path. If it is not possible to reach index `n`, return an empty array. A path `p1 = [Pa[1], Pa[2], ..., Pa[x]]` of length `x` is lexicographically smaller than `p2 = [Pb[1], Pb[2], ..., Pb[x]]` of length `y` iff at the first `j` where `Pa[j]` and `Pb[j]` differ, `Pa[j] < Pb[j]`; when no such `j` exists, then `x < y`.
+
+```c++
+#include <algorithm>
+#include <climits>
+#include <vector>
+
+using namespace std;
+
+vector<int> cheapestJump(vector<int>& coins, int maxJump) {
+  vector<int> visited;
+  if (coins.back() != -1) {
+    int n = coins.size();
+    vector<int> cost(n, INT_MAX), p(n, -1);
+    cost[n - 1] = coins.back();
+    for (int i = n - 2; i >= 0; i--) if (coins[i] != -1)
+      for (int j = i + 1; j <= min(i + maxJump, n - 1); j++)
+        if (cost[j] < INT_MAX && coins[i] + cost[j] < cost[i])
+          cost[i] = coins[i] + cost[j], p[i] = j;
+    if (cost[0] != INT_MAX) for (int i = 0; i != -1; i = p[i]) visited.push_back(i + 1);
+  }
+  return visited;
+}
+
+```
+
 #### Cherry Pickup
 
 You are given an `n * n` `grid` representing a field of cherries, each cell is one of three possible integers.
@@ -319,4 +347,6 @@ def cherryPickup(grid):
 [^07]: you must sell the stock before you buy again
 [^08]: there may be multiple ways
 [^09]: `0` is excluded
-[^10]: cells with value 0 or 1
+[^10]: 1-indexed
+[^11]: `coins[1]` is not `-1`
+[^12]: cells with value 0 or 1
