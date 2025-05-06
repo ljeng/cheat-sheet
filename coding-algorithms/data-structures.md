@@ -421,6 +421,56 @@ string minWindow(string source, string target) {
 
 #### Word Search
 
+#### Range Sum Query 2-D - Mutable
+
+Given a 2-D matrix `matrix`, handle multiple queries of the following types:
+
+1. *Update* the value of a cell in `matrix`.
+1. Calculate the *sum* of the elements of `matrix` inside the rectangle defined by its *upper left corner* `(row1, col1)` and *lower right corner* `(row2, col2)`.
+
+Implement the `NumMatrix` class:
+
+- `NumMatrix(int[][] matrix)` Initializes the object with the integer matrix `matrix`.
+- `void update(int row, int col, int val)` Updates the value of `matrix[row][col]` to be `val`.
+- `int sumRegion(int row1, int col1, int row2, int col2)` Returns the *sum* of the elements of `matrix` inside the rectangle defined by its *upper left corner* `(row1, col1)` and *lower right corner* `(row2, col2)`.
+
+```c++
+class NumMatrix {
+public:
+  int m, n;
+  vector<vector<int>> matrix;
+  vector<vector<int>> bit;
+
+  NumMatrix(vector<vector<int>>& matrix) {
+    m = matrix.size(), n = matrix[0].size();
+    this->matrix = vector<vector<int>>(m, vector<int>(n));
+    bit = vector<vector<int>>(m + 1, vector<int>(n + 1));
+    for (int i = 0; i < m; i++) for (int j = 0; j < n; j++) update(i, j, matrix[i][j]);
+  }
+  
+  void update(int row, int col, int val) {
+    int delta = val - matrix[row][col];
+    matrix[row][col] = val;
+    for (int i = row + 1; i <= m; i += i & -i)
+      for (int j = col + 1; j <= n; j += j & -j)
+        bit[i][j] += delta;
+  }
+
+  int sum(int row, int col) {
+    int x = 0;
+    for (int i = row; i > 0; i -= i & -i)
+      for (int j = col; j > 0; j -= j & -j)
+        x += bit[i][j];
+    return x;
+  }
+  
+  int sumRegion(int row1, int col1, int row2, int col2) {
+    return sum(row1, col1) - sum(row1, ++col2) - sum(++row2, col1) + sum(row2, col2);
+  }
+};
+
+```
+
 #### Palindrome Pairs
 
 #### *k*th Smallest in Lexicographical Order
