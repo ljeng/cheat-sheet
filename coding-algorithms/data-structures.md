@@ -473,7 +473,7 @@ public:
 
 #### Palindrome Pairs
 
-#### *k*th Smallest in Lexicographical Order
+#### `k`th Smallest in Lexicographical Order
 
 ### Binary
 
@@ -533,6 +533,30 @@ def getSkyline(buildings):
         if skyline[-1][1] != height: skyline.append([left, height])
     skyline.pop(0)
     return skyline
+
+```
+
+#### Rearrange String `k` Distance Apart
+
+Given a string `s` and an integer `k`, rearrange `s` such that the same characters are *at least* distance `k` from each other. If it is not possible to rearrange the string, return an empty string `""`.
+
+```python
+import collections
+import heapq
+
+def rearrangeString(s, k):
+    heap = [(-count, character) for character, count in collections.Counter(s).items()]
+    heapq.heapify(heap)
+    queue = collections.deque()
+    rearranged = []
+    while heap:
+        count, character = heapq.heappop(heap)
+        queue.append((count + 1, character))
+        rearranged.append(character)
+        if len(queue) >= k:
+            x = count, character = queue.popleft()
+            if count < 0: heapq.heappush(heap, x)
+    return ''.join(rearranged) if len(rearranged) == len(s) else ''
 
 ```
 
