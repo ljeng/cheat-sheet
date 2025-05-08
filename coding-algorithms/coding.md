@@ -6,7 +6,72 @@
 
 ## APIs
 
-#### Object-Oriented Design and Programming
+#### Read `n` Characters Given `read4` II - Call Multiple Times
+
+Given a `file` and assuming that you can only read the file using a given method `read4`, implement a method `read` to read `n` characters. Your method `read` may be *called multiple times*.
+
+**Method `read4`**
+
+The API `read4` reads *four consecutive characters* from `file`, then writes those characters into the buffer array `buf4`. The return value is the number of actual characters read. `read4()` has its own file pointer, much like `FILE *fp` in C.
+
+**Definition of `read4`**
+
+Parameter: `char[] buf4`
+Returns: `int`
+
+`buf4[]` is a destination, not a source. The results from `read4` will be copied to `buf4[]`.
+
+Below is a high-level example of how read4 works:
+
+![read4](https://assets.leetcode.com/uploads/2020/07/01/157_example.png)
+
+```c++
+File file("abcde"); // File is "abcde", initially file pointer (fp) points to 'a'
+char[] buf4 = new char[4]; // Create buffer with enough space to store characters
+read4(buf4); // read4 returns 4. Now buf4 = "abcd", fp points to 'e'
+read4(buf4); // read4 returns 1. Now buf4 = "e", fp points to end of file
+read4(buf4); // read4 returns 0. Now buf4 = "", fp points to end of file
+
+```
+
+**Method `read`**
+
+By using the `read4` method, implement the method `read` that reads `n` characters from `file` and store it in the buffer array `buf`. Consider that you cannot manipulate `file` directly. The return value is the number of actual characters read.
+
+**Definition of `read`**
+
+Parameters: `char[] buf, int n`
+Returns: `int`
+
+`buf[]` is a destination, not a source. You will need to write the results to `buf[]`.
+
+Notes:
+
+- Consider that you cannot manipulate the file directly. The file is only accessible for `read4` but not for `read`.
+- The read function may be *called multiple times*.
+- You may assume the destination buffer array, `buf`, is guaranteed to have enough space for storing `n` characters.
+- It is guaranteed that in a given test case the same buffer `buf` is called by `read`.
+
+```c++
+int i = 0, m = 0;
+char buf4[4];
+
+int read(char *buf, int n) {
+    int j = 0;
+    while (j < n) {
+        if (!i) m = read4(buf4);
+        if (!m) break;
+        while (j < n && i < m) buf[j++] = buf4[i++];
+        if (i >= m) i = 0;
+    }
+    return j;
+}
+
+```
+
+## Object-oriented Design and Programming
+
+#### LFU Cache
 
 Design and implement a data structure for a [Least Frequently Used (LFU)](https://en.wikipedia.org/wiki/Least_frequently_used) cache. Implement the `LFUCache` class:
 
