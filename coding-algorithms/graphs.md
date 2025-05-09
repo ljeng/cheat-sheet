@@ -180,10 +180,44 @@ def findTheCity(n, edges, distanceThreshold):
 
 Return the number of connected components.
 
-[Number of Islands](https://leetcode.com/problems/number-of-islands)
+#### Number of Islands
 ```python
 def numIslands(grid):
     return to_graph(grid, color='1').count_components()
+```
+
+You are given an empty 2-D binary grid `grid` of size `m * n`. The grid represents a map where `0`'s represent water and `1`'s represent land. Initially, all the cells of `grid` are water cells[^1]. We may perform an add land operation which turns the water at position into a land. You are given an array `positions` where `positions[i] = [r[i], c[i]]` is the position `(r[i], c[i])` at which we should operate the `i`th operation. Return an array of integers `answer` where `answer[i]` is the number of islands after turning the cell `(r[i], c[i])` into a land. An *island* is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+
+```python
+def find(self, x):
+    root = x
+    while cell_root[root] != root: root = cell_root[root]
+    while x != root:
+        parent, cell_root[x] = cell_root[x], root
+        x = parent
+    return root
+
+def numIslands2(m, n, positions)
+    cell_root = dict()
+    islands = 0
+    answer = []
+    for r, c in positions:
+        u = r + c * 1j
+        if u in cell_root:
+            answer.append(islands)
+            continue
+        cell_root[u] = u
+        islands += 1
+        for d in [-1, -1j, 1j, 1]:
+            v = u + d
+            if v in cell_root:
+                u_root, v_root = find(u), find(v)
+                if u_root != v_root:
+                    cell_root[u_root] = v_root
+                    islands -= 1
+        answer.append(islands)
+    return answer
+
 ```
 
 [Friend Circles](https://leetcode.com/problems/friend-circles)
@@ -254,7 +288,7 @@ def possibleBipartition(N, dislikes):
 
 #### Alien Dictionary
 
-There is a new alien language that uses the English alphabet. However, the order of the letters is unknown to you. You are given a list of strings `words` from the alien language's dictionary. Now it is claimed that the strings in `words` are *sorted lexicographically*[^1] by the rules of this new language. If this claim is incorrect, and the given arrangement of string in `words` cannot correspond to any order of letters, return `""`. Otherwise, return a string of the unique letters in the new alien language sorted in *lexicographically increasing order* by the new language's rules. If there are multiple solutions, return *any of them*.
+There is a new alien language that uses the English alphabet. However, the order of the letters is unknown to you. You are given a list of strings `words` from the alien language's dictionary. Now it is claimed that the strings in `words` are *sorted lexicographically*[^2] by the rules of this new language. If this claim is incorrect, and the given arrangement of string in `words` cannot correspond to any order of letters, return `""`. Otherwise, return a string of the unique letters in the new alien language sorted in *lexicographically increasing order* by the new language's rules. If there are multiple solutions, return *any of them*.
 
 ```python
 import itertools
@@ -517,4 +551,5 @@ def closedIsland(grid):
     return to_graph(grid, color=0).count_components()
 ```
 
-[^1] **Lexicographically smaller**: A string `a` is lexicographically smaller than a string `b` if in the first position where `a` and `b` differ, string `a` has a letter that appears earlier in the alien language than the corresponding letter in `b`. If the first `min(a.length, b.length)` characters do not differ, then the shorter string is the lexicographically smaller one.
+[^1]: all the cells are `0`'s
+[^2]: **Lexicographically smaller**: A string `a` is lexicographically smaller than a string `b` if in the first position where `a` and `b` differ, string `a` has a letter that appears earlier in the alien language than the corresponding letter in `b`. If the first `min(a.length, b.length)` characters do not differ, then the shorter string is the lexicographically smaller one.
