@@ -1,5 +1,13 @@
 # Coding
 
+## Table of Contents
+
+- [C++](#c)
+- [APIs](#apis)
+- [Object-Oriented Design and Programming](#object-oriented-design-and-programming)
+- [How to Test Your Code](#how-to-test-your-code)
+- [Corner Cases and Edge Cases](#corner-cases-and-edge-cases)
+
 ## C++
 
 #### Count the Repetitions
@@ -17,6 +25,7 @@ The API `read4` reads *four consecutive characters* from `file`, then writes tho
 **Definition of `read4`**
 
 Parameter: `char[] buf4`
+
 Returns: `int`
 
 `buf4[]` is a destination, not a source. The results from `read4` will be copied to `buf4[]`.
@@ -41,6 +50,7 @@ By using the `read4` method, implement the method `read` that reads `n` characte
 **Definition of `read`**
 
 Parameters: `char[] buf, int n`
+
 Returns: `int`
 
 `buf[]` is a destination, not a source. You will need to write the results to `buf[]`.
