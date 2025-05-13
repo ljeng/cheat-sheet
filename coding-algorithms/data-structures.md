@@ -1,5 +1,21 @@
 # Data Structures
 
+## Table of Contents
+
+- [Lists](#lists)
+    - [Arrays](#arrays)
+    - [Linked Lists](#linked-lists)
+    - [Stacks](#stacks)
+    - [Queues](#queues)
+- [Hash](#hash)
+    - [Sets](#sets)
+    - [Maps](#maps)
+    - [Tables](#tables)
+    - [Dictionary](#dictionary)
+- [Trees](c#trees)
+    - [Binary](#binary)
+    - [Heaps](#heaps)
+
 ## Lists
 
 ### Arrays
