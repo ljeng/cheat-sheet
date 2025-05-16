@@ -58,7 +58,7 @@ def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
 
 ```
 
-## Insertion Sort
+## [Insertion Sort](code/sorting.cpp#L6)
 
 ```c++
 #include <algorithm>
@@ -73,7 +73,7 @@ void InsertionSort(std::vector<int>& a) {
 
 ```
 
-## Radix Sort
+## [Radix Sort](code/sorting.py)
 
 ```python
 from itertools import chain
@@ -103,7 +103,7 @@ def quickselect(arr, k):
     else: return arr[0]
 ```
 
-## Merge Sort
+## [Merge Sort](code/sorting.cpp#L13)
 
 ```c++
 #include <algorithm>
@@ -239,7 +239,7 @@ def countSmaller(nums):
 
 ```
 
-## Heapsort
+## [Heapsort](code/sorting.cpp#L30)
 
 ```c++
 #include <algorithm>
