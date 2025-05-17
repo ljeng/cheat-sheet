@@ -252,4 +252,53 @@ def isNumber(s):
 
 ```
 
+#### Strong Password Checker
+
+A password is considered strong if the below conditions are all met:
+
+- It has at least `6` characters and at most `20` characters.
+- It contains at least *one lowercase* letter, at least *one uppercase* letter, and at least *one digit*.
+- It does not contain three repeating characters in a row[^2].
+
+Given a string `password`, return the minimum number of steps required to make `password` strong. If `password` is already strong, return 0.
+
+In one step, you can:
+
+- Insert one character to `password`,
+- Delete one character from `password`, or
+- Replace one character of `password` with another character.
+
+```c++
+int strongPasswordChecker(string password) {
+  bool lowercase = true, uppercase = true, digit = true;
+  for (char x : password) {
+    if (islower(x)) lowercase = false;
+    else if (isupper(x)) uppercase = false;
+    else if (isdigit(x)) digit = false;
+  }
+  int n = password.size(), mod[3], counter[3];
+  for (int i = 2; i < n; i++)
+    if (password[i - 2] == password[i] && password[i - 1] == password[i]) {
+      int j;
+      for (j = 3; i + 1 < n && password[i] == password[i + 1]; i++, j++);
+      mod[j % 3]++;
+      counter[0] += j / 3;
+    }
+  int contain = lowercase + uppercase + digit;
+  if (n < 6) return max(contain, 6 - n);
+  else if (n <= 20) return max(contain, counter[0]);
+  else {
+    counter[1] = n - 20;
+    counter[2] = min(counter[1], mod[0]);
+    counter[0] -= counter[2];
+    counter[1] -= counter[2];
+    counter[2] = min(counter[1], mod[1] * 2) / 2;
+    counter[1] -= counter[2] * 2;
+    return n + max(contain, counter[0] - counter[1] / 3 - counter[2]) - 20;
+  }
+}
+
+```
+
 [^1]: due to the `put` operation
+[^2]: `"Baaabb0"` is weak, but `"Baaba0"` is strong
