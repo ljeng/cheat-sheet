@@ -64,11 +64,11 @@ def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
 #include <algorithm>
 #include <vector>
 
-void InsertionSort(std::vector<int>& a) {
-  for (int i = 1; i < a.size(); i++) {
-    int j = i;
-    while (j && a[j - 1] > a[j]) std::swap(a[j], a[--j]);
-  }
+using namespace std;
+
+void InsertionSort(vector<int>& a) {
+  for (int i = 1; i < a.size(); i++)
+    for (int j = i; j && a[j - 1] > a[j]; swap(a[j], a[--j]));
 }
 
 ```
@@ -103,7 +103,7 @@ def quickselect(arr, k):
     else: return arr[0]
 ```
 
-## [Merge Sort](code/sorting.cpp#L13)
+## [Merge Sort](code/sorting.cpp#L11)
 
 ```c++
 #include <algorithm>
@@ -114,13 +114,14 @@ using namespace std;
 void MergeSort(vector<int>& a) {
   int n = a.size();
   vector<int> b(n);
+  int k;
   for (int width = 1; width < n; width *= 2) {
     for (int start = 0; start < n; start += 2 * width) {
-      int left = start, right = mid;
       int mid = min(start + width, n), end = min(start + 2 * width, n);
-      int k = start;
-      while (left < mid && right < end)
-        b[k++] = a[left] > a[right] ? a[right++] : a[left++];
+      int left = start, right = mid;
+      for (k = start;
+         left < mid && right < end;
+         b[k++] = a[left] > a[right] ? a[right++] : a[left++]);
       while (left < mid) b[k++] = a[left++];
       while (right < end) b[k++] = a[right++];
     }
@@ -239,7 +240,7 @@ def countSmaller(nums):
 
 ```
 
-## [Heapsort](code/sorting.cpp#L30)
+## [Heapsort](code/sorting.cpp#L29)
 
 ```c++
 #include <algorithm>
@@ -249,8 +250,7 @@ using namespace std;
 
 void HeapSort(vector<int>& a) {
   int count = a.size();
-  int start = count >> 1;
-  int end = count;
+  int start = count >> 1, end = count;
   while (end > 1) {
     if (start) start--;
     else swap(a[0], a[--end]);
