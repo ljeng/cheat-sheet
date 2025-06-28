@@ -14,7 +14,7 @@
 
 **[Knuth-Morris-Pratt](code/knuth-morris-pratt.cpp)**
 
-```c++
+```cpp
 #include <string>
 #include <vector>
 
@@ -46,7 +46,7 @@ vector<int> KnuthMorrisPratt(string pattern, string text) {
 
 You are given a string `s`. You can convert `s` to a palindrome[^1] by adding characters in front of it. Return the shortest palindrome you can find by performing this transformation.
 
-```c++
+```cpp
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -98,7 +98,7 @@ Suppose an array of length `n` sorted in ascending order is *rotated* between `1
 
 Notice that *rotating* an array `[a[0], a[1], a[2], ..., a[n - 1]]` 1 time results in the array `[a[n - 1], a[0], a[1], a[2], ..., a[n - 2]]`. Given the sorted rotated array `nums` that may contain *duplicates*, return the minimum element of this array. You must decrease the overall operation steps as much as possible.
 
-```c++
+```cpp
 #include <vector>
 
 int findMin(std::vector<int>& nums) {
@@ -134,7 +134,7 @@ def maxEnvelopes(envelopes):
 
 Given an `m * n` matrix `matrix` and an integer `k`, return the max sum of a rectangle in the matrix such that its sum is no larger than `k`. It is *guaranteed* that there will be a rectangle with a sum no larger than `k`.
 
-```c++
+```cpp
 #include <algorithm>
 #include <climits>
 #include <set>
@@ -168,7 +168,7 @@ int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
 
 The *distance of a pair* of integers `a` and `b` is defined as the absolute difference between `a` and `b`. Given an integer array `nums` and an integer `k`, return the `k`<sup>th</sup> smallest *distance among all the pairs* `nums[i]` and `nums[j]` where `0 <= i < j < nums.length`.
 
-```c++
+```cpp
 #include <algorithm>
 #include <vector>
 
@@ -206,7 +206,7 @@ Given an input string `s` and a pattern `p`, implement wildcard pattern matching
 
 The matching should cover the entire input string[^4].
 
-```c++
+```cpp
 #include <string>
 
 using namespace std;
@@ -268,7 +268,7 @@ There are `n` children standing in a line. Each child is assigned a rating value
 
 Return the minimum number of candies you need to have to distribute the candies to the children.
 
-```c++
+```cpp
 #include <algorithm>
 #include <vector>
 
@@ -300,7 +300,7 @@ int candy(vector<int>& ratings) {
 
 Given a sorted integer array `nums` and an integer `n`, add/patch elements to the array such that any number in the range `[1, n]` inclusive can be formed by the sum of some elements in the array. Return the minimum number of patches required.
 
-```c++
+```cpp
 #include <vector>
 
 int minPatches(std::vector<int>& nums, int n) {

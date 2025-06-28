@@ -34,7 +34,7 @@ Below is a high-level example of how read4 works:
 
 ![read4](https://assets.leetcode.com/uploads/2020/07/01/157_example.png)
 
-```c++
+```cpp
 File file("abcde"); // File is "abcde", initially file pointer (fp) points to 'a'
 char[] buf4 = new char[4]; // Create buffer with enough space to store characters
 read4(buf4); // read4 returns 4. Now buf4 = "abcd", fp points to 'e'
@@ -62,7 +62,7 @@ Notes:
 - You may assume the destination buffer array, `buf`, is guaranteed to have enough space for storing `n` characters.
 - It is guaranteed that in a given test case the same buffer `buf` is called by `read`.
 
-```c++
+```cpp
 int i = 0, m = 0;
 char buf4[4];
 
@@ -196,7 +196,7 @@ Implement the `myAtoi(string s)` function, which converts a string to a 32-bit s
 
 Return the integer as the final result.
 
-```c++
+```cpp
 #include <climits>
 #include <string>
 
@@ -268,7 +268,7 @@ In one step, you can:
 - Delete one character from `password`, or
 - Replace one character of `password` with another character.
 
-```c++
+```cpp
 int strongPasswordChecker(string password) {
   bool lowercase = true, uppercase = true, digit = true;
   for (char x : password) {

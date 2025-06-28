@@ -12,9 +12,10 @@
     - [Maps](#maps)
     - [Tables](#tables)
     - [Dictionary](#dictionary)
-- [Trees](c#trees)
+- [Trees](#trees)
     - [Binary](#binary)
     - [Heaps](#heaps)
+- [Graphs][#graphs]
 
 ## Lists
 
@@ -29,13 +30,13 @@ The median is the middle value in an ordered integer list. If the size of the li
 For example:
 
 - If `arr = [2, 3, 4]`, the median is `3`.
-- If `arr = [1,2,3,4]`, the median is `(2 + 3) / 2 = 2.5`.
+- If `arr = [1, 2, 3, 4]`, the median is `(2 + 3) / 2 = 2.5`.
 
 You are given an integer array nums and an integer k. There is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position.
 
 Return the median array for each window in the original array. Answers within ${10}^{-5}$ of the actual value will be accepted.
 
-```c++
+```cpp
 #include <iterator>
 #include <set>
 #include <vector>
@@ -71,7 +72,7 @@ Implement the `AllOne` class:
 
 Each function must run in $\Theta(1)$ time complexity.
 
-```c++
+```cpp
 #include <iterator>
 #include <list>
 #include <string>
@@ -225,7 +226,8 @@ def findItinerary(tickets):
     for from_, to in sorted(tickets, reverse=True): adjacency[from_].append(to)
     itinerary = []
     while airports:
-        while adjacency[airports[-1]]: airports.append(adjacency[airports[-1]].pop())
+        while adjacency[airports[-1]]:
+            airports.append(adjacency[airports[-1]].pop())
         itinerary.append(airports.pop())
     return itinerary[::-1]
 
@@ -280,7 +282,7 @@ def isValid(code):
 
 You are given an array of integers `nums`, there is a sliding window of size `k` which is moving from the very left of the array to the very right. You can only see the `k` numbers in the window. Each time the sliding window moves right by one position. Return the max sliding window.
 
-```c++
+```cpp
 #include <vector>
 #include <deque>
 
@@ -372,7 +374,7 @@ def numberToWords(num):
 
 You are given a string `s` and an array of strings `words`. All the strings of words are of *the same length*. A *concatenated string* is a string that exactly contains all the strings of any permutation of words concatenated. For example, if `words = ["ab","cd","ef"]`, then `"abcdef"`, `"abefcd"`, `"cdabef"`, `"cdefab"`, `"efabcd"`, and `"efcdab"` are all concatenated strings. `"acdbef"` is not a concatenated string because it is not the concatenation of any permutation of words. Return an array of the starting indices of all the concatenated substrings in `s`. You can return the answer in *any order*.
 
-```c++
+```cpp
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -411,7 +413,7 @@ vector<int> findSubstring(string s, vector<string>& words) {
 
 Given two strings `s` and `t` of lengths `m` and `n` respectively, return the *minimum window substring*[^2] of `s` such that every character in `t`[^4] is included in the window. If there is no such substring, return the empty string `""`. The input will be generated such that the answer is *unique.*
 
-```c++
+```cpp
 #include <climits>
 #include <string>
 #include <unordered_map>
@@ -453,7 +455,7 @@ Implement the `NumMatrix` class:
 - `void update(int row, int col, int val)` Updates the value of `matrix[row][col]` to be `val`.
 - `int sumRegion(int row1, int col1, int row2, int col2)` Returns the *sum* of the elements of `matrix` inside the rectangle defined by its *upper left corner* `(row1, col1)` and *lower right corner* `(row2, col2)`.
 
-```c++
+```cpp
 class NumMatrix {
 public:
   int m, n;
@@ -484,7 +486,10 @@ public:
   }
   
   int sumRegion(int row1, int col1, int row2, int col2) {
-    return sum(row1, col1) - sum(row1, ++col2) - sum(++row2, col1) + sum(row2, col2);
+    return sum(row1, col1)
+      - sum(row1, ++col2)
+      - sum(++row2, col1)
+      + sum(row2, col2);
   }
 };
 
@@ -564,7 +569,9 @@ import collections
 import heapq
 
 def rearrangeString(s, k):
-    heap = [(-count, character) for character, count in collections.Counter(s).items()]
+    heap = [(-count, character)
+      for character, count
+      in collections.Counter(s).items()]
     heapq.heapify(heap)
     queue = collections.deque()
     rearranged = []

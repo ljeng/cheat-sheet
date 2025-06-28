@@ -9,7 +9,7 @@ Given an input string `s` and a pattern `p`, implement regular expression matchi
 
 The matching should cover the entire input string[^01].
 
-```c++
+```cpp
 #include <string>
 #include <vector>
 
@@ -44,7 +44,7 @@ bool isMatch(string s, string p) {
 
 Given two strings `s` and `t`, return the number of distinct *subsequences* of `s` which equals `t`. The answer fits on a 32-bit signed integer.
 
-```c++
+```cpp
 #include <string>
 #include <vector>
 
@@ -68,7 +68,7 @@ int numDistinct(string s, string t) {
 
 Given a string `s`, partition `s` such that every substring[^02] of the partition is a palindrome[^03]. Return the *minimum* cuts needed for a palindrome partitioning of `s`.
 
-```c++
+```cpp
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -81,9 +81,9 @@ int minCut(string s) {
   for (int i = 0; i <= n; i++) cut[i] = i - 1;
   for (int i = 0; i < n; i++)
     for (int k = 0; k < 2; k++) {
-      int j = k;
-      while (j < min(i + k + 1, n - i) && s[i - j + k] == s[i + j])
-        cut[i + j] = min(cut[i - j + k] + 1, cut[i + ++j]);
+      for (int j = k;
+        j < min(i + k + 1, n - i) && s[i - j + k] == s[i + j];
+        cut[i + j] = min(cut[i - j + k] + 1, cut[i + ++j]));
     }
   return cut[n];
 }
@@ -94,7 +94,7 @@ int minCut(string s) {
 
 The demons had captured the princess and imprisoned her in *the bottom-right corner* of a `dungeon`. The `dungeon` consists of `m * n` rooms laid out in a 2-D grid. Our valiant knight was initially positioned in *the top-left room* and must fight his way through `dungeon` to rescue the princess. The knight has an initial health point represented by a positive integer. If at any point his health point drops to `0` or below, he dies immediately. Some of the rooms are guarded by demons[^04], so the knight loses health upon entering these rooms; other rooms are either empty[^05] or contain magic orbs that increase the knight's health[^06]. To reach the princess as quickly as possible, the knight decides to move only *rightward* or *downward* in each step. Return the knight's minimum initial health so that he can rescue the princess. Any room can contain threats or power-ups, even the first room the knight enters and the bottom-right room where the princess is imprisoned.
 
-```c++
+```cpp
 #include <algorithm>
 #include <climits>
 #include <vector>
@@ -122,7 +122,7 @@ You are given an array `prices` where `prices[i]` is the price of a given stock 
 
 You may complete *at most two transactions*.
 
-```c++
+```cpp
 #include <algorithm>
 #include <climits>
 
@@ -242,7 +242,8 @@ def numDecodings(s):
 
 ```
 
-```c++
+{% raw %}
+```cpp
 #include <cctype>
 #include <numeric>
 #include <string>
@@ -266,12 +267,13 @@ int numDecodings(string s) {
 }
 
 ```
+{% endraw %}
 
 #### Coin Path
 
 You are given an integer array `coins`[^10] of length `n` and an integer `maxJump`. You can jump to any index `i` of the array `coins` if `coins[i] != -1` and you have to pay `coins[i]` when you visit index `i`. In addition to that, if you are currently at index `i`, you can only jump to any index `i + k` where `i + k <= n` and `k` is a value in the range `[1, maxJump]`. You are initially positioned at index `1`[^11]. You want to find the path that reaches index `n` with the minimum cost. Return an integer array of the indices that you will visit in order so that you can reach index n with the minimum cost. If there are multiple paths with the same cost, return the *lexicographically smallest* such path. If it is not possible to reach index `n`, return an empty array. A path `p1 = [Pa[1], Pa[2], ..., Pa[x]]` of length `x` is lexicographically smaller than `p2 = [Pb[1], Pb[2], ..., Pb[x]]` of length `y` iff at the first `j` where `Pa[j]` and `Pb[j]` differ, `Pa[j] < Pb[j]`; when no such `j` exists, then `x < y`.
 
-```c++
+```cpp
 #include <algorithm>
 #include <climits>
 #include <vector>

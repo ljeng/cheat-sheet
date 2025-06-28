@@ -13,7 +13,7 @@
 
 Given an unsorted integer array `nums`. Return the smallest positive integer that is not present in `nums`. You must implement an algorithm that runs in $\Theta(n)$ time and uses $\Theta(1)$ auxiliary space.
 
-```c++
+```cpp
 #include <algorithm>
 #include <vector>
 
@@ -60,7 +60,7 @@ def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
 
 ## [Insertion Sort](code/sorting.cpp#L6)
 
-```c++
+```cpp
 #include <algorithm>
 #include <vector>
 
@@ -105,7 +105,7 @@ def quickselect(arr, k):
 
 ## [Merge Sort](code/sorting.cpp#L11)
 
-```c++
+```cpp
 #include <algorithm>
 #include <vector>
 
@@ -138,7 +138,7 @@ Given an integer array `nums`, return the number of *reverse pairs* in the array
 - `0 <= i < j < nums.length` and
 - `nums[i] > 2 * nums[j]`.
 
-```c++
+```cpp
 #include <algorithm>
 #include <vector>
 
@@ -186,7 +186,7 @@ def reversePairs(nums):
 
 Given an integer array `nums`, return an integer array `counts` where `counts[i]` is the number of smaller elements to the right of `nums[i]`.
 
-```c++
+```cpp
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -242,7 +242,7 @@ def countSmaller(nums):
 
 ## [Heapsort](code/sorting.cpp#L29)
 
-```c++
+```cpp
 #include <algorithm>
 #include <vector>
 
