@@ -63,15 +63,17 @@ We're trying to build a system where data is replicated across many servers, tra
 
 Our **database** as a collection of data items[^dscc01]. Each has multiple versions. Application clients submit requests to the database in the form of transactions, or groups of operations[^dscc02] that should be executed together. Each transaction operates on a logical **replica**, or set of versions of the items mentioned in the transaction. Transactions operate over "snapshots” of database state. Upon commit[^dscc03], the replica state is **merged** into the set of versions on at least one server. We assume this merge operator is commutative, associative, and idempotent. For example, if server
 
-$R_x = \{v\}$
+{% raw %}
+$R_x = \\{v\\}$
 
 and
 
-$R_y = \{w\}$
+$R_y = \\{w\\}$
 
 then
 
-$R_x \sqcup R_y = \{v, w\}$
+$R_x \sqcup R_y = \\{v, w\\}$
+{% endraw %}
 
 To determine whether a database state is valid according to application correctness criteria, we use **invariants**. You need usernames to be unique. Other kinds of constraints are very similar: An account balance never goes negative, a meeting room doesn't have overlapping bookings. A transaction can commit, or abort[^dscc04] if committing the transaction would violate a declared invariant over the replica state of its set of transactions $T$. A transaction can only abort if it explicitly chooses to abort itself or if committing would violate invariants over the transaction's replica state. A system is convergent iff, in the absence of new writes, the servers eventually contain the same version for any item they both store. We apply the merge operator to produce a convergent state. A system provides coordination-free execution for $T$ iff the progress of executing each $t \in T$ is only dependent on the versions of the items $t$ reads[^dscc05]. That is, in a coordination-free execution, each transaction's progress towards commit/abort is independent of other operations[^dscc06] being performed on behalf of other transactions.
 
@@ -79,7 +81,7 @@ If $\mathcal I$-confluence holds, there exists a correct, coordination-free exec
 
 *Figure DSCC-1*
 
-```mermaid
+<div class="mermaid" markdown="0">
 %%{init: {'flowchart': {'nodeSpacing': 200, 'rankSpacing': 200},
     'themeVariables': { 'primaryColor': '#fff', 'edgeLabelBackground':'#fff' }}}%%
 graph TD
@@ -119,23 +121,21 @@ graph TD
     PRECONDITION -.-> |"valid divergence<br>from initial state"| IMPLICATION
     IMPLICATION -.-> |"merge must be valid"| PRECONDITION
 
-```
+</div>
 
 *Theorem 1*: A globally $\mathcal I$-valid system can execute a set of transactions $T$ with coordination-freedom, transactional availability, convergence if and only if $T$ is $\mathcal I$-confluent with respect to $\mathcal I$.
 
 The theorem establishes $\mathcal I$-confluence as necessary and sufficient for coordination-free execution. If $\mathcal I$-confluence holds, there exists a correct, coordination-free execution strategy for the transactions; if not, no possible implementation can guarantee these properties for the provided invariants and transactions.
 
-$\rightarrow$ If $\mathcal If $\mathcal I$-confluence holds, each server can independently check if a transaction violates the invariant based on its local replica. There exists a coordination-free execution strategy for the transactions.
+$\rightarrow$ If $\mathcal I$-confluence holds, each server can independently check if a transaction violates the invariant based on its local replica. There exists a coordination-free execution strategy for the transactions.
 
 $\leftarrow$ If we have coordination-freedom, $\mathcal I$-confluence must hold. The forwards direction uses a partitioning argument to derive a contradiction. $\bot$ To prevent invalid states, at least one of the transaction sequences will have to forgo coordination-freedom.
 
-Writes are performed in the same, well-defined order[^dscc09]. The merge procedures[^dscc10] are deterministic so that servers resolve the same conflicts in the same manner. The Bayou system uses a primary commit scheme. One server designated as the primary takes responsibility for committing updates. The primary is responsible for deciding the final order of committed operations. Truncating the logs guarantees that they can catch up with the latest state.
-
-- *Log truncation*: As a multi-tenant database, [Manhattan](https://blog.x.com/engineering/en_us/a/2014/manhattan-our-real-time-multi-tenant-distributed-database-for-twitter-scale) needs to provide high quality of service to each customer without overwhelming the log.
+Writes are performed in the same, well-defined order[^dscc09]. The merge procedures[^dscc10] are deterministic so that servers resolve the same conflicts in the same manner. The Bayou system uses a primary commit scheme. One server designated as the primary takes responsibility for committing updates. The primary is responsible for deciding the final order of committed operations. **Truncating the logs** guarantees that they can catch up with the latest state. As a multi-tenant database, [Manhattan](https://blog.x.com/engineering/en_us/a/2014/manhattan-our-real-time-multi-tenant-distributed-database-for-twitter-scale) needs to provide high quality of service to each customer without overwhelming the log.
 
 *Example DSCC-1: Handling a money transfer*
 
-```mermaid
+<div class="mermaid" markdown="0">
 sequenceDiagram
     participant Client
     participant RequestLog as Request Log (partition)
@@ -153,10 +153,9 @@ sequenceDiagram
     Note over RequestLog: Aggregate results, update request status
     RequestLog-->>Client: Final request status (success/failure/partial)
 
-```
+</div>
 
-- *Multi-partition requests*: Apply every request exactly once to both the payer and payee accounts.
-- We can consider more complex invariants, such as **foreign key** constraints. Insertions are $\mathcal I$-confluent, while deletions are more challenging[^dscc11].
+Apply every request exactly once to both the payer and payee accounts. We can consider more complex invariants, such as **foreign key** constraints. Insertions are $\mathcal I$-confluent, while deletions are more challenging[^dscc11].
 
 [^dscc01]: like rows in a table
 [^dscc02]: reads and writes
@@ -203,10 +202,10 @@ Essential state is the foundation. Changes to the essential state may require ch
 A sharp focus on true essentials and avoiding useless complexity leads to less code. Good abstractions hide complexity. However, unneeded data abstraction can increase complexity due to subjectivity in grouping data. The relational model involves minimal commitment to subjective groupings, and this commitment has only minimal impact on the rest of the system.
 Abstraction is a good tool for removing complexity. Good abstractions hide implementation details and behind a simple interface. For example, high-level programming languages hide machine code, and SQL hides data structures and concurrency.
 
-- *What?* Define abstractions[simplicity05] as sets of functions. Make them small. Use polymorphism.
+- *What?* Define abstractions[^simplicity05] as sets of functions. Make them small. Use polymorphism.
 - *Who?* Define the data/entities your abstractions will use. Pass subcomponents as arguments. - Don't hardwire.
 - *How?* Implement the details, using polymorphism and isolating implementations.
-- *When?* Where? Avoid connecting objects directly; use queues to decouple them.
+- *When? Where?* Avoid connecting objects directly; use queues to decouple them.
 - *Why?* Use declarative systems to implement policies and rules. Rules tend to increase complex control flow.
 
 Keep information simple. Don't use objects to handle information. Use generic constructs[^simplicity06] to manipulate information. Don't tie data logic to its representation. Avoid ORM where possible.
@@ -249,7 +248,7 @@ It's **important to monitor** whether your databases are returning up-to-date re
 
 *Figure L-1*
 
-```mermaid
+<div class="mermaid" markdown="0">
 graph LR
     subgraph Replicas
         R1(Replica 1)
@@ -276,9 +275,9 @@ graph LR
     W -.-> Replicas
     R -.-> Replicas
 
-```
+</div>
 
-Dynamo-style databases are optimized for eventual consistency. The parameters `w` and `r` allow you to adjust the probability of stale values being read, but it's wise to not take them as absolute guarantees. Stronger guarantees^[limitations2] generally require transactions or consensus.The set of nodes to which you've written and the set of nodes from which you've read must overlap. It's not clear which write happened "before" another without a mechanism to determine the order of **concurrent writes**[^limitations3]. If the "last write wins," writes can be lost due to clock skew. In this case, it's undetermined whether the read returns the old or the new value. It could break the quorum condition. Even if everything is working correctly, there are edge cases in which you can get unlucky with the timing.
+Dynamo-style databases are optimized for eventual consistency. The parameters `w` and `r` allow you to adjust the probability of stale values being read, but it's wise to not take them as absolute guarantees. Stronger guarantees[^limitations2] generally require transactions or consensus.The set of nodes to which you've written and the set of nodes from which you've read must overlap. It's not clear which write happened "before" another without a mechanism to determine the order of **concurrent writes**[^limitations3]. If the "last write wins," writes can be lost due to clock skew. In this case, it's undetermined whether the read returns the old or the new value. It could break the quorum condition. Even if everything is working correctly, there are edge cases in which you can get unlucky with the timing.
 
 Riak is based on Dynamo. Riak intends to add support for **strict quorums** with PW/PR turns out to have a corner case where the guarantees aren't enforced. Riak optimizes for **"always writable" over "read-your-own-writes"** consistency. A **write failure** in Riak doesn't mean the value won't later show-up in a read. You may eventually read it through read repair.
 WARS models only a **single write and read**. It's a conservative estimate for multi-write scenarios.
@@ -354,7 +353,7 @@ CREATE INDEX edges_heads ON edges (head_vertex);
 
 For any vertex, you can retrieve both incoming and outgoing edges, thus traversing the graph forward and backward. That's why Example TG-1 has indexes on `tail_vertex` and `head_vertex`.
 
-The directions of 'in' and 'out' were reversed. Where the input notion of the sequential file world meant 'into the computer from tape,' the new input notion became 'into the database.' This revolution in thinking changes the programmer from a stationary observer to a navigator traversing the database. Processing a single transaction involves a path through the database. A record would be used to gain access to other records. Each of these records is used in turn as a point for examining other sets. The [Neo4j Traversal API](https://neo4j.com/docs/) is a callback-based, lazily executed way for specifying these movements in Java. [Some traversal examples are collected.](https://neo4j.com/docs/2.0.0/tutorials-java-embedded-traversal.html) We want to train programmers to navigate in an *n*-dimensional data space. Neo4j's graph algorithms component contains implementations of common graph algorithms like:
+The directions of "in" and "out" were reversed. Where the input notion of the sequential file world meant "into the computer from tape," the new input notion became "into the database." This revolution in thinking changes the programmer from a stationary observer to a navigator traversing the database. Processing a single transaction involves a path through the database. A record would be used to gain access to other records. Each of these records is used in turn as a point for examining other sets. The [Neo4j Traversal API](https://neo4j.com/docs/) is a callback-based, lazily executed way for specifying these movements in Java. [Some traversal examples are collected.](https://neo4j.com/docs/2.0.0/tutorials-java-embedded-traversal.html) We want to train programmers to navigate in an *n*-dimensional data space. Neo4j's graph algorithms component contains implementations of common graph algorithms like:
 
 - shortest paths
 - all paths
