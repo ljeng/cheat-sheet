@@ -361,7 +361,7 @@ The directions of "in" and "out" were reversed. Where the input notion of the se
 - Dijkstra's
 - A*
 
-This 'traverser' concept is new in TinkerPop3, providing the means by which steps remain stateless. A traverser maintains all the metadata about the traversal – how many times the traverser has gone through a loop, path history, the current object, etc. Path calculation is costly in terms of space. The traverser stores an array of previously visited objects. Thus, a traversal strategy analyzes whether path metadata is required. If not, path calculations are turned off. Never rely on the iteration order in TinkerPop3 traversals. Even within a release, traversal optimizations may alter the flow.
+This "traverser" concept is new in TinkerPop3, providing the means by which steps remain stateless. A traverser maintains all the metadata about the traversal – how many times the traverser has gone through a loop, path history, the current object, etc. Path calculation is costly in terms of space. The traverser stores an array of previously visited objects. Thus, a traversal strategy analyzes whether path metadata is required. If not, path calculations are turned off. Never rely on the iteration order in TinkerPop3 traversals. Even within a release, traversal optimizations may alter the flow.
 
 [Cypher](https://neo4j.com/docs/2.0.0/cypher-query-lang.html), a powerful declarative query language, queries the graph. [TinkerPop3's `GraphTraversal` JavaDoc](https://tinkerpop.apache.org/javadocs/3.4.6/core/org/apache/tinkerpop/gremlin/process/traversal/dsl/graph/GraphTraversal.html) lists all steps and their descriptions. The [Gremlin Console](https://tinkerpop.apache.org/docs/3.2.3/reference/#gremlin-console) can be used for these steps.
 
@@ -478,10 +478,10 @@ graph TD
     BST --> M1[Recursively halves the search space]
     BST --> P1{Performance degradation}
     style P1 fill:#ffdddd,stroke:#b30000
-    P1 --> C1["Worst-case O(n) performance"]
+    P1 --> C1["Worst-case *O*(*n*) performance"]
     P1 --> S1["Self-balancing variant (AVL, red-black tree)"]
     style S1 fill:#ddffdd,stroke:#006400
-    S1 --> R1["O (log n) performance contract"]
+    S1 --> R1["*O*(log *n*) performance contract"]
     BST --> P2{Data size > RAM}
     style P2 fill:#ffdddd,stroke:#b30000
     P2 --> C2[Traversing deep tree on disk is slow]
@@ -523,7 +523,7 @@ graph TD
 
 The **decision tree** (Example BT-3) uses a binary tree to encode a sequence of decisions. Implement machine learning classifiers. It is constructed. Each internal node constitutes a conditional test[^bt11], and its two children select the subsequent action or determine the next test for the true-and-false outcomes. The leaves constitute the final classification. Decision trees are highly transparent[^bt12], which is a major advantage for debugging business logic or complying with regulations. Complex decision trees prove brittle and difficult to update. A small change in an early rule can have cascading, unintended consequences. Traversal is very fast[^bt13], making it suitable for real-time decision-making applications like telephony and packet filtering.
 
-Example BT-4*
+*Example BT-4*
 
 ```mermaid
 graph TD
@@ -547,9 +547,9 @@ graph TD
 
 Naive **recursive** implementations are elegant but risk **stack overflow** if the tree becomes unexpectedly **deep**. Production systems should favor iterative solutions over recursive ones when tail-call optimization is unavailable. A shared tree structure is a bottleneck. The design must specify a **concurrency** control model:
 
-- *Coarse-grained Locking*: Simple but kills performance.
-- *Fine-grained Locking*: High performance but notoriously difficult to implement correctly[^bt16].
-- *Lock-free Algorithms*: The best performance, but requires expert-level knowledge.
+- *Coarse-grained locking*: Simple but kills performance.
+- *Fine-grained locking*: High performance but notoriously difficult to implement correctly[^bt16].
+- *Lock-free algorithms*: The best performance, but requires expert-level knowledge.
 
 It's better to use a pre-existing concurrent library implementation than to build one for most systems. A **serialization** format is needed to save a tree's state. A **preorder traversal** is used because it perfectly reconstructs the original tree's structure, which is critical for specific layouts.
 
@@ -602,7 +602,7 @@ Programs written in this functional style are automatically parallelized and are
 
 ### Example: Word Count
 
-```c++
+```cpp
 map(String docName, String docContent):
   for each word w in docContent:
     EmitIntermediate(w, "1");
@@ -628,12 +628,14 @@ That is, the input keys and values `(k1, v1)` are drawn from a different domain 
 
 ### More Examples
 
-* *Distributed Grep:* `map` emits a line if it matches a pattern; `reduce` is the identity function[^mr01].
-* *Count of URL Access Frequency:* `map` outputs `<URL, 1>`; `reduce` adds the values for the same URL.
-* *Reverse Web-Link Graph:* `map` outputs `<target, source>` for each link; `reduce` concatenates the list of source URLs associated with a target.
-* *Term-Vector per Host:* `map` emits `<hostname, term_vector>`; `reduce` adds the term vectors together for a given host.
-* *Inverted Index:* map emits `<word, documentID>`; `reduce` sorts corresponding document IDs and emits `<word, list(documentID)>`.
-* *Distributed Sort:* `map` emits `<key, record>`; `reduce` emits all pairs unchanged[^mr02].
+| Example | `map` emits | `reduce` |
+| --- | --- | --- |
+| distributed grep | a line if it matches a pattern | is the identity function[^mr01] |
+| count of URL access frequency | `<URL, 1>` | adds the values for the same URL |
+| reverse web-link graph | `<target, source>` for each link | concatenates the list of source URLs associated with a target |
+| term-vector per host | `<hostname, term_vector>` | adds the term vectors together for a given host |
+| inverted index | `<word, documentID>` | `reduce` sorts corresponding document IDs and emits `<word, list(documentID)>` |
+| distributed sort | `<key, record>` | emits all pairs unchanged[^mr02] |
 
 ### Implementation and Execution
 
@@ -721,26 +723,26 @@ The master keeps data structures to store the state[^mr09] and worker identity f
 
 MapReduce is designed to tolerate machine failures gracefully.
 
-* The master pings workers periodically. If *a worker fails*, any completed `map` tasks are reset to idle and rescheduled. In-progress `map` and `reduce` tasks on the failed worker are also reset. Completed `map` tasks are re-executed because their output is on the failed machine's local disk. Completed `reduce` tasks don't need re-execution since their output is in the global file system.
-* The master writes periodic checkpoints. *Master failure* is unlikely[^mr10]; therefore an implementation would abort the computation. Clients can retry the operation.
-* *Semantics in the Presence of Failures:* When `map` and `reduce` operators are deterministic, the output is the same as a non-faulting sequential execution. This is achieved by relying on atomic commits of task outputs. Each task writes to private temporary files. When a task completes, the worker sends a message to the master. When a `reduce` task completes, the worker atomically renames its temporary file. When operators are non-deterministic, weaker but reasonable semantics are provided.
-* Network bandwidth is a scarce resource. MapReduce conserves bandwidth by taking advantage of the fact that input data is stored on the *local* disks of the machines. The master attempts to schedule `map` tasks on machines containing a replica of the input data, or failing that, near a replica.
-* *Task Granularity:* The `map` phase is divided into *M* pieces, and the `reduce` phase into *R* pieces. Ideally, *M* and *R* should be much larger than the number of worker machines to improve load balancing and speed up recovery. There are practical bounds on *M* and *R* since the master must make $O(M + R)$ decisions and keeps $O(MR)$ state in memory.
-* *Backup Tasks:* To alleviate the problem of "stragglers"[^mr11], the master schedules backup executions of remaining in-progress tasks close to completion. The task is marked as completed when either the primary or backup execution completes.
+* The master pings workers periodically. If **a worker fails**, any completed `map` tasks are reset to idle and rescheduled. In-progress `map` and `reduce` tasks on the failed worker are also reset. Completed `map` tasks are re-executed because their output is on the failed machine's local disk. Completed `reduce` tasks don't need re-execution since their output is in the global file system.
+* The master writes periodic checkpoints. **Master failure** is unlikely[^mr10]; therefore an implementation would abort the computation. Clients can retry the operation.
+* *Semantics in the presence of failures:* When `map` and `reduce` operators are deterministic, the output is the same as a non-faulting sequential execution. This is achieved by relying on atomic commits of task outputs. Each task writes to private temporary files. When a task completes, the worker sends a message to the master. When a `reduce` task completes, the worker atomically renames its temporary file. When operators are non-deterministic, weaker but reasonable semantics are provided.
+* Network bandwidth is a scarce resource. MapReduce conserves bandwidth by taking advantage of the fact that input data is stored on the **local** disks of the machines. The master attempts to schedule `map` tasks on machines containing a replica of the input data, or failing that, near a replica.
+* *Task granularity:* The `map` phase is divided into *M* pieces, and the `reduce` phase into *R* pieces. Ideally, *M* and *R* should be much larger than the number of worker machines to improve load balancing and speed up recovery. There are practical bounds on *M* and *R* since the master must make $O(M + R)$ decisions and keeps $O(MR)$ state in memory.
+* *Backup tasks:* To alleviate the problem of "stragglers"[^mr11], the master schedules backup executions of remaining in-progress tasks close to completion. The task is marked as completed when either the primary or backup execution completes.
 
 ### Refinements and Extensions
 
 Although the basic MapReduce functionality is powerful, a few extensions are useful.
 
 * Users specify the number of `reduce` tasks (*R*) and, optionally, a special *partitioning function.* The default is `hash(key) mod R`, but custom functions are useful in some cases[^mr12].
-* *Ordering Guarantees:* Within a partition, intermediate key-value pairs are processed in increasing key order. This makes it easy to generate sorted output and supports efficient lookups.
-* For cases with significant repetition in intermediate keys and a commutative and associative `reduce` function[^mr13], a *combiner function* can do partial merging before data is sent over the network. This significantly reduces network traffic. The combiner function is typically the same code as the `reduce` function, but its output is written to an intermediate file.
-* Users can add support for a new *input type* by providing an implementation of a simple reader interface.
-* Users of MapReduce have found it convenient to produce auxiliary files as additional outputs. The application writer to make such *side-effects* atomic and idempotent.
-* *Skipping Bad Records:* In an optional mode, the MapReduce library detects and skips records that cause deterministic crashes. This deals with bugs. Also, sometimes it's acceptable to ignore a few records.
-* *Local Execution:* To help facilitate debugging and testing, an alternative implementation sequentially executes a MapReduce operation on a local machine.
-* *Status Information:* The master runs an internal HTTP server and exports status pages showing bytes of output, processing rates, etc. They also link to standard error/output files.
-* A *counter* facility counts occurrences of events[^mr14]. Counter values are propagated to the master and displayed on the status page. The master eliminates the effects of duplicate executions to avoid double-counting.
+* *Ordering guarantees:* Within a partition, intermediate key-value pairs are processed in increasing key order. This makes it easy to generate sorted output and supports efficient lookups.
+* For cases with significant repetition in intermediate keys and a commutative and associative `reduce` function[^mr13], a **combiner function** can do partial merging before data is sent over the network. This significantly reduces network traffic. The combiner function is typically the same code as the `reduce` function, but its output is written to an intermediate file.
+* Users can add support for a new **input type** by providing an implementation of a simple reader interface.
+* Users of MapReduce have found it convenient to produce auxiliary files as additional outputs. The application writer to make such **side-effects** atomic and idempotent.
+* *Skipping bad records:* In an optional mode, the MapReduce library detects and skips records that cause deterministic crashes. This deals with bugs. Also, sometimes it's acceptable to ignore a few records.
+* *Local execution:* To help facilitate debugging and testing, an alternative implementation sequentially executes a MapReduce operation on a local machine.
+* *Status information:* The master runs an internal HTTP server and exports status pages showing bytes of output, processing rates, etc. They also link to standard error/output files.
+* A **counter** facility counts occurrences of events[^mr14]. Counter values are propagated to the master and displayed on the status page. The master eliminates the effects of duplicate executions to avoid double-counting.
 
 ###  Usage and Lessons Learned
 
@@ -872,7 +874,7 @@ Managing indexes is a critical operational task that requires careful planning a
 
 To optimize queries that frequently join tables[^index13], a **merged index** physically co-locates related records from both tables within a single B-tree structure. All details for a given order are stored next to the order record itself by sorting records by a common key[^index14]. This dramatically reduces the I/O required for joins while providing a viable solution that captures denormalization's performance benefits without altering the logical database schema.
 
-A B-tree's flexibility inspires creativity. For example, one can create a B-tree on the keys' *hash values*. This concatenates a B-tree's ordered traversal and range-scan benefits with the uniform key distribution that a hash function implies, creating a powerful hybrid architecture that serves as a fulcrum for balanced query performance while avoiding the superfluous overhead of redundant data structures.
+A B-tree's flexibility inspires creativity. For example, one can create a B-tree on the keys' *hash values*. This concatenates a B-tree's ordered traversal and range-scan benefits with the uniform key distribution that a hash function implies, creating a powerful hybrid architecture that serves as a fulcrum for balanced query performance while avoiding the overhead of redundant data structures.
 
 [^index01]: also called a *clustered index* or *index-organized table*
 [^index02]: or *non-clustered index*
@@ -894,9 +896,9 @@ A B-tree's flexibility inspires creativity. For example, one can create a B-tree
 
 ## Memory Cache
 
-30 years of Moore's Law has antiquated the traditional disk-oriented DBMS buffer pool architecture. It's now feasible to store entire OLTP databases directly in RAM with main memory capacity growing from megabytes to hundreds of gigabytes - and soon terabytes - on commodity servers. The overwhelming majority of OLTP databases are less than 1 Tb in size and growing in size quite slowly. As such, I believe that OLTP should be considered a main-memory market. A new engine such as H-Store can achieve dramatically better performance. I'll broach two influential systems, H-Store and RAMCloud, examining their deft approaches to durability.
+30 years of Moore's Law have antiquated the traditional disk-oriented DBMS buffer pool architecture. It's now feasible to store entire OLTP databases directly in RAM with main memory capacity growing from megabytes to hundreds of gigabytes - and soon terabytes - on commodity servers. The overwhelming majority of OLTP databases are less than 1 Tb in size and growing in size quite slowly. As such, I believe that OLTP should be considered a main-memory market. A new engine such as H-Store can achieve dramatically better performance. I'll broach two influential systems, H-Store and RAMCloud, examining their deft approaches to durability.
 
-### In-Memory Databases
+### In-memory Databases
 
 An in-memory database stores its primary data entirely in main memory, using non-volatile storage for recovery rather than for runtime data access, achieving consummate performance gains by eliminating disk I/O latency from the query path.
 
