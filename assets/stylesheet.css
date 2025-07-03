@@ -1,0 +1,37 @@
+body {
+  font-size: 1.25em;
+  width: calc((80ch + 100%) / 2);
+  margin: 0 auto;
+}
+
+table, th, td {
+  border: 1px solid;
+}
+
+blockquote {
+  display: inline-block;
+  margin: 2em;
+  padding: 2em;
+  font-style: italic;
+  position: relative;
+}
+
+blockquote::before {
+  content: "“";
+  font-size: 3em;
+  position: absolute;
+  left: 12px;
+  top: -12px;
+}
+
+blockquote::after {
+  content: "”";
+  font-size: 3em;
+  position: absolute;
+  right: -12px;
+  bottom: 0;
+}
+
+blockquote p {
+  margin: 0;
+}
