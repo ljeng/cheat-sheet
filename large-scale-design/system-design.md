@@ -63,7 +63,6 @@ We're trying to build a system where data is replicated across many servers, tra
 
 Our **database** as a collection of data items[^dscc01]. Each has multiple versions. Application clients submit requests to the database in the form of transactions, or groups of operations[^dscc02] that should be executed together. Each transaction operates on a logical **replica**, or set of versions of the items mentioned in the transaction. Transactions operate over "snapshots” of database state. Upon commit[^dscc03], the replica state is **merged** into the set of versions on at least one server. We assume this merge operator is commutative, associative, and idempotent. For example, if server
 
-{% raw %}
 $R_x = \\{v\\}$
 
 and
@@ -73,7 +72,6 @@ $R_y = \\{w\\}$
 then
 
 $R_x \sqcup R_y = \\{v, w\\}$
-{% endraw %}
 
 To determine whether a database state is valid according to application correctness criteria, we use **invariants**. You need usernames to be unique. Other kinds of constraints are very similar: An account balance never goes negative, a meeting room doesn't have overlapping bookings. A transaction can commit, or abort[^dscc04] if committing the transaction would violate a declared invariant over the replica state of its set of transactions $T$. A transaction can only abort if it explicitly chooses to abort itself or if committing would violate invariants over the transaction's replica state. A system is convergent iff, in the absence of new writes, the servers eventually contain the same version for any item they both store. We apply the merge operator to produce a convergent state. A system provides coordination-free execution for $T$ iff the progress of executing each $t \in T$ is only dependent on the versions of the items $t$ reads[^dscc05]. That is, in a coordination-free execution, each transaction's progress towards commit/abort is independent of other operations[^dscc06] being performed on behalf of other transactions.
 
@@ -81,12 +79,11 @@ If $\mathcal I$-confluence holds, there exists a correct, coordination-free exec
 
 *Figure DSCC-1*
 
-<div class="mermaid" markdown="0">
-%%{init: {'flowchart': {'nodeSpacing': 200, 'rankSpacing': 200},
-    'themeVariables': { 'primaryColor': '#fff', 'edgeLabelBackground':'#fff' }}}%%
+```mermaid
+
 graph TD
     subgraph PRECONDITION
-        Ds("Ds<br><font color='blue'>Initial state:<br>empty meeting<br>room schedule</font>") --> Di1("Di1")
+        Ds("Ds<br><font color='blue'>Initial state: empty meeting room schedule</font>") --> Di1("Di1")
         Ds --> Dj1("Dj1")
         Di1 --> Din("Din")
         Dj1 --> Djm("Djm")
@@ -101,27 +98,27 @@ graph TD
         Ds --> |"I(Ds) = True"| Dj1
         Di1 --> |"I(Di1) = True"| Din
         Dj1 --> |"I(Dj1) = True"| Djm
-        Di1 -.-> |"-ti2<br><font color='blue'>T1: Alice books<br>Room A, 10:00-11:00</font>"| Din
-        Dj1 -.-> |"-tj2<br><font color='blue'>T2: Bob books<br>Room A, 11:00-12:00</font>"| Djm
+        Di1 -.-> |"-ti2<br><font color='blue'>T1: Alice books Room A, 10:00-11:00</font>"| Din
+        Dj1 -.-> |"-tj2<br><font color='blue'>T2: Bob books Room A, 11:00-12:00</font>"| Djm
         Din -.-> |"-tin"| Di1
         Djm -.-> |"-tjm"| Dj1
         Ds -.-> |"-ti1"| Di1
         Ds -.-> |"-tj1"| Dj1
-        note_local[/"<font color='green'>Transactions<br>complete locally</font>"/]
+        note_local[/"<font color='green'>Transactions complete locally</font>"/]
         Di1 & Dj1 --> note_local
     end
     subgraph IMPLICATION
-        Din_Djm("Din ⊔ Djm<br><font color='green'>Merged state:<br>both bookings are<br>present, no conflict</font>")
+        Din_Djm("Din ⊔ Djm<br><font color='green'>Merged state: both bookings are present, no conflict</font>")
         Din_Djm --> |"I(Din ⊔ Djm) = True"| Din
         Din_Djm --> |"I(Din ⊔ Djm) = True"| Djm
         style Din_Djm fill:#ccf,stroke:#333,stroke-width:2px
         Din -.-> Din_Djm
         Djm -.-> Din_Djm
     end
-    PRECONDITION -.-> |"valid divergence<br>from initial state"| IMPLICATION
+    PRECONDITION -.-> |"valid divergence from initial state"| IMPLICATION
     IMPLICATION -.-> |"merge must be valid"| PRECONDITION
 
-</div>
+```
 
 *Theorem 1*: A globally $\mathcal I$-valid system can execute a set of transactions $T$ with coordination-freedom, transactional availability, convergence if and only if $T$ is $\mathcal I$-confluent with respect to $\mathcal I$.
 
@@ -135,7 +132,7 @@ Writes are performed in the same, well-defined order[^dscc09]. The merge procedu
 
 *Example DSCC-1: Handling a money transfer*
 
-<div class="mermaid" markdown="0">
+```mermaid
 sequenceDiagram
     participant Client
     participant RequestLog as Request Log (partition)
@@ -153,7 +150,7 @@ sequenceDiagram
     Note over RequestLog: Aggregate results, update request status
     RequestLog-->>Client: Final request status (success/failure/partial)
 
-</div>
+```
 
 Apply every request exactly once to both the payer and payee accounts. We can consider more complex invariants, such as **foreign key** constraints. Insertions are $\mathcal I$-confluent, while deletions are more challenging[^dscc11].
 
@@ -210,16 +207,18 @@ Abstraction is a good tool for removing complexity. Good abstractions hide imple
 
 Keep information simple. Don't use objects to handle information. Use generic constructs[^simplicity06] to manipulate information. Don't tie data logic to its representation. Avoid ORM where possible.
 
-- *Values* - Use final, persistent collections.
-- *Functions* - Use stateless methods.
-- *Namespaces* - Use languages with good namespace support.
-- *Data* - Use maps, arrays, sets, XML, JSON, etc.
-- *Polymorphism* -  Use protocols, type classes.
-- *Managed references* - Use Clojure, Haskell.
-- *Set functions* - Use libraries.
-- *Queues* - Use libraries.
-- *Declarative data manipulation* - Use SQL, LINQ, Datalog.
-- *Rules* - Use libraries or Prolog.
+| Construct           | Use                  |
+| ---------------- | --------------------- |
+| values            | final, persistent collections      |
+| functions           | stateless methods           |
+| namespaces          | languages with good namespace support |
+| data             | maps, arrays, sets, XML, JSON, etc.   |
+| polymorphism         | protocols, type classes       |
+| managed references      | Clojure, Haskell         |
+| set functions         | libraries              |
+| queues            | libraries                |
+| declarative data manipulation | SQL, LINQ, Datalog     |
+| rules             | libraries or Prolog           |
 
 Choose simple tools. Write simple code. Simplify existing code by disentangling it.
 
@@ -248,7 +247,7 @@ It's **important to monitor** whether your databases are returning up-to-date re
 
 *Figure L-1*
 
-<div class="mermaid" markdown="0">
+```mermaid
 graph LR
     subgraph Replicas
         R1(Replica 1)
@@ -275,7 +274,7 @@ graph LR
     W -.-> Replicas
     R -.-> Replicas
 
-</div>
+```
 
 Dynamo-style databases are optimized for eventual consistency. The parameters `w` and `r` allow you to adjust the probability of stale values being read, but it's wise to not take them as absolute guarantees. Stronger guarantees[^limitations2] generally require transactions or consensus.The set of nodes to which you've written and the set of nodes from which you've read must overlap. It's not clear which write happened "before" another without a mechanism to determine the order of **concurrent writes**[^limitations3]. If the "last write wins," writes can be lost due to clock skew. In this case, it's undetermined whether the read returns the old or the new value. It could break the quorum condition. Even if everything is working correctly, there are edge cases in which you can get unlucky with the timing.
 
@@ -509,7 +508,6 @@ graph TD
     B -- False --> E[Decline];
     D -- True --> F[Approve];
     D -- False --> G[Review manually];
-
     classDef decision fill:#87CEEB,stroke:#333,stroke-width:2px;
     classDef classification_approve fill:#90EE90,stroke:#333,stroke-width:2px;
     classDef classification_decline fill:#F08080,stroke:#333,stroke-width:2px;
@@ -628,14 +626,14 @@ That is, the input keys and values `(k1, v1)` are drawn from a different domain 
 
 ### More Examples
 
-| Example | `map` emits | `reduce` |
-| --- | --- | --- |
-| distributed grep | a line if it matches a pattern | is the identity function[^mr01] |
-| count of URL access frequency | `<URL, 1>` | adds the values for the same URL |
-| reverse web-link graph | `<target, source>` for each link | concatenates the list of source URLs associated with a target |
-| term-vector per host | `<hostname, term_vector>` | adds the term vectors together for a given host |
-| inverted index | `<word, documentID>` | `reduce` sorts corresponding document IDs and emits `<word, list(documentID)>` |
-| distributed sort | `<key, record>` | emits all pairs unchanged[^mr02] |
+| Example | `map` emits                     | `reduce`                                         |
+| ---------------- | ---------------------- | ---------------------------------------------- |
+| distributed grep       | a line if it matches a pattern    | is the identity function[^mr01]                     |
+| count of URL access frequency | `<URL, 1>`          | adds the values for the same URL |
+| reverse web-link graph     | `<target, source>` for each link | concatenates the list of source URLs associated with a target     |
+| term-vector per host     | `<hostname, term_vector>`     | adds the term vectors together for a given host              |
+| inverted index        | `<word, documentID>`         | `reduce` sorts corresponding document IDs and emits `<word, list(documentID)>` |
+| distributed sort       | `<key, record>`           | emits all pairs unchanged[^mr02]                         |
 
 ### Implementation and Execution
 
@@ -723,26 +721,26 @@ The master keeps data structures to store the state[^mr09] and worker identity f
 
 MapReduce is designed to tolerate machine failures gracefully.
 
-* The master pings workers periodically. If **a worker fails**, any completed `map` tasks are reset to idle and rescheduled. In-progress `map` and `reduce` tasks on the failed worker are also reset. Completed `map` tasks are re-executed because their output is on the failed machine's local disk. Completed `reduce` tasks don't need re-execution since their output is in the global file system.
-* The master writes periodic checkpoints. **Master failure** is unlikely[^mr10]; therefore an implementation would abort the computation. Clients can retry the operation.
-* *Semantics in the presence of failures:* When `map` and `reduce` operators are deterministic, the output is the same as a non-faulting sequential execution. This is achieved by relying on atomic commits of task outputs. Each task writes to private temporary files. When a task completes, the worker sends a message to the master. When a `reduce` task completes, the worker atomically renames its temporary file. When operators are non-deterministic, weaker but reasonable semantics are provided.
-* Network bandwidth is a scarce resource. MapReduce conserves bandwidth by taking advantage of the fact that input data is stored on the **local** disks of the machines. The master attempts to schedule `map` tasks on machines containing a replica of the input data, or failing that, near a replica.
-* *Task granularity:* The `map` phase is divided into *M* pieces, and the `reduce` phase into *R* pieces. Ideally, *M* and *R* should be much larger than the number of worker machines to improve load balancing and speed up recovery. There are practical bounds on *M* and *R* since the master must make $O(M + R)$ decisions and keeps $O(MR)$ state in memory.
-* *Backup tasks:* To alleviate the problem of "stragglers"[^mr11], the master schedules backup executions of remaining in-progress tasks close to completion. The task is marked as completed when either the primary or backup execution completes.
+- The master pings workers periodically. If **a worker fails**, any completed `map` tasks are reset to idle and rescheduled. In-progress `map` and `reduce` tasks on the failed worker are also reset. Completed `map` tasks are re-executed because their output is on the failed machine's local disk. Completed `reduce` tasks don't need re-execution since their output is in the global file system.
+- The master writes periodic checkpoints. **Master failure** is unlikely[^mr10]; therefore an implementation would abort the computation. Clients can retry the operation.
+- *Semantics in the presence of failures:* When `map` and `reduce` operators are deterministic, the output is the same as a non-faulting sequential execution. This is achieved by relying on atomic commits of task outputs. Each task writes to private temporary files. When a task completes, the worker sends a message to the master. When a `reduce` task completes, the worker atomically renames its temporary file. When operators are non-deterministic, weaker but reasonable semantics are provided.
+- Network bandwidth is a scarce resource. MapReduce conserves bandwidth by taking advantage of the fact that input data is stored on the **local** disks of the machines. The master attempts to schedule `map` tasks on machines containing a replica of the input data, or failing that, near a replica.
+- *Task granularity:* The `map` phase is divided into *M* pieces, and the `reduce` phase into *R* pieces. Ideally, *M* and *R* should be much larger than the number of worker machines to improve load balancing and speed up recovery. There are practical bounds on *M* and *R* since the master must make $O(M + R)$ decisions and keeps $O(MR)$ state in memory.
+- *Backup tasks:* To alleviate the problem of "stragglers"[^mr11], the master schedules backup executions of remaining in-progress tasks close to completion. The task is marked as completed when either the primary or backup execution completes.
 
 ### Refinements and Extensions
 
 Although the basic MapReduce functionality is powerful, a few extensions are useful.
 
-* Users specify the number of `reduce` tasks (*R*) and, optionally, a special *partitioning function.* The default is `hash(key) mod R`, but custom functions are useful in some cases[^mr12].
-* *Ordering guarantees:* Within a partition, intermediate key-value pairs are processed in increasing key order. This makes it easy to generate sorted output and supports efficient lookups.
-* For cases with significant repetition in intermediate keys and a commutative and associative `reduce` function[^mr13], a **combiner function** can do partial merging before data is sent over the network. This significantly reduces network traffic. The combiner function is typically the same code as the `reduce` function, but its output is written to an intermediate file.
-* Users can add support for a new **input type** by providing an implementation of a simple reader interface.
-* Users of MapReduce have found it convenient to produce auxiliary files as additional outputs. The application writer to make such **side-effects** atomic and idempotent.
-* *Skipping bad records:* In an optional mode, the MapReduce library detects and skips records that cause deterministic crashes. This deals with bugs. Also, sometimes it's acceptable to ignore a few records.
-* *Local execution:* To help facilitate debugging and testing, an alternative implementation sequentially executes a MapReduce operation on a local machine.
-* *Status information:* The master runs an internal HTTP server and exports status pages showing bytes of output, processing rates, etc. They also link to standard error/output files.
-* A **counter** facility counts occurrences of events[^mr14]. Counter values are propagated to the master and displayed on the status page. The master eliminates the effects of duplicate executions to avoid double-counting.
+- Users specify the number of `reduce` tasks (*R*) and, optionally, a special *partitioning function.* The default is `hash(key) mod R`, but custom functions are useful in some cases[^mr12].
+- *Ordering guarantees:* Within a partition, intermediate key-value pairs are processed in increasing key order. This makes it easy to generate sorted output and supports efficient lookups.
+- For cases with significant repetition in intermediate keys and a commutative and associative `reduce` function[^mr13], a **combiner function** can do partial merging before data is sent over the network. This significantly reduces network traffic. The combiner function is typically the same code as the `reduce` function, but its output is written to an intermediate file.
+- Users can add support for a new **input type** by providing an implementation of a simple reader interface.
+- Users of MapReduce have found it convenient to produce auxiliary files as additional outputs. The application writer to make such **side-effects** atomic and idempotent.
+- *Skipping bad records:* In an optional mode, the MapReduce library detects and skips records that cause deterministic crashes. This deals with bugs. Also, sometimes it's acceptable to ignore a few records.
+- *Local execution:* To help facilitate debugging and testing, an alternative implementation sequentially executes a MapReduce operation on a local machine.
+- *Status information:* The master runs an internal HTTP server and exports status pages showing bytes of output, processing rates, etc. They also link to standard error/output files.
+- A **counter** facility counts occurrences of events[^mr14]. Counter values are propagated to the master and displayed on the status page. The master eliminates the effects of duplicate executions to avoid double-counting.
 
 ###  Usage and Lessons Learned
 
