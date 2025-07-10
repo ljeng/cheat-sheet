@@ -1,0 +1,98 @@
+body {
+}
+
+.container {
+}
+
+h1 {
+}
+
+.scenario {
+}
+
+.scenario::before {
+}
+
+.scenario-title {
+}
+
+.system-diagram {
+}
+
+.node {
+}
+
+.node.healthy {
+}
+
+.node.failed {
+}
+
+.node.promoting {
+}
+
+.load-balancer {
+}
+
+.arrow {
+}
+
+.arrow.blocked {
+}
+
+.status-indicator {
+}
+
+.status-indicator.online {
+}
+
+.status-indicator.offline {
+}
+
+.timeline {
+}
+
+.timeline-step {
+}
+
+.heartbeat {
+}
+
+@keyframes pulse {
+}
+
+@keyframes shake {
+}
+
+@keyframes glow {
+}
+
+@keyframes float {
+}
+
+@keyframes heartbeat {
+}
+
+.explanation {
+}
+
+.control-panel {
+}
+
+.btn {
+}
+
+.btn:hover {
+}
+
+.metrics {
+}
+
+.metric-card {
+}
+
+.metric-value {
+}
+
+.metric-label {
+}
