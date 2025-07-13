@@ -1,0 +1,86 @@
+body {
+}
+
+.container {
+}
+
+h1 {
+}
+
+.comparison {
+}
+
+.scenario {
+}
+
+.scenario:hover {
+}
+
+.scenario h2 {
+}
+
+.road-network {
+}
+
+.road {
+}
+
+.road-horizontal {
+}
+
+.road-vertical {
+}
+
+.road-vertical2 {
+}
+
+.road-diagonal {
+}
+
+.car {
+}
+
+@keyframes moveCar {
+}
+
+.network {
+}
+
+.node {
+}
+
+.switch {
+}
+
+.destination {
+}
+
+.connection {
+}
+
+.packet {
+}
+
+@keyframes movePacket {
+}
+
+.queue-display {
+}
+
+.legend {
+}
+
+.legend-item {
+}
+
+.legend-color {
+}
+
+.explanation {
+}
+
+@media (max-width: 768px) {
+}
+
+h1 {
+}
