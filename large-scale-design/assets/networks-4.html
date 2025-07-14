@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+      QJUMP Network Epoch Illustration
+    </title>
+    <link rel="stylesheet" href="network-4.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        QJUMP Network Epoch Control
+      </h1>
+      <p class="subtitle">
+        Eliminating Network Interference Through Bounded Queueing
+      </p>
+      <div class="comparison">
+        <div class="scenario traditional">
+            <div class="scenario-title">❌ Traditional Network</div>
+            <div class="network-diagram">
+            </div>
+            <div class="timeline">
+            </div>
+            <p style="text-align: center;
+              margin-top: 15px;
+              color: #e53e3e;
+              font-weight: 600;">
+              Unbounded queues → Unpredictable delays
+            </p>
+        </div>
+        <div class="scenario qjump">
+          <div class="scenario-title">✅ QJUMP Network</div>
+          <div class="network-diagram">
+          </div>
+          <div class="timeline">
+          </div>
+          <p style="text-align: center;
+            margin-top: 15px;
+            color: #38a169;
+            font-weight: 600;">
+            Bounded queues → Predictable delays
+          </p>
+        </div>
+      </div>
+      <div class="epoch-explanation">
+        <div class="epoch-title">
+          🕒 Network Epoch Definition
+        </div>
+        <div class="epoch-definition">
+          The maximum time an idle network takes to service one packet from every sending host, 
+          regardless of source, destination, or timing.
+        </div>
+        <div class="formula-box">
+          Network Epoch = max(service_time(packet_from_each_host))
+          <br>
+          <br>
+          <strong>Rate Limiting Rule:</strong>
+          <br>
+          ≤ 1 packet per host per epoch
+        </div>
+      </div>
+      <div class="benefits">
+        <div class="benefit">
+        </div>
+        <div class="benefit">
+        </div>
+        <div class="benefit">
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
