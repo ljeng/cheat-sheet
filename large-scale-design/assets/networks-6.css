@@ -1,0 +1,90 @@
+body {
+}
+
+.container {
+}
+
+h1 {
+}
+
+.theorem-section {
+}
+
+.triangle-container {
+}
+
+.triangle {
+}
+
+.triangle-svg {
+}
+
+.property {
+}
+
+.consistency {
+}
+
+.availability {
+}
+
+.partition {
+}
+
+.combinations {
+}
+
+.combination {
+}
+
+.combination.cp { border-left-color: #9b59b6; }
+.combination.ca { border-left-color: #f39c12; }
+.combination.ap { border-left-color: #1abc9c; }
+
+.combination h3 {
+}
+
+.combination p {
+}
+
+.reality-check {
+}
+
+.reality-check h2 {
+}
+
+.reality-check p {
+}
+
+.better-framing {
+}
+
+.better-framing h2 {
+}
+
+.partition-choice {
+}
+
+.choice {
+}
+
+.choice.consistent {
+}
+
+.choice.available {
+}
+
+.choice h3 {
+}
+
+.animated-partition {
+}
+
+@keyframes pulse {
+}
+
+.network-fault {
+}
+
+@media (max-width: 768px) {
+}
