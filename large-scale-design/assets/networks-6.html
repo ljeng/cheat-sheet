@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAP Theorem Illustration</title>
+    <link rel="stylesheet" href="networks-6.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        The CAP Theorem
+      </h1>
+      <div class="theorem-section">
+        <div class="triangle-container">
+        </div>
+        <div class="combinations">
+          <div class="combination cp">
+          </div>
+          <div class="combination ca">
+          </div>
+          <div class="combination ap">
+          </div>
+        </div>
+      </div>
+      <div class="reality-check">
+        <h2>
+          Reality Check
+        </h2>
+        <p>
+          The CAP theorem oversimplifies the tensions among properties. In distributed systems,
+          <strong>
+            partition tolerance is not optional
+          </strong>
+          — network faults will occur, and you must handle them.
+        </p>
+      </div>
+      <div class="better-framing">
+        <h2>
+          Better Framing: "Consistent or Available When Partitioned"
+        </h2>
+        <div class="animated-partition">
+        </div>
+        <div class="partition-choice">
+        </div>
+      </div>
+    </div>
+    <script src="networks-6.js"></script>
+  </body>
+</html>
