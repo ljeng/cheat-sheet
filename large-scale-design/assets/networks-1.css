@@ -1,0 +1,11 @@
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.prose {
+  max-width: 65ch;
+}
+
+.prose blockquote {
+  border-left-color: #4f46e5;
+}
