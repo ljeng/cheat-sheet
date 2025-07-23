@@ -1,13 +1,36 @@
 body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #333;
 }
 
 .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 40px;
+  font-size: 2.5em;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .scenario {
+  margin-bottom: 50px;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
 .scenario::before {
@@ -17,9 +40,29 @@ h1 {
 }
 
 .system-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 20px 0;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
 }
 
 .node {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  transition: all 0.3s ease;
 }
 
 .node.healthy {
@@ -35,12 +78,23 @@ h1 {
 }
 
 .arrow {
+  font-size: 24px;
+  color: #666;
+  margin: 0 10px;
+  animation: float 2s infinite ease-in-out;
 }
 
 .arrow.blocked {
 }
 
 .status-indicator {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid white;
 }
 
 .status-indicator.online {
@@ -50,6 +104,14 @@ h1 {
 }
 
 .timeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+  padding: 15px;
+  background: #e8f5e8;
+  border-radius: 10px;
+  border-left: 4px solid #4CAF50;
 }
 
 .timeline-step {
@@ -59,18 +121,30 @@ h1 {
 }
 
 @keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 @keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
 }
 
 @keyframes glow {
+  0% { box-shadow: 0 0 10px rgba(255, 152, 0, 0.5); }
+  100% { box-shadow: 0 0 20px rgba(255, 152, 0, 0.8); }
 }
 
 @keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
 }
 
 @keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
 }
 
 .explanation {
