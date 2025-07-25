@@ -1,16 +1,44 @@
 body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
 }
 
 .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 
 h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 40px;
+  font-size: 2.5em;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
 }
 
 .scenario {
+  background: #f8f9ff;
+  border-radius: 15px;
+  padding: 25px;
+  border: 2px solid #e1e5ff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .scenario:hover {
@@ -20,9 +48,18 @@ h1 {
 }
 
 .road-network {
+  position: relative;
+  height: 300px;
+  background: #e8f5e8;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .road {
+  position: absolute;
+  background: #666;
+  border-radius: 3px;
 }
 
 .road-horizontal {
@@ -38,15 +75,38 @@ h1 {
 }
 
 .car {
+  position: absolute;
+  width: 20px;
+  height: 12px;
+  background: #ff6b6b;
+  border-radius: 3px;
+  animation: moveCar 3s infinite ease-in-out;
 }
 
+.car:nth-child(3) { animation-delay: 0.5s; background: #4ecdc4; }
+.car:nth-child(4) { animation-delay: 1s; background: #45b7d1; }
+.car:nth-child(5) { animation-delay: 1.5s; background: #f9ca24; }
+
 @keyframes moveCar {
+  0%, 100% { left: 20%; }
+  50% { left: 70%; }
 }
 
 .network {
 }
 
 .node {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: #4a90e2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
 }
 
 .switch {
@@ -55,19 +115,45 @@ h1 {
 .destination {
 }
 
+.node1 { top: 20px; left: 20px; }
+.node2 { top: 80px; left: 20px; }
+.node3 { top: 140px; left: 20px; }
+.node4 { top: 200px; left: 20px; }
+
 .connection {
 }
 
 .packet {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #f39c12;
+  border-radius: 50%;
+  z-index: 2;
+  animation: movePacket 4s infinite ease-in-out;
 }
 
+.packet:nth-child(10) { animation-delay: 0s; top: 35px; }
+.packet:nth-child(11) { animation-delay: 1s; top: 95px; }
+.packet:nth-child(12) { animation-delay: 2s; top: 155px; }
+.packet:nth-child(13) { animation-delay: 3s; top: 215px; }
+
 @keyframes movePacket {
+  0% { left: 60px; }
+  25% { left: 45%; }
+  50% { left: 45%; }
+  75% { left: 70%; }
+  100% { left: 80%; }
 }
 
 .queue-display {
 }
 
 .legend {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  font-size: 14px;
 }
 
 .legend-item {
@@ -80,7 +166,11 @@ h1 {
 }
 
 @media (max-width: 768px) {
+  .comparison {
+  grid-template-columns: 1fr;
+  gap: 20px;
 }
 
 h1 {
+  font-size: 2em;
 }
