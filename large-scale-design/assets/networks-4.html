@@ -6,7 +6,7 @@
     <title>
       QJUMP Network Epoch Illustration
     </title>
-    <link rel="stylesheet" href="network-4.css">
+    <link rel="stylesheet" href="networks-4.css">
   </head>
   <body>
     <div class="container">
@@ -18,23 +18,85 @@
       </p>
       <div class="comparison">
         <div class="scenario traditional">
-            <div class="scenario-title">❌ Traditional Network</div>
-            <div class="network-diagram">
+          <div class="scenario-title">❌ Traditional Network</div>
+          <div class="network-diagram">
+            <div class="hosts">
+              <div class="host">H1</div>
+              <div class="host">H2</div>
+              <div class="host">H3</div>
+              <div class="host">H4</div>
             </div>
-            <div class="timeline">
+            <div class="arrows">
+              <div class="arrow"></div>
+              <div class="arrow"></div>
+              <div class="arrow"></div>
+              <div class="arrow"></div>
             </div>
-            <p style="text-align: center;
-              margin-top: 15px;
-              color: #e53e3e;
-              font-weight: 600;">
-              Unbounded queues → Unpredictable delays
-            </p>
+            <div class="switch">
+              SWITCH
+              <div class="queue-visual">
+                <div class="packet packet-red"></div>
+                <div class="packet packet-red"></div>
+                <div class="packet packet-red"></div>
+                <div class="packet packet-red"></div>
+                <div class="packet packet-red"></div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline">
+            <div class="timeline-title">Queue Buildup Over Time</div>
+            <div class="time-slots">
+              <div class="time-slot busy">1</div>
+              <div class="time-slot busy">2</div>
+              <div class="time-slot busy">3</div>
+              <div class="time-slot busy">4</div>
+              <div class="time-slot busy">5</div>
+              <div class="time-slot busy">6</div>
+              <div class="time-slot busy">7</div>
+              <div class="time-slot busy">8</div>
+            </div>
+          </div>
+          <p style="text-align: center;
+            margin-top: 15px;
+            color: #e53e3e;
+            font-weight: 600;">
+            Unbounded queues → Unpredictable delays
+          </p>
         </div>
         <div class="scenario qjump">
           <div class="scenario-title">✅ QJUMP Network</div>
           <div class="network-diagram">
+            <div class="hosts">
+              <div class="host">H1</div>
+              <div class="host">H2</div>
+              <div class="host">H3</div>
+              <div class="host">H4</div>
+            </div>
+            <div class="arrows">
+              <div class="arrow"></div>
+              <div class="arrow"></div>
+              <div class="arrow"></div>
+              <div class="arrow"></div>
+            </div>
+            <div class="switch">
+              SWITCH
+              <div class="queue-visual">
+                <div class="packet packet-green"></div>
+              </div>
+            </div>
           </div>
           <div class="timeline">
+            <div class="timeline-title">Controlled Packet Flow</div>
+            <div class="time-slots">
+              <div class="time-slot controlled">1</div>
+              <div class="time-slot idle">-</div>
+              <div class="time-slot controlled">2</div>
+              <div class="time-slot idle">-</div>
+              <div class="time-slot controlled">3</div>
+              <div class="time-slot idle">-</div>
+              <div class="time-slot controlled">4</div>
+              <div class="time-slot idle">-</div>
+            </div>
           </div>
           <p style="text-align: center;
             margin-top: 15px;
@@ -63,10 +125,19 @@
       </div>
       <div class="benefits">
         <div class="benefit">
+          <div class="benefit-icon">🎯</div>
+          <div class="benefit-title">Bounded Delays</div>
+          <div class="benefit-desc">End-to-end network delay bounds are maintained forever with no permanent queue buildup</div>
         </div>
         <div class="benefit">
+          <div class="benefit-icon">⚡</div>
+          <div class="benefit-title">No Interference</div>
+          <div class="benefit-desc">Network interference is eliminated by controlling switch queueing through rate limiting</div>
         </div>
         <div class="benefit">
+          <div class="benefit-icon">🛡️</div>
+          <div class="benefit-title">Guaranteed Service</div>
+          <div class="benefit-desc">Every host gets fair access within each epoch, preventing starvation and ensuring predictability</div>
         </div>
       </div>
     </div>
