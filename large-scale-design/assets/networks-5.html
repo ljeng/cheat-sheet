@@ -6,8 +6,7 @@
     <title>
       Network Interference Visualization
     </title>
-    <link rel="stylesheet" href="network-5.css">
-    <script src="network-5.js"></script>
+    <link rel="stylesheet" href="networks-5.css">
   </head>
   <body>
     <div class="container">
@@ -15,10 +14,18 @@
         Network Interference & Congestion Signaling
       </h1>
       <div class="network-diagram" id="networkDiagram">
-        <div class="endpoint" id="endpoint1" style="left: 50px; top: 50px;">Host A</div>
-        <div class="endpoint" id="endpoint2" style="right: 50px; top: 50px;">Host B</div>
-        <div class="endpoint" id="endpoint3" style="left: 50px; bottom: 50px;">Host C</div>
-        <div class="endpoint" id="endpoint4" style="right: 50px; bottom: 50px;">Host D</div>
+        <div class="endpoint" id="endpoint1" style="left: 50px; top: 50px;">
+          Host A
+        </div>
+        <div class="endpoint" id="endpoint2" style="right: 50px; top: 50px;">
+          Host B
+        </div>
+        <div class="endpoint" id="endpoint3" style="left: 50px; bottom: 50px;">
+          Host C
+        </div>
+        <div class="endpoint" id="endpoint4" style="right: 50px; bottom: 50px;">
+          Host D
+        </div>
         <div class="switch" id="switch">
           <div>
             Network Switch
@@ -41,23 +48,43 @@
         </div>
       </div>
       <div class="controls">
-        <button class="btn" onclick="startLightTraffic()">Light Traffic</button>
-        <button class="btn" onclick="startHeavyTraffic()">Heavy Traffic</button>
-        <button class="btn" onclick="simulateCongestion()">Simulate Congestion</button>
-        <button class="btn" onclick="resetSimulation()">Reset</button>
+        <button class="btn" onclick="startLightTraffic()">
+          Light Traffic
+        </button>
+        <button class="btn" onclick="startHeavyTraffic()">
+          Heavy Traffic
+        </button>
+        <button class="btn" onclick="simulateCongestion()">
+          Simulate Congestion
+        </button>
+        <button class="btn" onclick="resetSimulation()">
+          Reset
+        </button>
       </div>
       <div class="metrics">
         <div class="metric">
-          <div>Queue Utilization</div>
-          <div class="metric-value" id="queueUtil">0%</div>
+          <div>
+            Queue Utilization
+          </div>
+          <div class="metric-value" id="queueUtil">
+            0%
+          </div>
         </div>
         <div class="metric">
-          <div>Packets Dropped</div>
-          <div class="metric-value" id="packetsDropped">0</div>
+          <div>
+            Packets Dropped
+          </div>
+          <div class="metric-value" id="packetsDropped">
+            0
+          </div>
         </div>
         <div class="metric">
-          <div>Congestion Signals</div>
-          <div class="metric-value" id="congestionSignals">0</div>
+          <div>
+            Congestion Signals
+          </div>
+          <div class="metric-value" id="congestionSignals">
+            0
+          </div>
         </div>
       </div>
       <div class="status">
@@ -89,5 +116,6 @@
         </div>
       </div>
     </div>
+    <script src="network-5.js"></script>
   </body>
 </html>
