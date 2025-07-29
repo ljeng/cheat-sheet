@@ -13,6 +13,12 @@ h1 {
 .endpoint {
 }
 
+.endpoint:hover {
+}
+
+.endpoint.sending {
+}
+
 @keyframes pulse {
 }
 
@@ -25,13 +31,25 @@ h1 {
 .queue-slot {
 }
 
+.queue-slot.filled {
+}
+
+.queue-slot.overflow {
+}
+
 @keyframes blink {
 }
 
 .packet {
 }
 
+.packet.congested {
+}
+
 .connection-line {
+}
+
+.connection-line.congested {
 }
 
 @keyframes flash {
@@ -41,6 +59,12 @@ h1 {
 }
 
 .btn {
+}
+
+.btn:hover {
+}
+
+.btn:active {
 }
 
 .status {
@@ -56,6 +80,15 @@ h1 {
 }
 
 .congestion-indicator {
+}
+
+.congestion-indicator.normal {
+}
+
+.congestion-indicator.warning {
+}
+
+.congestion-indicator.critical {
 }
 
 @keyframes urgent {
