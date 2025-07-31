@@ -1,25 +1,69 @@
 body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #333;
 }
 
 .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 
 h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 40px;
+  font-size: 2.5em;
+  font-weight: 700;
 }
 
 .theorem-section {
 }
 
 .triangle-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+  position: relative;
 }
 
 .triangle {
+  width: 300px;
+  height: 260px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.triangle:hover {
 }
 
 .triangle-svg {
 }
 
 .property {
+  position: absolute;
+  background: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  border: 3px solid;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.property:hover {
 }
 
 .consistency {
@@ -35,6 +79,14 @@ h1 {
 }
 
 .combination {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 25px;
+  border-radius: 15px;
+  border-left: 5px solid;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.combination:hover {
 }
 
 .combination.cp { border-left-color: #9b59b6; }
@@ -48,6 +100,12 @@ h1 {
 }
 
 .reality-check {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  color: white;
+  padding: 30px;
+  border-radius: 15px;
+  margin: 40px 0;
+  text-align: center;
 }
 
 .reality-check h2 {
@@ -57,6 +115,11 @@ h1 {
 }
 
 .better-framing {
+  background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+  padding: 30px;
+  border-radius: 15px;
+  margin: 40px 0;
+  text-align: center;
 }
 
 .better-framing h2 {
@@ -66,6 +129,17 @@ h1 {
 }
 
 .choice {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  text-align: center;
+  flex: 1;
+  margin: 0 10px;
+  transition: transform 0.3s ease;
+}
+
+.choice:hover {
 }
 
 .choice.consistent {
@@ -81,10 +155,34 @@ h1 {
 }
 
 @keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
 }
 
 .network-fault {
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+  
+  .triangle {
+    width: 250px;
+    height: 220px;
+  }
+  
+  .property {
+    font-size: 12px;
+    padding: 10px 15px;
+  }
+  
+  .partition-choice {
+    flex-direction: column;
+  }
+  
+  .choice {
+    margin: 10px 0;
+  }
 }
