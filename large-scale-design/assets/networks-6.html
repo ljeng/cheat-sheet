@@ -13,27 +13,84 @@
       </h1>
       <div class="theorem-section">
         <div class="triangle-container">
-        </div>
-        <div class="combinations">
-          <div class="combination cp">
+          <div class="triangle" onclick="highlightTriangle()">
+            <svg class="triangle-svg" viewBox="0 0 300 260">
+              <polygon
+                points="150,20 50,220 250,220" 
+                fill="rgba(52, 152, 219, 0.1)"
+                stroke="#3498db"
+                stroke-width="3"/>
+              <text
+                x="150"
+                y="120"
+                text-anchor="middle"
+                font-family="Arial, sans-serif"
+                font-size="16"
+                fill="#2c3e50"
+                font-weight="bold">
+                Pick Any Two
+              </text>
+            </svg>
+            <div class="property consistency">
+              Consistency
+            </div>
+            <div class="property availability">
+              Availability
+            </div>
+            <div class="property partition">
+              Partition Tolerance
+            </div>
           </div>
-          <div class="combination ca">
-          </div>
-          <div class="combination ap">
-          </div>
-        </div>
       </div>
-      <div class="reality-check">
-        <h2>
-          Reality Check
-        </h2>
-        <p>
-          The CAP theorem oversimplifies the tensions among properties. In distributed systems,
-          <strong>
-            partition tolerance is not optional
-          </strong>
-          — network faults will occur, and you must handle them.
-        </p>
+      <div class="combinations">
+        <div class="combination cp">
+          <h3>
+            Consistency + Partition Tolerance
+          </h3>
+          <p>
+            <strong>
+              Traditional RDBMS approach:
+            </strong>
+             When partitioned, sacrifice availability to maintain consistency. System may become unavailable but data remains consistent.
+          </p>
+          <p>
+            <em>
+              Examples: Traditional SQL databases, HBase
+            </em>
+          </p>
+        </div>
+        <div class="combination ca">
+          <h3>
+            Consistency + Availability
+          </h3>
+          <p>
+            <strong>
+              Theoretical only:
+            </strong>
+             Perfect consistency and availability, but cannot handle network partitions. Only works in perfect network conditions.
+          </p>
+          <p>
+            <em>
+              Examples: Single-node databases, systems with no distribution
+            </em>
+          </p>
+        </div>
+        <div class="combination ap">
+          <h3>
+            Availability + Partition Tolerance
+          </h3>
+          <p>
+            <strong>
+              NoSQL approach:
+            </strong>
+             Remain available during partitions, but accept eventual consistency. System stays responsive but data may be temporarily inconsistent.
+          </p>
+          <p>
+            <em>
+              Examples: DynamoDB, Cassandra, CouchDB
+            </em>
+          </p>
+        </div>
       </div>
       <div class="better-framing">
         <h2>
