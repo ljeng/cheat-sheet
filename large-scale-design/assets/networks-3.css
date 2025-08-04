@@ -42,9 +42,15 @@ h1 {
 }
 
 .scenario:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
 }
 
 .scenario h2 {
+  color: #4a5568;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  text-align: center;
 }
 
 .road-network {
@@ -63,15 +69,33 @@ h1 {
 }
 
 .road-horizontal {
+  height: 8px;
+  width: 200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .road-vertical {
+  width: 8px;
+  height: 100px;
+  left: 30%;
+  top: 20%;
 }
 
 .road-vertical2 {
+  width: 8px;
+  height: 100px;
+  left: 70%;
+  top: 20%;
 }
 
 .road-diagonal {
+  width: 8px;
+  height: 120px;
+  left: 50%;
+  top: 10%;
+  transform: rotate(45deg);
 }
 
 .car {
@@ -93,6 +117,12 @@ h1 {
 }
 
 .network {
+  position: relative;
+  height: 300px;
+  background: #f0f8ff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .node {
@@ -110,9 +140,37 @@ h1 {
 }
 
 .switch {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: #e74c3c;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 10px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .destination {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: #27ae60;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 10px;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .node1 { top: 20px; left: 20px; }
@@ -121,6 +179,10 @@ h1 {
 .node4 { top: 200px; left: 20px; }
 
 .connection {
+  position: absolute;
+  height: 2px;
+  background: #bdc3c7;
+  z-index: 1;
 }
 
 .packet {
@@ -147,6 +209,15 @@ h1 {
 }
 
 .queue-display {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.9);
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  text-align: center;
 }
 
 .legend {
@@ -157,12 +228,25 @@ h1 {
 }
 
 .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .legend-color {
+width: 16px;
+height: 16px;
+border-radius: 50%;
 }
 
 .explanation {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 25px;
+  border-radius: 15px;
+  margin-top: 30px;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 @media (max-width: 768px) {
