@@ -25,9 +25,17 @@ h1 {
 }
 
 .subtitle {
+  text-align: center;
+  color: #718096;
+  margin-bottom: 40px;
+  font-size: 1.2em;
 }
 
 .comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
 }
 
 .scenario {
@@ -39,12 +47,16 @@ h1 {
 }
 
 .scenario:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .traditional {
+  border-color: #e53e3e;
 }
 
 .qjump {
+  border-color: #38a169;
 }
 
 .scenario-title {
@@ -55,9 +67,11 @@ h1 {
 }
 
 .traditional .scenario-title {
+  color: #e53e3e;
 }
 
 .qjump .scenario-title {
+  color: #38a169;
 }
 
 .network-diagram {
@@ -87,9 +101,25 @@ h1 {
 }
 
 .switch {
+  width: 120px;
+  height: 60px;
+  background: #805ad5;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  margin: 20px 0;
+  position: relative;
 }
 
 .queue-visual {
+  position: absolute;
+  top: -15px;
+  right: -10px;
+  display: flex;
+  gap: 2px;
 }
 
 .packet {
@@ -100,9 +130,11 @@ h1 {
 }
 
 .packet-red {
+  background: #e53e3e;
 }
 
 .packet-green {
+  background: #38a169;
 }
 
 @keyframes pulse {
@@ -118,33 +150,71 @@ h1 {
 }
 
 .timeline-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .time-slots {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .time-slot {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: white;
 }
 
 .busy {
+  background: #e53e3e;
 }
 
 .controlled {
+  background: #38a169;
 }
 
 .idle {
+  background: #a0aec0;
 }
 
 .epoch-explanation {
+  background: linear-gradient(135deg, #4299e1, #3182ce);
+  color: white;
+  border-radius: 15px;
+  padding: 25px;
+  margin-top: 30px;
 }
 
 .epoch-title {
+  font-size: 1.6em;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 .epoch-definition {
+  font-size: 1.1em;
+  line-height: 1.6;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .formula-box {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2em;
 }
 
 .benefits {
@@ -164,16 +234,31 @@ h1 {
 
 .benefit-icon {
   font-size: 2em;
+  margin-bottom: 10px;
 }
 
 .benefit-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #4a5568;
 }
 
 .benefit-desc {
+  color: #718096;
+  line-height: 1.5;
 }
 
 .arrows {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
 }
 
 .arrow {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 12px solid #805ad5;
+  margin: 0 10px;
 }
