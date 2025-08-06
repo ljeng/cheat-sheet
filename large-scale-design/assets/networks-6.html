@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CAP Theorem Illustration</title>
+    <title>
+      CAP Theorem Illustration
+    </title>
     <link rel="stylesheet" href="networks-6.css">
   </head>
   <body>
@@ -92,14 +94,61 @@
           </p>
         </div>
       </div>
+      </div>
+      <div class="reality-check">
+        <h2>
+          Reality Check
+        </h2>
+        <p>
+          The CAP theorem oversimplifies the tensions among properties. In distributed systems, 
+          <strong>
+            partition tolerance is not optional
+          </strong>
+           — network faults will occur, and you must handle them.
+        </p>
+      </div>
       <div class="better-framing">
         <h2>
           Better Framing: "Consistent or Available When Partitioned"
         </h2>
-        <div class="animated-partition">
+      <div class="animated-partition">
+        <span class="network-fault">
+          ⚠️ Network Partition Occurs ⚠️
+        </span>
+      </div>
+      <div class="partition-choice">
+        <div class="choice consistent">
+          <h3>
+            Choose Consistency
+          </h3>
+          <p>
+            Reject requests that might cause inconsistency
+          </p>
+          <p>
+            <strong>
+              Result:
+            </strong>
+             System unavailable but data correct
+          </p>
         </div>
-        <div class="partition-choice">
+        <div class="choice available">
+          <h3>
+            Choose Availability
+          </h3>
+          <p>
+            Accept requests and resolve conflicts later
+          </p>
+          <p>
+            <strong>
+              Result:
+            </strong>
+             System responsive but potentially inconsistent
+          </p>
         </div>
+      </div>
+      <p style="margin-top: 30px; font-size: 1.1em; color: #2c3e50;">
+        This reframing better captures the real-world tradeoff: when networks fail (not if), you must choose between maintaining strict consistency or keeping the system available to users.
+      </p>
       </div>
     </div>
     <script src="networks-6.js"></script>
