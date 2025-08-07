@@ -25,6 +25,7 @@ h1 {
 }
 
 .theorem-section {
+  margin-bottom: 50px;
 }
 
 .triangle-container {
@@ -43,9 +44,12 @@ h1 {
 }
 
 .triangle:hover {
+  transform: scale(1.05);
 }
 
 .triangle-svg {
+  width: 100%;
+  height: 100%;
 }
 
 .property {
@@ -64,18 +68,37 @@ h1 {
 }
 
 .property:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.2);
 }
 
 .consistency {
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-color: #e74c3c;
+  color: #e74c3c;
 }
 
 .availability {
+  bottom: -20px;
+  left: -30px;
+  border-color: #27ae60;
+  color: #27ae60;
 }
 
 .partition {
+  bottom: -20px;
+  right: -30px;
+  border-color: #3498db;
+  color: #3498db;
 }
 
 .combinations {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin: 40px 0;
 }
 
 .combination {
@@ -87,6 +110,8 @@ h1 {
 }
 
 .combination:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
 }
 
 .combination.cp { border-left-color: #9b59b6; }
@@ -94,9 +119,15 @@ h1 {
 .combination.ap { border-left-color: #1abc9c; }
 
 .combination h3 {
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+  font-size: 1.3em;
 }
 
 .combination p {
+  margin: 10px 0;
+  line-height: 1.6;
+  color: #5a6c7d;
 }
 
 .reality-check {
@@ -109,9 +140,14 @@ h1 {
 }
 
 .reality-check h2 {
+  margin: 0 0 20px 0;
+  font-size: 1.8em;
 }
 
 .reality-check p {
+  font-size: 1.1em;
+  line-height: 1.7;
+  margin: 0;
 }
 
 .better-framing {
@@ -123,9 +159,15 @@ h1 {
 }
 
 .better-framing h2 {
+  color: #2c3e50;
+  margin: 0 0 20px 0;
+  font-size: 1.8em;
 }
 
 .partition-choice {
+  display: flex;
+  justify-content: space-around;
+  margin: 30px 0;
 }
 
 .choice {
@@ -140,18 +182,27 @@ h1 {
 }
 
 .choice:hover {
+  transform: translateY(-5px);
 }
 
 .choice.consistent {
+  border-top: 4px solid #e74c3c;
 }
 
 .choice.available {
+  border-top: 4px solid #27ae60;
 }
 
 .choice h3 {
+  margin: 0 0 10px 0;
+  color: #2c3e50;
 }
 
 .animated-partition {
+  text-align: center;
+  margin: 30px 0;
+  font-size: 1.2em;
+  animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
@@ -161,6 +212,8 @@ h1 {
 }
 
 .network-fault {
+  color: #e74c3c;
+  font-weight: bold;
 }
 
 @media (max-width: 768px) {
