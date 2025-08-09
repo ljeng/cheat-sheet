@@ -1,16 +1,46 @@
 body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: white;
+  min-height: 100vh;
 }
 
 .container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.5em;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 .network-diagram {
+  position: relative;
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 40px;
+  margin: 20px 0;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
 
 .endpoint {
+  position: absolute;
+  width: 80px;
+  height: 60px;
+  background: linear-gradient(45deg, #4CAF50, #45a049);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
 }
 
 .endpoint:hover {
@@ -20,15 +50,25 @@ h1 {
 }
 
 @keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
 }
 
 .switch {
 }
 
 .queue-container {
+  margin-top: 10px;
+  display: flex;
+  gap: 5px;
 }
 
 .queue-slot {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255,255,255,0.5);
+  border-radius: 4px;
+  transition: all 0.3s ease;
 }
 
 .queue-slot.filled {
@@ -38,27 +78,54 @@ h1 {
 }
 
 @keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
 
 .packet {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #00E676;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0,230,118,0.6);
+  transition: all 0.8s ease-in-out;
 }
 
 .packet.congested {
 }
 
 .connection-line {
+  position: absolute;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #00E676, transparent);
+  border-radius: 2px;
+  opacity: 0.7;
 }
 
 .connection-line.congested {
 }
 
 @keyframes flash {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
 }
 
 .controls {
 }
 
 .btn {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  margin: 0 10px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .btn:hover {
@@ -71,6 +138,10 @@ h1 {
 }
 
 .metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
 }
 
 .metric {
@@ -80,6 +151,14 @@ h1 {
 }
 
 .congestion-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s ease;
 }
 
 .congestion-indicator.normal {
@@ -92,9 +171,16 @@ h1 {
 }
 
 @keyframes urgent {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
 }
 
 .legend {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 20px 0;
+  flex-wrap: wrap;
 }
 
 .legend-item {
