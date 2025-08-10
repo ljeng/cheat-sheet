@@ -52,12 +52,78 @@ function createPacket(startElement, endElement, isCongested = false) {
 }
 
 function animatePacket(packet, endElement, callback) {
+  const endRect = endElement.getBoundingClientRect();
+  const diagramRect = document.getElementById('networkDiagram').getBoundingClientRect();
+  setTimeout(() => {
+    packet.style.left = (endRect.left - diagramRect.left + endRect.width/2) + 'px';
+    packet.style.top = (endRect.top - diagramRect.top + endRect.height/2) + 'px';
+    setTimeout(() => {
+      if (packet.parentNode) {
+        packet.parentNode.removeChild(packet);
+      }
+      if (callback) callback();
+    }, 800);
+  }, 100);
 }
 
 function sendPacket(fromEndpoint, toEndpoint, delay = 0) {
+  setTimeout(() => {
+    if (!simulationActive) return;
+    const fromEl = document.getElementById(fromEndpoint);
+    const toEl = document.getElementById(toEndpoint);
+    const switchEl = document.getElementById('switch');
+    fromEl.classList.add('sending');
+    setTimeout(() => fromEl.classList.remove('sending'), 500);
+    if (queueLevel >= 6) {
+      packetsDropped++;
+      congestionSignals++;
+      const droppedPacket = createPacket(fromEl, switchEl, true);
+      animatePacket(droppedPacket, switchEl, () => {
+        document.getElementById('statusText').textContent = 
+          'Packet dropped due to queue overflow! Congestion signal sent to ' + fromEndpoint + '.';
+      });
+      updateMetrics();
+      return;
+    }
+    queueLevel++;
+    updateQueue();
+    const packet = createPacket(fromEl, switchEl, queueLevel > 4);
+    animatePacket(packet, switchEl, () => {
+      setTimeout(() => {
+        if (queueLevel > 0) {
+          queueLevel--;
+          updateQueue();
+          const outPacket = createPacket(switchEl, toEl, queueLevel > 4);
+          animatePacket(outPacket, toEl);
+          if (queueLevel > 4) {
+            congestionSignals++;
+            document.getElementById('statusText').textContent = 
+              'Queue congestion detected! ECN signal sent to endpoints.';
+          }
+        }
+        updateMetrics();
+      }, Math.random() * 500 + 200);
+    });
+  }, delay);
 }
 
 function startLightTraffic() {
+  resetSimulation();
+  simulationActive = true;
+  document.getElementById('statusText').textContent = 'Light traffic simulation started. Packets flowing normally.';
+  const sendInterval = setInterval(() => {
+    if (!simulationActive) {
+      clearInterval(sendInterval);
+      return;
+    }
+    const endpoints = ['endpoint1', 'endpoint2', 'endpoint3', 'endpoint4'];
+    const from = endpoints[Math.floor(Math.random() * endpoints.length)];
+    let to = endpoints[Math.floor(Math.random() * endpoints.length)];
+    while (to === from) {
+      to = endpoints[Math.floor(Math.random() * endpoints.length)];
+    }
+    sendPacket(from, to);
+  }, 1500);
 }
 
 function startHeavyTraffic() {
