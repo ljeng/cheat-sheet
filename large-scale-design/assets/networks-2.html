@@ -82,6 +82,30 @@
           2. Load Balancer Traffic Management
         </div>
         <div class="system-diagram">
+          <div class="load-balancer">
+            Load Balancer
+          </div>
+          <div class="arrow">
+            →
+          </div>
+          <div class="node healthy">
+            Server 1
+            <div class="status-indicator online"></div>
+          </div>
+          <div class="arrow blocked">
+            ✗
+          </div>
+          <div class="node failed">
+            Server 2
+            <div class="status-indicator offline"></div>
+          </div>
+          <div class="arrow">
+            →
+          </div>
+          <div class="node healthy">
+            Server 3
+            <div class="status-indicator online"></div>
+          </div>
         </div>
         <div class="metrics">
         </div>
