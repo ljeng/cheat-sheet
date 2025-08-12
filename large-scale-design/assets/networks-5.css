@@ -44,9 +44,13 @@ h1 {
 }
 
 .endpoint:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
 
 .endpoint.sending {
+  background: linear-gradient(45deg, #FF6B6B, #ee5a52);
+  animation: pulse 1s infinite;
 }
 
 @keyframes pulse {
@@ -55,6 +59,21 @@ h1 {
 }
 
 .switch {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 120px;
+  background: linear-gradient(45deg, #2196F3, #1976D2);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
 
 .queue-container {
@@ -72,9 +91,15 @@ h1 {
 }
 
 .queue-slot.filled {
+  background: #FFC107;
+  border-color: #FFB300;
+  box-shadow: 0 0 10px rgba(255,193,7,0.5);
 }
 
 .queue-slot.overflow {
+  background: #F44336;
+  border-color: #D32F2F;
+  animation: blink 0.5s infinite;
 }
 
 @keyframes blink {
@@ -93,6 +118,8 @@ h1 {
 }
 
 .packet.congested {
+  background: #FF5722;
+  box-shadow: 0 0 10px rgba(255,87,34,0.6);
 }
 
 .connection-line {
@@ -104,6 +131,8 @@ h1 {
 }
 
 .connection-line.congested {
+  background: linear-gradient(90deg, transparent, #FF5722, transparent);
+  animation: flash 0.5s infinite;
 }
 
 @keyframes flash {
@@ -112,6 +141,8 @@ h1 {
 }
 
 .controls {
+  text-align: center;
+  margin: 30px 0;
 }
 
 .btn {
@@ -129,12 +160,20 @@ h1 {
 }
 
 .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 
 .btn:active {
+  transform: translateY(0);
 }
 
 .status {
+  background: rgba(0,0,0,0.3);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  backdrop-filter: blur(5px);
 }
 
 .metrics {
@@ -145,9 +184,17 @@ h1 {
 }
 
 .metric {
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  backdrop-filter: blur(5px);
 }
 
 .metric-value {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 10px 0;
 }
 
 .congestion-indicator {
@@ -162,12 +209,17 @@ h1 {
 }
 
 .congestion-indicator.normal {
+  background: rgba(76, 175, 80, 0.8);
 }
 
 .congestion-indicator.warning {
+  background: rgba(255, 193, 7, 0.8);
+  color: #333;
 }
 
 .congestion-indicator.critical {
+  background: rgba(244, 67, 54, 0.8);
+  animation: urgent 1s infinite;
 }
 
 @keyframes urgent {
@@ -184,7 +236,13 @@ h1 {
 }
 
 .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .legend-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
 }
