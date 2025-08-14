@@ -127,15 +127,73 @@ function startLightTraffic() {
 }
 
 function startHeavyTraffic() {
+  resetSimulation();
+  simulationActive = true;
+  document.getElementById('statusText').textContent = 'Heavy traffic simulation started. Watch for queue buildup.';
+  const sendInterval = setInterval(() => {
+    if (!simulationActive) {
+      clearInterval(sendInterval);
+      return;
+    }
+    const endpoints = ['endpoint1', 'endpoint2', 'endpoint3', 'endpoint4'];
+    for (let i = 0; i < 3; i++) {
+      const from = endpoints[Math.floor(Math.random() * endpoints.length)];
+      let to = endpoints[Math.floor(Math.random() * endpoints.length)];
+      while (to === from) {
+        to = endpoints[Math.floor(Math.random() * endpoints.length)];
+      }
+      sendPacket(from, to, i * 100);
+    }
+  }, 800);
 }
 
 function simulateCongestion() {
+  resetSimulation();
+  simulationActive = true;
+  document.getElementById('statusText').textContent = 'Congestion scenario: Multiple hosts sending simultaneously!';
+  for (let i = 0; i < 10; i++) {
+    sendPacket('endpoint1', 'endpoint2', i * 50);
+    sendPacket('endpoint3', 'endpoint4', i * 50 + 25);
+  }
+  setTimeout(() => {
+      simulationActive = false;
+  }, 5000);
 }
 
 function resetSimulation() {
+  simulationActive = false;
+  queueLevel = 0;
+  packetsDropped = 0;
+  congestionSignals = 0;
+  packetId = 0;
+  document.querySelectorAll('.packet').forEach(packet => packet.remove());
+  updateQueue();
+  updateMetrics();
+  document.getElementById('statusText').textContent = 'Simulation reset. Ready for new traffic patterns.';
 }
 
 function initializeLines() {
+  const switch1 = document.getElementById('switch');
+  const endpoints = ['endpoint1', 'endpoint2', 'endpoint3', 'endpoint4'];
+  const lines = ['line1', 'line2', 'line3', 'line4'];
+  endpoints.forEach((endpoint, index) => {
+    const endpointEl = document.getElementById(endpoint);
+    const lineEl = document.getElementById(lines[index]);
+    const switchRect = switch1.getBoundingClientRect();
+    const endpointRect = endpointEl.getBoundingClientRect();
+    const diagramRect = document.getElementById('networkDiagram').getBoundingClientRect();
+    const x1 = switchRect.left - diagramRect.left + switchRect.width/2;
+    const y1 = switchRect.top - diagramRect.top + switchRect.height/2;
+    const x2 = endpointRect.left - diagramRect.left + endpointRect.width/2;
+    const y2 = endpointRect.top - diagramRect.top + endpointRect.height/2;
+    const length = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+    const angle = Math.atan2(y2-y1, x2-x1) * 180/Math.PI;
+    lineEl.style.width = length + 'px';
+    lineEl.style.left = x1 + 'px';
+    lineEl.style.top = y1 + 'px';
+    lineEl.style.transform = `rotate(${angle}deg)`;
+    lineEl.style.transformOrigin = '0 50%';
+  });
 }
 
 window.addEventListener('load', initializeLines);
