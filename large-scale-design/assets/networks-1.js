@@ -13,13 +13,9 @@ const NODE_STATE = {INITIAL: 'gray',
   FAULTY: '#ef4444',
   COMMITTED: '#10b981'};
 
-function resizeCanvas() {
+function init() {
   canvas.width = container.clientWidth;
   canvas.height = container.clientHeight;
-}
-
-function init() {
-  resizeCanvas();
   nodes = [];
   messages = [];
   const radius = Math.min(canvas.width, canvas.height) * 0.4;
@@ -72,17 +68,6 @@ function drawNode(node) {
   }
 }
 
-function drawMessage(msg) {
-  const dx = msg.to.x - msg.from.x;
-  const dy = msg.to.y - msg.from.y;
-  const x = msg.from.x + dx * msg.progress / 100;
-  const y = msg.from.y + dy * msg.progress / 100;
-  ctx.beginPath();
-  ctx.arc(x, y, 5, 0, 2 * Math.PI);
-  ctx.fillStyle = 'white';
-  ctx.fill();
-}
-
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   for (let i = messages.length - 1; i >= 0; i--) {
@@ -104,7 +89,16 @@ function animate() {
         } else if (msg.type === 'ACK') recipient.acks.add(msg.originator);
       }
       messages.splice(i, 1);
-    } else drawMessage(msg);
+    } else {
+      const dx = msg.to.x - msg.from.x;
+      const dy = msg.to.y - msg.from.y;
+      const x = msg.from.x + dx * msg.progress / 100;
+      const y = msg.from.y + dy * msg.progress / 100;
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.fillStyle = 'white';
+      ctx.fill();
+    }
   }
   nodes.forEach(drawNode);
   animationFrameId = requestAnimationFrame(animate);
