@@ -58,7 +58,7 @@ def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
 
 ```
 
-## [Insertion Sort](code/sorting.cpp#L6)
+## [Insertion Sort](code/sorting.cpp#L7)
 
 ```cpp
 #include <algorithm>
@@ -90,7 +90,34 @@ def radixSort(array, w):
 
 ```
 
-## Quicksort
+## [Quicksort](code/sorting.cpp#L12)
+
+```c++
+#include <vector>
+#include <stack>
+#include <algorithm>
+
+using namespace std;
+
+void Quicksort(vector<int>& a) {
+  stack<pair<int, int>> ranges;
+  ranges.emplace(0, a.size() - 1);
+  int i, j;
+  while (!ranges.empty()) {
+    auto [lo, hi] = ranges.top();
+    ranges.pop();
+    if (lo < hi) {
+      for (i = lo - 1, j = lo; j < hi; j++)
+        if (a[j] < a[hi])
+          swap(a[++i], a[j]);
+      swap(a[++i], a[hi]);
+      ranges.emplace(lo, i - 1);
+      ranges.emplace(i + 1, hi);
+    }
+  }
+}
+
+```
 
 ### Quickselect
 
@@ -103,7 +130,7 @@ def quickselect(arr, k):
     else: return arr[0]
 ```
 
-## [Merge Sort](code/sorting.cpp#L11)
+## [Merge Sort](code/sorting.cpp#L30)
 
 ```cpp
 #include <algorithm>
@@ -240,7 +267,7 @@ def countSmaller(nums):
 
 ```
 
-## [Heapsort](code/sorting.cpp#L29)
+## [Heapsort](code/sorting.cpp#L48)
 
 ```cpp
 #include <algorithm>

@@ -1,11 +1,30 @@
 #include <algorithm>
 #include <vector>
+#include <stack>
 
 using namespace std;
 
 void InsertionSort(vector<int>& a) {
   for (int i = 1; i < a.size(); i++)
     for (int j = i; j && a[j - 1] > a[j]; swap(a[j], a[--j]));
+}
+
+void Quicksort(vector<int>& a) {
+  stack<pair<int, int>> ranges;
+  ranges.emplace(0, a.size() - 1);
+  int i, j;
+  while (!ranges.empty()) {
+    auto [lo, hi] = ranges.top();
+    ranges.pop();
+    if (lo < hi) {
+      for (i = lo - 1, j = lo; j < hi; j++)
+        if (a[j] < a[hi])
+          swap(a[++i], a[j]);
+      swap(a[++i], a[hi]);
+      ranges.emplace(lo, i - 1);
+      ranges.emplace(i + 1, hi);
+    }
+  }
 }
 
 void MergeSort(vector<int>& a) {
