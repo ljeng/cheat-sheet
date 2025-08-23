@@ -33,6 +33,24 @@ def divide(dividend, divisor):
 
 ```
 
+#### $\sqrt(x)$
+
+Given a non-negative integer `x`, return the square root of `x` rounded down to the nearest integer. The returned integer should be non-negative as well. You must not use any built-in exponent function or operator. For example, do not use `pow(x, 0.5)`.
+
+```cpp
+#include <cmath>
+
+double SQRT0 = 8000;
+double EPSILON = 1;
+
+int mySqrt(int x) {
+  double y = SQRT0;
+  while (fabs(y * y - x) > EPSILON) y = (y + x / y) / 2;
+  return static_cast<int>(y);
+}
+
+```
+
 #### Self Crossing
 
 #### Perfect Rectangle
