@@ -191,3 +191,23 @@ def getPermutation(n, k):
 ```
 
 ## *n*-choose-*k*
+
+The number of ways to choose $k$ items from $n$ items without repetition and without order is
+
+$\pmatrix{
+    n \\
+    k \\
+\pmatrix} = \frac{n!}{k! {(n - k)}!}$
+
+for
+
+$0 \leq k \leq n$
+
+or
+
+```python
+import math
+
+math.comb(n, k)
+
+```
