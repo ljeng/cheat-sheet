@@ -119,6 +119,20 @@ def nthMagicalNumber(n, a, b):
 
 ## Counting
 
+#### Climbing Stairs
+
+You are climbing a staircase. It takes `n` steps to reach the top. Each time you can either climb ` or `2` steps. In how many distinct ways can you climb to the top?
+
+```cpp
+#include <cmath>
+
+int climbStairs(int n) {
+  double sqrt5 = sqrt(5);
+  return round(pow((sqrt5 + 1) / 2, ++n) / sqrt5);
+}
+
+```
+
 #### Max Points on a Line
 
 Given an array of `points` where `points[i] = [x[i], y[i]]` represents a point on the *xy*-plane, return the maximum number of points that lie on the same straight line.
