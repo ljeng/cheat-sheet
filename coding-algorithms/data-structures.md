@@ -15,7 +15,7 @@
 - [Trees](#trees)
     - [Binary](#binary)
     - [Heaps](#heaps)
-- [Graphs][#graphs]
+- [Graphs](#graphs)
 
 ## Lists
 
@@ -500,6 +500,42 @@ public:
 #### `k`th Smallest in Lexicographical Order
 
 ### Binary
+
+#### Binary Tree Inorder Traversal
+
+Given the `root` of a binary tree, return the inorder traversal of its nodes' values.
+
+```cpp
+#include <vector>
+
+using namespace std;
+
+vector<int> inorderTraversal(TreeNode* root) {
+  TreeNode* q;
+  vector<int> inorder_traversal;
+  while (root) {
+    if (root->left) {
+      q = root->left;
+      while (q->right && q->right != root) q = q->right;
+      if (q->right) {
+        q->right = nullptr;
+        inorder_traversal.push_back(root->val);
+        root = root->right;
+      }
+      else {
+        q->right = root;
+        root = root->left;
+      }
+    }
+    else {
+      inorder_traversal.push_back(root->val);
+      root = root->right;
+    }
+  }
+  return inorder_traversal;
+}
+
+```
 
 #### Binary Tree Maximum Path Sum
 
