@@ -27,6 +27,52 @@ A `Graph` is a mathematical structure defined by a set of vertices `V` connected
 
 Apply Dijkstra's algorithm. Return a dictionary in the form of `{u: distance}` where there is some `distance` from vertex `source` to vertex `u`. If `trace` is `True`, instead return a dictionary in the form of `{u: [[source...u]]}` where each list in the value is a path from `source` to `u`.
 
+#### Shortest Path in Binary Matrix
+
+Given an `n * n` binary matrix grid, return the length of the shortest **clear path** in the matrix. If there is no clear path, return `-1`. A **clear path** in a binary matrix is a path from the **top-left** cell[^1] to the bottom-right cell[^2] such that:
+
+- All the visited cells of the path are `0`.
+- All the adjacent cells of the path are **8-directionally** connected[^3].
+- The **length of a clear path** is the number of visited cells of this path.
+
+```python
+import itertools
+import numpy as np
+import scipy.sparse as sparse
+
+toInt = lambda x: int(x.real) * n + int(x.imag)
+
+directions = [dx + dy*1j
+    for dx, dy
+    in itertools.product(range(-1, 2), repeat=2)
+    if not dx == dy == 0]
+
+def shortestPathBinaryMatrix(grid):
+    if grid[0][0] or grid[-1][-1]: return -1
+    n = len(grid)
+    k, m = n - 1, pow(n, 2)
+    cells = np.fromfunction(lambda i, j: i + 1j*j, (n, n))
+    chebyshev = np.maximum(k - cells.real, k - cells.imag).ravel()
+    source, destination = [], []
+    d_chebyshev = []
+    for ui, uj in itertools.product(range(n), repeat=2):
+        if grid[ui][uj]: continue
+        u_int = toInt(ui + uj*1j)
+        for d in self.directions:
+            v_complex = ui + uj*1j + d
+            vi, vj = int(v_complex.real), int(v_complex.imag)
+            if 0 <= vi < n and 0 <= vj < n and not grid[vi][vj]:
+                source.append(u_int)
+                v_int = toInt(v_complex)
+                destination.append(v_int)
+                d_chebyshev.append(chebyshev[v_int] - chebyshev[u_int] + 1)
+    chebyshev[0] += sparse.csgraph.dijkstra(csgraph=sparse
+        .csr_matrix((d_chebyshev, (source, destination)),  shape=(m, m)),
+            indices=0)[m - 1]
+    return -1 if np.isinf(chebyshev[0]) else int(chebyshev[0]) + 1
+
+```
+
 [Network Delay Time](https://leetcode.com/problems/network-delay-time)
 ```python
 import collections
@@ -186,7 +232,7 @@ def numIslands(grid):
     return to_graph(grid, color='1').count_components()
 ```
 
-You are given an empty 2-D binary grid `grid` of size `m * n`. The grid represents a map where `0`'s represent water and `1`'s represent land. Initially, all the cells of `grid` are water cells[^1]. We may perform an add land operation which turns the water at position into a land. You are given an array `positions` where `positions[i] = [r[i], c[i]]` is the position `(r[i], c[i])` at which we should operate the `i`th operation. Return an array of integers `answer` where `answer[i]` is the number of islands after turning the cell `(r[i], c[i])` into a land. An *island* is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+You are given an empty 2-D binary grid `grid` of size `m * n`. The grid represents a map where `0`'s represent water and `1`'s represent land. Initially, all the cells of `grid` are water cells[^4]. We may perform an add land operation which turns the water at position into a land. You are given an array `positions` where `positions[i] = [r[i], c[i]]` is the position `(r[i], c[i])` at which we should operate the `i`th operation. Return an array of integers `answer` where `answer[i]` is the number of islands after turning the cell `(r[i], c[i])` into a land. An *island* is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
 
 ```python
 def find(self, x):
@@ -288,7 +334,7 @@ def possibleBipartition(N, dislikes):
 
 #### Alien Dictionary
 
-There is a new alien language that uses the English alphabet. However, the order of the letters is unknown to you. You are given a list of strings `words` from the alien language's dictionary. Now it is claimed that the strings in `words` are *sorted lexicographically*[^2] by the rules of this new language. If this claim is incorrect, and the given arrangement of string in `words` cannot correspond to any order of letters, return `""`. Otherwise, return a string of the unique letters in the new alien language sorted in *lexicographically increasing order* by the new language's rules. If there are multiple solutions, return *any of them*.
+There is a new alien language that uses the English alphabet. However, the order of the letters is unknown to you. You are given a list of strings `words` from the alien language's dictionary. Now it is claimed that the strings in `words` are *sorted lexicographically*[^5] by the rules of this new language. If this claim is incorrect, and the given arrangement of string in `words` cannot correspond to any order of letters, return `""`. Otherwise, return a string of the unique letters in the new alien language sorted in *lexicographically increasing order* by the new language's rules. If there are multiple solutions, return *any of them*.
 
 ```python
 import itertools
@@ -551,5 +597,8 @@ def closedIsland(grid):
     return to_graph(grid, color=0).count_components()
 ```
 
-[^1]: all the cells are `0`'s
-[^2]: **Lexicographically smaller**: A string `a` is lexicographically smaller than a string `b` if in the first position where `a` and `b` differ, string `a` has a letter that appears earlier in the alien language than the corresponding letter in `b`. If the first `min(a.length, b.length)` characters do not differ, then the shorter string is the lexicographically smaller one.
+[^1]: `(0, 0)`
+[^2]: `(n - 1, n - 1)`
+[^3]: they are different and they share an edge or a corner
+[^4]: all the cells are `0`'s
+[^5]: **Lexicographically smaller**: A string `a` is lexicographically smaller than a string `b` if in the first position where `a` and `b` differ, string `a` has a letter that appears earlier in the alien language than the corresponding letter in `b`. If the first `min(a.length, b.length)` characters do not differ, then the shorter string is the lexicographically smaller one.
