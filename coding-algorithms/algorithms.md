@@ -12,6 +12,40 @@
 
 ## Searching
 
+#### Longest Palindromic Substring
+
+Given a string `s`, return the longest palindromic substring in `s`.
+
+```cpp
+#include <algorithm>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+string longestPalindrome(string s) {
+  string t = "#";
+  for (char x : s) t += x, t += '#';
+  int n = t.size();
+  vector<int> m(n, 0);
+  string longest_palindrome = s.substr(0, 1);
+  for (int enp = 0, tc = 0, bp = 0; enp < n; enp++) {
+    if (enp < bp) m[enp] = min(bp - enp, m[2 * tc - enp]);
+    while (enp - m[enp]
+      && enp + m[enp] + 1 < n
+      && t[enp - m[enp] - 1] == t[enp + m[enp] + 1])
+      m[enp]++;
+    if (enp + m[enp] > bp) tc = enp, bp = enp + m[enp];
+    if (m[enp] > longest_palindrome.size()) {
+      longest_palindrome = "";
+      for (int i = enp - m[enp]; i < enp + m[enp] + 1; i++) if (t[i] != '#')
+        longest_palindrome += t[i];
+    }
+  }
+  return longest_palindrome;
+}
+```
+
 **[Knuth-Morris-Pratt](code/knuth-morris-pratt.cpp)**
 
 ```cpp
