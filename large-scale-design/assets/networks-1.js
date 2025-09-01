@@ -47,27 +47,6 @@ function init() {
   animate();
 }
 
-function drawNode(node) {
-  const nodeRadius = Math.min(canvas.width, canvas.height) * 0.06;
-  ctx.beginPath();
-  ctx.arc(node.x, node.y, nodeRadius, 0, 2 * Math.PI);
-  ctx.fillStyle = node.state;
-  ctx.fill();
-  ctx.strokeStyle = '#9ca3af';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  if (node.isFaulty) {
-    ctx.beginPath();
-    ctx.moveTo(node.x - nodeRadius / 2, node.y - nodeRadius / 2);
-    ctx.lineTo(node.x + nodeRadius / 2, node.y + nodeRadius / 2);
-    ctx.moveTo(node.x + nodeRadius / 2, node.y - nodeRadius / 2);
-    ctx.lineTo(node.x - nodeRadius / 2, node.y + nodeRadius / 2);
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 3;
-    ctx.stroke();
-  }
-}
-
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   for (let i = messages.length - 1; i >= 0; i--) {
@@ -100,7 +79,26 @@ function animate() {
       ctx.fill();
     }
   }
-  nodes.forEach(drawNode);
+  for (const node of nodes) {
+    const nodeRadius = Math.min(canvas.width, canvas.height) * 0.06;
+    ctx.beginPath();
+    ctx.arc(node.x, node.y, nodeRadius, 0, 2 * Math.PI);
+    ctx.fillStyle = node.state;
+    ctx.fill();
+    ctx.strokeStyle = '#9ca3af';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    if (node.isFaulty) {
+      ctx.beginPath();
+      ctx.moveTo(node.x - nodeRadius / 2, node.y - nodeRadius / 2);
+      ctx.lineTo(node.x + nodeRadius / 2, node.y + nodeRadius / 2);
+      ctx.moveTo(node.x + nodeRadius / 2, node.y - nodeRadius / 2);
+      ctx.lineTo(node.x - nodeRadius / 2, node.y + nodeRadius / 2);
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+    }
+  }
   animationFrameId = requestAnimationFrame(animate);
 }
 
