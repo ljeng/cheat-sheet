@@ -3,30 +3,26 @@ let systemState = {
   leader: 1
 };
 
-function simulateFailure() {
-  const healthyNodes = systemState.nodes.map((state, index) => 
-    state === 'healthy' ? index : -1).filter(index => index !== -1);
-  if (healthyNodes) {
-    const i = healthyNodes[Math.floor(Math.random() * healthyNodes.length)];
-    systemState.nodes[i] = 'failed';
+function simulate(states, message) {
+  const nodes = systemState.nodes.map((state, index) => 
+    state === states[0] ? index : -1).filter(index =>
+    index !== -1);
+  if (nodes.length) {
+    const i = nodes[Math.floor(Math.random() * nodes.length)];
+    systemState.nodes[i] = states[1];
     updateDisplay();
-    setTimeout(() => {alert(`Node ${i + 1} has failed! System is adapting...`);
-      }, 500);
+    setTimeout(() => {
+      alert(`Node ${i + 1} has ` + message);
+    }, 500);
   }
 }
 
+function simulateFailure() {
+  simulate(['healthy', 'failed'], `failed! System is adapting...`);
+}
+
 function simulateRecovery() {
-  const failedNodes = systemState.nodes.map((state, index) => 
-    state === 'failed' ? index : -1
-  ).filter(index => index !== -1);
-  if (failedNodes.length > 0) {
-    const i = failedNodes[Math.floor(Math.random() * failedNodes.length)];
-    systemState.nodes[i] = 'healthy';
-    updateDisplay();
-    setTimeout(() => {
-      alert(`Node ${i + 1} has recovered and rejoined the system!`);
-    }, 500);
-  }
+  simulate(['failed', 'healthy'], `recovered and rejoined the system!`);
 }
 
 function resetSystem() {
