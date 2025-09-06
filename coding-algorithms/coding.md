@@ -30,7 +30,7 @@ Returns: `int`
 
 `buf4[]` is a destination, not a source. The results from `read4` will be copied to `buf4[]`.
 
-Below is a high-level example of how read4 works:
+Below is a high-level example of how `read4` works:
 
 ![read4](https://assets.leetcode.com/uploads/2020/07/01/157_example.png)
 
@@ -67,14 +67,14 @@ int i = 0, m = 0;
 char buf4[4];
 
 int read(char *buf, int n) {
-    int j = 0;
-    while (j < n) {
-        if (!i) m = read4(buf4);
-        if (!m) break;
-        while (j < n && i < m) buf[j++] = buf4[i++];
-        if (i >= m) i = 0;
-    }
-    return j;
+  int j = 0;
+  while (j < n) {
+    if (!i) m = read4(buf4);
+    if (!m) break;
+    while (j < n && i < m) buf[j++] = buf4[i++];
+    if (i >= m) i = 0;
+  }
+  return j;
 }
 
 ```
