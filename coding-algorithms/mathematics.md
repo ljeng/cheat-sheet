@@ -169,6 +169,40 @@ def maxPoints(points):
 
 ## Probability
 
+#### Random Pick with Weight
+
+You are given a *0-indexed* array of positive integers `w` where `w[i]` describes the *weight* of the `i`th index. You need to implement the function `pickIndex()`, which *randomly* picks an index in the range `[0, w.length - 1]`[^1] and returns it. The *probability* of picking an index `i` is `w[i] / sum(w)`.
+
+- For example, if `w = [1, 3]`, the probability of picking index `0` is `1 / (1 + 3) = 0.25`[^2], and the probability of picking index `1` is `3 / (1 + 3) = 0.75`[^3].
+
+```python
+import collections
+
+Alias = collections.namedtuple('Alias', ['indexes', 'alias'])
+
+class Solution:
+    def __init__(self, w):
+        self.sum_w = sum(w)
+        full = [dict(), dict()]
+        for i, x in enumerate(w):
+            x *= len(w)
+            full[x >= self.sum_w][i] = x
+        self.aliases = []
+        while all(full):
+            under, underweight = full[0].popitem()
+            over, overweight = full[1].popitem()
+            weight = underweight + overweight - self.sum_w
+            full[weight >= self.sum_w][over] = weight
+            self.aliases.append(Alias(indexes=[under, over], alias=underweight))
+        for over in full[1]:
+            self.aliases.append(Alias(indexes=[over], alias=self.sum_w))
+
+    def pickIndex(self):
+        alias = choice(self.aliases)
+        return alias.indexes[uniform(0, self.sum_w) > alias.alias]
+
+```
+
 ## Discrete Math
 
 ## Combinatorics
@@ -225,3 +259,7 @@ import math
 math.comb(n, k)
 
 ```
+
+[^1]: *inclusive*
+[^2]: `25%`
+[^3]: `75%`
