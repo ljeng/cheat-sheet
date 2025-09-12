@@ -73,17 +73,25 @@ def shortestPathBinaryMatrix(grid):
 
 ```
 
-[Network Delay Time](https://leetcode.com/problems/network-delay-time)
+#### Network Delay Time
+
+You are given a network of `n` nodes, labeled from `1` to `n`. You are also given `times`, a list of travel times as directed edges `times[i] = (u[i], v[i], w[i])`, where `u[i]` is the source node, `v[i]` is the target node, and `w[i]` is the time it takes for a signal to travel from source to target. We will send a signal from a given node `k`. Return the *minimum* time it takes for all the `n` nodes to receive the signal. If it is impossible for all the `n` nodes to receive the signal, return `-1`.
+
 ```python
-import collections
+import numpy as np
+from scipy import sparse
 
-
-def networkDelayTime(times, N, K):
-    E = collections.defaultdict(dict)
+def networkDelayTime(times, n, k):
+    source, target, time = [], [], []
     for u, v, w in times:
-        E[u][v] = w
-    time = max(Graph(set(range(1, N + 1)), E).dijkstra(K).values())
-    return int(time) if time < float('inf') else -1
+        source.append(u - 1)
+        target.append(v - 1)
+        time.append(w)
+    min_time = sparse.csgraph.dijkstra(sparse
+            .csr_matrix((time, (source, target)), shape = (n, n)),
+        indices = k - 1)
+    return -1 if np.isinf(min_time).any() else int(np.max(min_time))
+
 ```
 
 [Bus Routes](https://leetcode.com/problems/bus-routes)
