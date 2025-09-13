@@ -94,22 +94,6 @@ def networkDelayTime(times, n, k):
 
 ```
 
-[Bus Routes](https://leetcode.com/problems/bus-routes)
-```python
-import collections
-import itertools
-
-
-def numBusesToDestination(routes, S, T):
-    E = collections.defaultdict(dict)
-    for route in routes:
-        for u, v in itertools.permutations(route, 2):
-            if u != v:
-                E[u][v] = 1
-    dist = Graph(set(itertools.chain(*routes)), E).dijkstra(S)
-    return dist[T] if T in dist and T < float('inf') else -1
-```
-
 [Snakes and Ladders](https://leetcode.com/problems/snakes-and-ladders)
 ```python
 import collections
@@ -545,6 +529,39 @@ def minMutation(start, end, bank):
     return mutations if mutations < float('inf') else -1
 ```
 
+#### Bus Routes
+
+You are given an array `routes` representing bus `routes` where `routes[i]` is a bus route that the `i`<super>th</super> bus repeats forever.
+
+- For example, if `routes[0] = [1, 5, 7]`, this means that the `0`<super>th</super> bus travels in the sequence `1 -> 5 -> 7 -> 1 -> 5 -> 7 -> 1 -> ...` forever.
+
+You will start at the bus stop `source`[^6], and you want to go to the bus stop `target`. You can travel between bus stops by buses only. Return the least number of buses you must take to travel from `source `to `target`. Return `-1` if it is not possible.
+
+```python
+import collections
+
+def numBusesToDestination(routes, source, target):
+    graph = collections.defaultdict(set)
+    for i, route in enumerate(routes):
+        for stop in route:
+           graph[stop].add(i)
+    queue = collections.deque([(source, 0)])
+    traveled_routes = set()
+    traveled_stops = {source}
+    while queue:
+        stop, buses = queue.popleft()
+        if stop == target: return buses
+        for i in graph[stop]:
+            if i in traveled_routes: continue
+            traveled_routes.add(i)
+            for j in routes[i]:
+                if j not in traveled_stops:
+                    traveled_stops.add(j)
+                    queue.append((j, buses + 1))
+    return -1
+
+```
+
 ### Depth-first Search
 
 **toposort**()
@@ -610,3 +627,4 @@ def closedIsland(grid):
 [^3]: they are different and they share an edge or a corner
 [^4]: all the cells are `0`'s
 [^5]: **Lexicographically smaller**: A string `a` is lexicographically smaller than a string `b` if in the first position where `a` and `b` differ, string `a` has a letter that appears earlier in the alien language than the corresponding letter in `b`. If the first `min(a.length, b.length)` characters do not differ, then the shorter string is the lexicographically smaller one.
+[^6]: You are not on any bus initially
