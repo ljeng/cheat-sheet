@@ -118,15 +118,6 @@ def snakesAndLadders(board):
     return moves if moves < float('inf') else -1
 ```
 
-[Shortest Path Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix)
-```python
-def shortestPathBinaryMatrix(grid):
-    dist = to_graph(grid, color=0, k=8).dijkstra((0, 0))
-    m = len(grid) - 1
-    k = m, m
-    return dist[k] + 1 if k in dist and dist[k] < float('inf') else -1
-```
-
 [Shortest Path with Alternating Colors](https://leetcode.com/problems/shortest-path-with-alternating-colors)
 ```python
 import collections
