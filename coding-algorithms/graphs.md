@@ -185,20 +185,30 @@ Apply the Bellman-Ford algorithm. Return a `collections.defaultdict(dict)` objec
 
 Apply the Floyd-Warshall algorithm. Return a dictionary in the form of `{u: {v: distance}}` where there is some `distance` from vertex `u` to vertex `v`.
 
-[Find the City With the Smallest Number of Neighbors at a Threshold Distance](https://leetcode.com/contest/weekly-contest-173/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance)
+#### Find the City With the Smallest Number of Neighbors at a Threshold Distance
+
+There are `n` cities numbered from `0` to `n - 1`. Given the array edges where `edges[i] = [from[i], to[i], weight[i]]` represents a bidirectional and weighted edge between cities [from[i]] and [to[i]], and given the integer `distanceThreshold`. Return the city with the smallest number of cities that are reachable through some path and whose distance is *at most* `distanceThreshold`, If there are multiple such cities, return the city with the greatest number. The distance of a path connecting cities *`i`* and *`j`* is equal to the sum of the edges' weights along that path.
+
 ```python
-import collections
+import numpy as np
+import scipy.sparse.csgraph.floyd_warshall
+import sys
 
+def findTheCity(n, edges, distanceThreshold)
+    csgraph = np.full((n, n), maxsize, dtype=int)
+    np.fill_diagonal(csgraph, 0)
+    for from_, to, weight in edges:
+        csgraph[from_, to] = csgraph[to, from_] = weight
+    distance = scipy.sparse.csgraph.floyd_warshall(csgraph, directed=False)
+    city = -1
+    smallest_reachable = sys.maxsize
+    for i, d in enumerate(distance):
+        reachable = np.sum(d <= distanceThreshold) - 1
+        if (reachable, city) < (smallest_reachable, i):
+            smallest_reachable = reachable
+            city = i
+    return city
 
-def findTheCity(n, edges, distanceThreshold):
-    V = set(range(n))
-    E = collections.defaultdict(dict)
-    for from_, to_, weight in edges:
-        E[from_][to_] = weight
-    dist = Graph(V, E, directed=False).floyd_warshall()
-    return min(V, key = lambda y: (sum(map(
-        lambda x: x <= distanceThreshold, dist[y].values()
-    )), -y))
 ```
 
 ### Search
