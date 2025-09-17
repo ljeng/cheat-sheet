@@ -1,20 +1,20 @@
 import java.util.*;
 
-class FibonacciHeap<T> {
-  private Node<T> min;
+class FibonacciHeap<E> {
+  private Node<E> min;
   private int n;
   
-  public static class Node<T> {
+  public static class Node<E> {
     T data;
     int key;
-    Node<T> parent;
-    Node<T> child;
-    Node<T> left;
-    Node<T> right;
+    Node<E> parent;
+    Node<E> child;
+    Node<E> left;
+    Node<E> right;
     int degree;
     boolean mark;
     
-    Node(T data, int key) {
+    Node(E data, int key) {
       this.data = data;
       this.key = key;
       this.left = this;
@@ -27,33 +27,31 @@ class FibonacciHeap<T> {
     n = 0;
   }
   
-  public boolean isEmpty() {
+  public boolean empty() {
+    return min == null;
   }
   
-  public Node<T> insert(T data, int key) {
+  public Node<E> insert(E data, int key) {
   }
   
-  public Node<T> extractMin() {
+  public Node<E> extractMin() {
   }
   
-  public void decreaseKey(Node<T> x, int k) {
+  public void decreaseKey(Node<E> x, int k) {
   }
   
-  private void addToRootList(Node<T> node) {
+  private void add(Node<E> node) {
   }
   
-  private void removeFromRootList(Node<T> node) {
+  private void remove(Node<E> node) {
   }
   
   private void consolidate() {
   }
   
-  private void link(Node<T> y, Node<T> x) {
+  private void cut(Node<E> x, Node<E> y) {
   }
   
-  private void cut(Node<T> x, Node<T> y) {
-  }
-  
-  private void cascadingCut(Node<T> y) {
+  private void cascadingCut(Node<E> y) {
   }
 }
