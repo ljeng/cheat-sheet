@@ -32,6 +32,14 @@ class FibonacciHeap<E> {
   }
   
   public Node<E> insert(E data, int key) {
+    Node<T> node = new Node<>(data, key);
+    if (min == null) min = node;
+    else {
+      add(node);
+      if (node.key < min.key) min = node;
+    }
+    n++;
+    return node;
   }
   
   public Node<E> extractMin() {
