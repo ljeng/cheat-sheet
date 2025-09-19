@@ -49,6 +49,10 @@ class FibonacciHeap<E> {
   }
   
   private void add(Node<E> node) {
+    node.left = min;
+    node.right = min.right;
+    min.right.left = node;
+    min.right = node;
   }
   
   private void remove(Node<E> node) {
