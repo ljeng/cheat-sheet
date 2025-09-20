@@ -56,6 +56,8 @@ class FibonacciHeap<E> {
   }
   
   private void remove(Node<E> node) {
+    node.left.right = node.right;
+    node.right.left = node.left;
   }
   
   private void consolidate() {
