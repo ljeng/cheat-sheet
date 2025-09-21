@@ -43,6 +43,26 @@ class FibonacciHeap<E> {
   }
   
   public Node<E> extractMin() {
+    Node<E> current = min;
+    if (current != null) {
+      if (current.child != null) {
+        Node<E> child = z.child;
+        while (child != current.child) {
+          Node<E> next = child.right;
+          add(child);
+          child.parent = null;
+          child = next;
+        }
+      }
+      remove(current);
+      if (current == current.right) min = null;
+      else {
+        min = current.right;
+        consolidate();
+      }
+      n--;
+    }
+    return currents;
   }
   
   public void decreaseKey(Node<E> x, int k) {
