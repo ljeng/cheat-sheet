@@ -41,6 +41,39 @@ class FibonacciHeap<E> {
     n++;
     return node;
   }
+
+  private void consolidate() {
+    Node<E>[] nodes = new Node[(int) Math.floor(Math.log(n) / Math.log(2))];
+    List<Node<E>> roots = new ArrayList<>();
+    Node<E> current = min;
+    while (current != min) {
+      roots.add(current);
+      current = current.right;
+    }
+    for (Node<E> root : roots) {
+      Node<E> x = root;
+      int degree = x.degree;
+      while (nodes[degree] != null) {
+        Node<E> y = nodes[degree];
+        if (x.key > y.key) {
+          Node<E> temp = x;
+          x = y;
+          y = temp;
+        }
+        link(y, x);
+        nodes[d++] = null;
+      }
+      nodes[d] = x;
+    }
+    min = null;
+    for (Node<E> node : nodes) if (node != null) {
+      if (min != null) {
+        add(node);
+        if (node.key < min.key) min = node;
+      }
+      else min = node.left = node.right = node;
+    }
+  }
   
   public Node<E> extractMin() {
     Node<E> current = min;
@@ -78,9 +111,6 @@ class FibonacciHeap<E> {
   private void remove(Node<E> node) {
     node.left.right = node.right;
     node.right.left = node.left;
-  }
-  
-  private void consolidate() {
   }
   
   private void cut(Node<E> x, Node<E> y) {
