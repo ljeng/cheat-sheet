@@ -5,7 +5,7 @@ class FibonacciHeap<E> {
   private int n;
   
   public static class Node<E> {
-    T data;
+    E data;
     int key;
     Node<E> parent;
     Node<E> child;
@@ -96,6 +96,19 @@ class FibonacciHeap<E> {
       n--;
     }
     return currents;
+  }
+
+  private void link(Node<E> x, Node<E> y) {
+    remove(x);
+    x.left = x.right = x;
+    if (y.child != null) {
+      x.left = y.child, x.right = y.child.right;
+      y.child.right = y.child.right.left = x;
+    }
+    else y.child = x;
+    x.parent = y;
+    y.degree++;
+    x.mark = false;
   }
   
   public void decreaseKey(Node<E> x, int k) {
