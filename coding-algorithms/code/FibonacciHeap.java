@@ -127,6 +127,14 @@ class FibonacciHeap<E> {
   }
   
   private void cut(Node<E> x, Node<E> y) {
+    if (x != x.right) {
+      x.left.right = x.right, x.right.left = x.left;
+      if (y.child == x) y.child = x.right;
+    } else y.child = null;
+    y.degree--;
+    add(x);
+    x.parent = null;
+    x.mark = false;
   }
   
   private void cascadingCut(Node<E> y) {
