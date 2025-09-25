@@ -137,6 +137,14 @@ class FibonacciHeap<E> {
     x.mark = false;
   }
   
-  private void cascadingCut(Node<E> y) {
+  private void cascadingCut(Node<E> x) {
+    Node<E> y = x.parent;
+    if (y != null) {
+      if (x.mark) {
+        cut(x, y);
+        cascadingCut(y);
+      }
+      else x.mark = true;
+    }
   }
 }
