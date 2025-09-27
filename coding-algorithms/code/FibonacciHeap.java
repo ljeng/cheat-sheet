@@ -112,6 +112,13 @@ class FibonacciHeap<E> {
   }
   
   public void decreaseKey(Node<E> x, int k) {
+    x.key = k;
+    Node<E> y = x.parent;
+    if (y != null && x.key < y.key) {
+      cut(x, y);
+      cascadingCut(y);
+    }
+    if (x.key < min.key) min = x;
   }
   
   private void add(Node<E> node) {
