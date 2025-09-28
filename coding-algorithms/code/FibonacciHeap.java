@@ -134,20 +134,25 @@ class FibonacciHeap<E> {
   }
   
   private void cascadingCut(Node<E> x) {
-    Node<E> y = x.parent;
-    if (y != null) {
-      if (x.mark) {
-        if (x != x.right) {
-          x.left.right = x.right, x.right.left = x.left;
-          if (y.child == x) y.child = x.right;
+    Node<E> current = x;
+    while (current != null) {
+      Node<E> y = current.parent;
+      if (y == null) break;
+      if (current.mark) {
+        if (current != current.right) {
+          current.left.right = current.right;
+          current.right.left = current.left;
+          if (y.child == current) y.child = current.right;
         } else y.child = null;
         y.degree--;
-        add(x);
-        x.parent = null;
-        x.mark = false;
-        cascadingCut(y);
+        add(current);
+        current.parent = null;
+        current.mark = false;
+        current = y;
+      } else {
+        current.mark = true;
+        break;
       }
-      else x.mark = true;
     }
   }
 }
