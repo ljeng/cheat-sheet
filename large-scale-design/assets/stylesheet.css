@@ -9,11 +9,12 @@ table, th, td {
 }
 
 blockquote {
-  display: inline-block;
+  display: block;
   margin: 2em;
   padding: 2em;
   font-style: italic;
   position: relative;
+  white-space: pre-wrap;
 }
 
 blockquote::before {
