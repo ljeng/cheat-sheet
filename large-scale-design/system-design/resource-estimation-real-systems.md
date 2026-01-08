@@ -1,6 +1,6 @@
 # Resource Estimation with Real Systems
 
-The engineering technique of "back-of-the-envelope" calculations is standard fare for practicing engineers. Unfortunately, it's neglected in computing. It was in the middle of a conversaton on software engineering that Bob Martin asked, "How much water flows out of the Mississippi River in a day?" Near its mouth, the river is about a mile wide and 20 feet deep[^01]. The flow rate is 5 mph[^02].
+The engineering technique of "back-of-the-envelope" calculations is standard fare for practicing engineers. Unfortunately, it's neglected in computing. It was in the middle of a conversation on software engineering that Bob Martin asked, "How much water flows out of the Mississippi River in a day?" Near its mouth, the river is about a mile wide and 20 feet deep[^01]. The flow rate is 5 mph[^02].
 
 $$1 \text{ mile} \times \frac{1}{250} \text{ mile} \times 120 \frac{\text{miles}}{\text{day}} \
 \approx 0.48 \frac{\text{miles}^3}{\text{day}}$$
@@ -18,7 +18,7 @@ The word "average" is commonly used loosely to influence public opinion. When yo
 | **median**  | The middle value; half the group is above it, half below. |
 | **mode**    | The most frequently occurring value. |
 
-Let's say you're looking to buy property not far from the Watchung Mountain in which I live. Most of my neighbors are small farmers. But three of the inhabitants are millionaire weekenders. I tell you that the average income in this neighborhood is \$65K a year, and that handsome figure sticks in your mind. As a member of some taxpayers' committee, I'm circulating a petition to keep the tax rate down or assessments down. My plea is that we can't afford the increase: the average income is only \$25k. Both these figures are legitimate averages. At the same time, one of them is misleading as the millionaire weekenders boost the total income enormously. If you draw a curve to represent a normal distribution, the **mean**, **median**, and mode fall at the same point. One kind of average is as good as another for describing the heights of men. But for describing their pocketbooks it's not. Instead of being symmetrical, this would be skewed. The mean would be quite a distance from the median.
+Let's say you're looking to buy property not far from the Watchung Mountain in which I live. Most of my neighbors are small farmers. But three of the inhabitants are millionaire weekenders. I tell you that the average income in this neighborhood is \$65K a year, and that handsome figure sticks in your mind. As a member of some taxpayers' committee, I'm circulating a petition to keep the tax rate down or assessments down. My plea is that we can't afford the increase: the average income is only \$25K. Both these figures are legitimate averages. At the same time, one of them is misleading as the millionaire weekenders boost the total income enormously. If you draw a curve to represent a normal distribution, the **mean**, **median**, and mode fall at the same point. One kind of average is as good as another for describing the heights of men. But for describing their pocketbooks it's not. Instead of being symmetrical, this would be skewed. The mean would be quite a distance from the median.
 
 You read an announcement by a corporation executive or business proprietor that the average pay of people who work in his establishment is some figure. You may be getting nothing more revealing than the average of the proprietor's \$370K income and the salaries of a crew of underpaid workers. The **mode** is \$16K.
 
@@ -34,7 +34,7 @@ Assume one person in 100 suffers from a disease. The clinic director pools 50 sa
 
 The spiel that goes with chuck-a-luck can be very persuasive. You pick a number from 1 to 6 and the operator rolls three dice. You have three chances to win. The expected value of your winnings is
 
-$$\frac{1}{2} - \frac{{(6 - 1)}^3}{6^3} = \frac{1}{2} - \frac{125}{216} \approx -\text{\$}0.079$$
+$$\frac{1}{2} - \frac{(6 - 1)^3}{6^3} = \frac{1}{2} - \frac{125}{216} \approx -\text{\$}0.079$$
 
 Thus, 125 out of 216 you play chuck-a-luck, you'll lose $1.
 
