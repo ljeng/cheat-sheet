@@ -66,7 +66,7 @@
         - [Simplicity](large-scale-design/system-design/simplicity.md)
         - [Limitations](large-scale-design/system-design/limitations.md)
         - [Robustness](large-scale-design/system-design/robustness.md)
-        - [Tradeoffs](large-scale-design/system-design/tradeoffs.md)
+        - [Trade-offs](large-scale-design/system-design/tradeoffs.md)
         - [How the Internet Works](large-scale-design/system-design/how-internet-works.md)
             - [Routers](large-scale-design/system-design/how-internet-works.md#routers)
             - [Domain Name Servers](large-scale-design/system-design/how-internet-works.md#domain-name-servers)
