@@ -1,82 +1,58 @@
 # Traversing a Graph
 
-The use of the same data value as a primary key and a secondary key is a basic concept. This reflects real-world relationships and re-establishes those relationships for processing. A programmer can:
+*Input* and *output* were defined by the movement of data from tape into the computer's memory in the era of sequential file processing. That has been reversed today: input now means *into the database*. This revolution in thinking transforms the programmer from a stationary viewer - watching objects pass through the CPU core as a passive observer - into a **mobile navigator**. Modern programmers are empowered to probe a multi-dimensional data space at will, starting from any known record and following relationships to discover insights.
 
-1. start at the beginning or a known record and access records sequentially.
-1. use a database key for direct access to a record's physical location.
-1. use a primary data key.
-1. use a secondary data key to access all records with that value.
-1. traverse from a set's owner to its member records.
-1. traverse between members of a set.
-1. start from any member and access the owner of the set.
+Modern framework architecture eschews archaic patterns, and **TinkerPop3** introduces the **traverser** to facilitate this navigation. This is the engine that orchestrates steps within a query, yet remains stateless. A traverser garners all necessary metadata about its journey, including the current object being processed, the path history[^1], and loop counts[^2]. Path calculation is memory-intensive. An array of previously seen objects is stored in each path of the respective traverser. Traversal strategies automatically analyze queries to determine if path metadata is required; if not, these calculations are disabled to save space. Never rely on a specific iteration order between TinkerPop3 releases - or even within a single release - as traversal optimizations alter the underlying data flow.
 
-Data structure sets are declared and maintained. They contribute to programmers the capability to:
-
-* associate records into sets.
-* use these sets as retrieval paths.
+The navigator mindset is conceptual, and the underlying storage must support movement. A property graph is modeled to facilitate bidirectional traversal even within a relational[^3] schema.
 
 ```sql
-CREATE TABLE vertices (
-    vertex_id integer PRIMARY KEY,
-    properties json);
-CREATE TABLE edges (
-    edge_id integer PRIMARY KEY,
-    tail_vertex integer REFERENCES vertices (vertex_id),
-    head_vertex integer REFERENCES vertices (vertex_id),
-    label text,
-    properties json);
+CREATE TABLE vertices (vertex_id integer PRIMARY KEY, 
+      properties json);
+CREATE TABLE edges (edge_id integer PRIMARY KEY,
+      tail_vertex integer REFERENCES vertices (vertex_id),
+      head_vertex integer REFERENCES vertices (vertex_id),
+      label text,
+      properties json);
 CREATE INDEX edges_tails ON edges (tail_vertex);
 CREATE INDEX edges_heads ON edges (head_vertex);
 
 ```
+ 
+A programmer finds incoming and outgoing edges by indexing the `tail_vertex` and `head_vertex` like a novice navigating by crude landmarks, whereas the navigator follows a path through a chain of vertices forward and backward.
 
-*Example 1*
+A full-fledged navigator utilizes convenient entry points into the graph.
 
-For any vertex, you can retrieve both incoming and outgoing edges, thus traversing the graph forward and backward. That's why Example TG-1 has indexes on `tail_vertex` and `head_vertex`.
+1. *Direct access*: entering the database via a database key[^4]
+1. *Primary key entry*: accessing data via indexed randomized access techniques
+1. *Secondary key entry*: accessing all records sharing a data value
+1. *Set navigation*: moving from an owner record to all member records[^5]
+1. *Directional movement*: moving to the next member within a set or moving from a member back to its owner
 
-The directions of "in" and "out" were reversed. Where the input notion of the sequential file world meant "into the computer from tape," the new input notion became "into the database." This revolution in thinking changes the programmer from a stationary observer to a navigator traversing the database. Processing a single transaction involves a path through the database. A record would be used to gain access to other records. Each of these records is used in turn as a point for examining other sets. The [Neo4j Traversal API](https://neo4j.com/docs/) is a callback-based, lazily executed way for specifying these movements in Java. [Some traversal examples are collected.](https://neo4j.com/docs/2.0.0/tutorials-java-embedded-traversal.html) We want to train programmers to navigate in an *n*-dimensional data space. Neo4j's graph algorithms component contains implementations of common graph algorithms like:
+This ability transmutes records into data structure sets that beckon the programmer to use these sets as retrieval paths, turning a single transaction into a sophisticated journey through the data.
 
-- shortest paths
-- all paths
-- all simple paths
-- Dijkstra's
-- A*
-
-This "traverser" concept is new in TinkerPop3, providing the means by which steps remain stateless. A traverser maintains all the metadata about the traversal – how many times the traverser has gone through a loop, path history, the current object, etc. Path calculation is costly in terms of space. The traverser stores an array of previously visited objects. Thus, a traversal strategy analyzes whether path metadata is required. If not, path calculations are turned off. Never rely on the iteration order in TinkerPop3 traversals. Even within a release, traversal optimizations may alter the flow.
-
-[Cypher](https://neo4j.com/docs/2.0.0/cypher-query-lang.html), a powerful declarative query language, queries the graph. [TinkerPop3's `GraphTraversal` JavaDoc](https://tinkerpop.apache.org/javadocs/3.4.6/core/org/apache/tinkerpop/gremlin/process/traversal/dsl/graph/GraphTraversal.html) lists all steps and their descriptions. The [Gremlin Console](https://tinkerpop.apache.org/docs/3.2.3/reference/#gremlin-console) can be used for these steps.
+Modern graph databases proffer high-level APIs to execute these navigations without manual pointer management. Neo4j tenders a dedicated **Traversal API**[^6] and the Cypher Query Language, a declarative way to query graphs. It also encompasses a library of graph algorithms for navigation, including shortest path / all path, Dijkstra, and all simple paths. Traversals are composed of chains of steps in Gremlin. Gremlin employs shorthand syntax for ease of use where parentheses are omitted for zero-argument method calls.
 
 ```groovy
-gremlin> g.V // (1)
+gremlin> g.V 
   ==>v[1]
   ==>v[2]
-  ==>v[3]
-  ==>v[4]
-  ==>v[5]
-  ==>v[6]
-
-gremlin> g.V.name // (2)
+gremlin> g.V.name 
   ==>marko
   ==>vadas
-  ==>lop
-  ==>josh
-  ==>ripple
-  ==>peter
-
-gremlin> g.V.outE.weight // (3)
-  ==>0.4
+gremlin> g.V.outE.weight 
   ==>0.4
   ==>0.5
-  ==>1.0
-  ==>1.0
-  ==>0.2
 
 ```
 
-1. `g.V` retrieves all vertices. There's no need for parentheses.
-1. `g.V.name` is interpreted as `g.V().values('name')`.
-1. A chain of zero-argument step calls is followed by a property value call.
+It's vital to hew to provided standard steps when building domain-specific languages, lest practitioners inadvertently obviate common decoration strategies that correctly reason on the traversal sequence.
 
-Domain-specific language authors should leverage the steps, as then the common optimization and decoration strategies can reason on the underlying traversal sequence. If new steps are introduced, these optimizations may not function properly.
+We must develop a minimum-energy science for database access as we move forward - a paradigm intrinsic not just to the mechanics of traversing an existing database, but to the architecture of building databases to fit ever-changing access patterns. The goal remains the same: to equip the navigator with the most efficient path through an *n*-dimensional data space.
 
-Physics yields minimum-energy solutions; a similar science must be developed for database access. This includes the traversal of existing databases, building databases, and restructuring them to best fit the changing access patterns.
+[^1]: the sequence of steps taken
+[^2]: how many times a cycle has been executed
+[^3]: SQL
+[^4]: a permanent virtual memory address assigned at record creation
+[^5]: converting a primary key into a secondary key
+[^6]: a callback-based, lazily-executed Java API
