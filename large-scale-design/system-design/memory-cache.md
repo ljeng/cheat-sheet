@@ -13,15 +13,15 @@ Memcached is used purely as a volatile cache, but most in-memory databases embra
 - **replicating** the in-memory state to other machines so data survives a single-node failure
 - *specialized hardware*: using battery-backed RAM ensures memory contents survive a power failure.
 
-It's common to place an application-managed caching layer[^mc1] in front of a database. It is normally the application code's responsibility to keep the cache in sync with the main database in this model.
+It's common to place an app-managed caching layer[^1] in front of a database. It is normally the app code's responsibility to keep the cache in sync with the main database in this model.
 
 ---
 
 H-Store is a research database system designed from the ground up for high-throughput OLTP workloads. It operates on a shared-nothing cluster of nodes and is built on the principle that OLTP transactions are short-lived and are executed serially on a single CPU core to eliminate concurrency overhead.
 
-Data is partitioned across a grid of computers. Each node is independent and manages its own data. Each CPU core on a node is treated as an independent, **single-threaded execution** site. This design eliminates unnecessary latching, creating a simpler codebase. H-Store assumes that applications interact with the database via pre-defined **stored procedures**. This minimizes network round-trips and allows for transaction analysis and optimization at definition time.
+Data is partitioned across a grid of computers. Each node is independent and manages its own data. Each CPU core on a node is treated as an independent, **single-threaded execution** site. This design eliminates unnecessary latching, creating a simpler codebase. H-Store assumes that apps interact with the database via pre-defined **stored procedures**. This minimizes network round-trips and allows for transaction analysis and optimization at definition time.
 
-Many datasets fit in memory, but H-Store requires a  solution for cases where the database exceeds available RAM. This architecture is called **anti-caching**, as it's the inverse of a buffer pool. Anti-caching spills cold data from memory to disk instead of pulling hot data from disk into memory. A data tuple resides exclusively in one location in this model: either in main memory or on disk. It's never copied between the two. The DBMS monitors the amount of memory used. It "evicts” the least recently used (LRU) tuples to make space when the size of the database relative to the amount of available memory on the node exceeds some administrator-defined threshold.
+Many datasets fit in memory, but H-Store requires a  solution for cases where the database exceeds available RAM. This architecture is called **anti-caching**, as it's the inverse of a buffer pool. Anti-caching spills cold data from memory to disk instead of pulling hot data from disk into memory. A data tuple resides exclusively in one location in this model: either in main memory or on disk. It's never copied between the two. The DBMS monitors the amount of memory used. It evicts the least recently used (LRU) tuples to make space when the size of the database relative to the amount of available memory on the node exceeds some admin-defined threshold.
 
 ### Eviction Process
 
@@ -29,7 +29,7 @@ The system maintains a separate LRU chain per table that is local to a partition
 
 ### Retrieval Process
 
-When a transaction attempts to access a tuple marked as evicted, the system intercepts the request. The transaction is switched into a **"pre-pass" mode**. It executes without making changes in this mode, simply to identify *all* the evicted data it needs. The transaction is **aborted**[^mc2] after the pre-pass. The system then issues an asynchronous request to **fetch** the required data blocks from disk in the background. The original transaction is **restarted** and executes to completion once the data is loaded back into the in-memory tables, this time with all its data in memory.
+When a transaction attempts to access a tuple marked as evicted, the system intercepts the request. The transaction is switched into a **"pre-pass" mode**. It executes without making changes in this mode, simply to identify *all* the evicted data it needs. The transaction is **aborted**[^2] after the pre-pass. The system then issues an asynchronous request to **fetch** the required data blocks from disk in the background. The original transaction is **restarted** and executes to completion once the data is loaded back into the in-memory tables, this time with all its data in memory.
 
 ---
 

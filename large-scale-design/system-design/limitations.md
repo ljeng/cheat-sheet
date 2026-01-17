@@ -1,6 +1,6 @@
 # Limitations
 
-It's **important to monitor** whether your databases are returning up-to-date results even if an application can tolerate stale reads. Your replication should alert you so that you can investigate the cause[^1] if it falls behind. You can measure replication lag by subtracting a follower's position from the leader's. Monitoring is more difficult in leaderless replication because there's no fixed order in which writes are applied. There has been some research on measuring staleness depending on `n`, `w`, and `r`, but it's not yet a common practice. Eventual consistency is a vague guarantee. For operability, it's important to **quantify "eventual."**
+It's **important to monitor** whether your databases are returning up-to-date results even if an app can tolerate stale reads. Your replication should alert you so that you can investigate the cause[^1] if it falls behind. You can measure replication lag by subtracting a follower's position from the leader's. Monitoring is more difficult in leaderless replication because there's no fixed order in which writes are applied. There has been some research on measuring staleness depending on `n`, `w`, and `r`, but it's not yet a common practice. Eventual consistency is a vague guarantee. For operability, it's important to **quantify "eventual."**
 
 *Figure 1*
 
@@ -48,7 +48,7 @@ WARS **doesn't capture effects of common anti-entropy processes** (e.g., read-re
 
 Truly deleting data is surprisingly hard, since copies can live in many places, and backups are often deliberately immutable. You sometimes have to try. Data protection legislation may require erroneous information to be removed. **Humans** need a "snapshot," rather than noisy real-time data changes.
 
-XA transactions introduce operational problems. If the transaction coordinator isn't replicated, it's a **single point of failure** for the entire system. Many coordinator implementations aren't highly available by default or only have rudimentary replication support. The coordinator's logs become a crucial part of the durable system state - as important as the databases themselves. Such application servers are no longer stateless. XA is necessarily the **lowest common denominator**. For example, it can't detect deadlocks across different systems, and it doesn't work with serializable snapshot isolation. The tendency to **amplify failures** runs counter to building fault-tolerant systems. There are alternative methods that allow us to achieve consistency across systems without the pain of heterogeneous distributed transactions.
+XA transactions introduce operational problems. If the transaction coordinator isn't replicated, it's a **single point of failure** for the entire system. Many coordinator implementations aren't highly available by default or only have rudimentary replication support. The coordinator's logs become a crucial part of the durable system state - as important as the databases themselves. Such app servers are no longer stateless. XA is necessarily the **lowest common denominator**. For example, it can't detect deadlocks across different systems, and it doesn't work with serializable snapshot isolation. The tendency to **amplify failures** runs counter to building fault-tolerant systems. There are alternative methods that allow us to achieve consistency across systems without the pain of heterogeneous distributed transactions.
 
 [^1]: network issues, overloaded nodes
 [^2]: such as read-your-writes, monotonic reads, or consistent prefix reads
@@ -57,4 +57,4 @@ XA transactions introduce operational problems. If the transaction coordinator i
 [^5]: used for efficient data synchronization
 [^6]: node failures, network partitions
 [^7]: LSM trees, CouchDB, Datomic
-[^8]: which prioritizes reently-updated blocks
+[^8]: which prioritizes recently-updated blocks

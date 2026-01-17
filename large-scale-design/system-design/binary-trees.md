@@ -89,7 +89,7 @@ graph TD
 
 The **decision tree** (Example 3) uses a binary tree to encode a sequence of decisions. Implement machine learning classifiers. It is constructed. Each internal node constitutes a conditional test[^11], and its two children select the subsequent action or determine the next test for the true-and-false outcomes. The leaves constitute the final classification. Decision trees are highly transparent[^12], which is a major advantage for debugging business logic or complying with regulations. Complex decision trees prove brittle and difficult to update. A small change in an early rule can have cascading, unintended consequences. Traversal is very fast[^13], making it suitable for real-time decision-making applications like telephony and packet filtering.
 
-*Example BT-4*
+*Example 4*
 
 ```mermaid
 graph TD
@@ -109,7 +109,7 @@ graph TD
 
 ```
 
-**Huffman coding** (Example 4) uses a binary tree's structure to institute a variable-length prefix code for data compression. Compress data for storage or network transmission. Huffman coding builds a binary tree based on the frequency of symbols in the input data. Frequent symbols are placed closer to the root, resulting in shorter bit codes. The path from the root to a symbol's leaf node[^14] defines its unique binary code. Highly effective for data with a skewed frequency distribution. It's a component in widely used compression standards like *gzip* and DEFLATE. The frequency table, or a smattering of metadata about the tree itself, must be transmitted along with the compressed data so the decompressor can rebuild the exact same tree. This adds a fixed **overhead** that proves counterproductive for very small payloads. It's a two-pass algorithm[^15], which isn't suitable for pure streaming applications without adaptive variants.
+**Huffman coding** (Example 4) uses a binary tree's structure to institute a variable-length prefix code for data compression. Compress data for storage or network transmission. Huffman coding builds a binary tree based on the frequency of symbols in the input data. Frequent symbols are placed closer to the root, resulting in shorter bit codes. The path from the root to a symbol's leaf node[^14] defines its unique binary code. Highly effective for data with a skewed frequency distribution. It's a component in widely used compression standards like *gzip* and DEFLATE. The frequency table, or a smattering of metadata about the tree itself, must be transmitted along with the compressed data so the decompressor can rebuild the exact same tree. This adds a fixed **overhead** that proves counterproductive for very small payloads. It's a two-pass algorithm[^15], which isn't suitable for pure streaming apps without adaptive variants.
 
 Naive **recursive** implementations are elegant but risk **stack overflow** if the tree becomes unexpectedly **deep**. Production systems should favor iterative solutions over recursive ones when tail-call optimization is unavailable. A shared tree structure is a bottleneck. The design must specify a **concurrency** control model:
 
@@ -131,7 +131,7 @@ It's better to use a pre-existing concurrent library implementation than to buil
 [^10]: a major operational risk
 [^11]: "Is `packet.port == 445`?"
 [^12]: "white box"
-[^13]: *O*(log n)
+[^13]: *O*(log *n*)
 [^14]: `left = 0`, `right = 1`
 [^15]: first pass to calculate frequencies, second to encode
 [^16]: risk of deadlocks

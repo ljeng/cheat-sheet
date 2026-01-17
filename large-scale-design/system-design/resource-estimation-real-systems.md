@@ -10,7 +10,7 @@ The river discharges about half a cubic mile of water per day to within an order
 - Will 2M nodes[^03] fit in 128MB of RAM? `sizeof(struct node)` is 8 bytes, yet dynamic **allocation** via malloc adds overhead. 8-byte records actually consumed 48 bytes each due to allocator overhead in one system, totaling 96MB for 2M records - nearly exhausting the available **memory**.
 - If a numerical **algorithm** is dominated by $n^3$ square root operations and $n = 1000$, how long will it take? A billion square roots, at ~200 nanoseconds each, would take ~200 seconds.
 
-Innumeracy obtrudes perspective on large numbers. For example, a million **seconds** pass in 11.5 days; a billion seconds take nearly 32 years. All the human **blood** in the world[^04] would fit into a cube 870 feet on each side or cover New York’s Central Park to a depth of just under 20 feet. A Concorde jet[^05] is 400K$\times$ faster than a snail[^06]. However, a supercomputer is over a billion times faster than a human at adding ten-digit numbers.
+Innumeracy obtrudes perspective on large numbers. For example, a million **seconds** pass in 11.5 days; a billion seconds take nearly 32 years. All the human **blood** in the world[^04] would fit into a cube 870 feet on each side or cover New York’s Central Park to a depth of just under 20 feet. A Concorde jet[^05] is $400 \text k \times$ faster than a snail[^06]. However, a supercomputer is over a billion times faster than a human at adding ten-digit numbers.
 
 The word "average" is commonly used loosely to influence public opinion. When you're told that something is an average, you still don't know very much about it unless you can find out which of the common kinds of average it is - mean, median, or mode.
 
@@ -26,7 +26,7 @@ Results that aren't indicative of anything can be produced by pure chance - give
 
 Let any small group of persons keep count of cavities for six months, then switch to Doakes'. By chance, a test group shows a big improvement worthy of a headline and perhaps a whole advertising campaign. If the group counts more cavities or about the same number, Doakes & Company files the figures well out of sight and tries again.
 
-If you can't prove what you want to prove, demonstrate something else and pretend they're the same. Your nostrum killed 31,108 **germs** in a test tube. An antiseptic that works well in a test tube may not perform in the human throat. "$4\times$ more fatalities occur at 7 p.m. than at 7 a.m." But the conclusion doesn't follow. More people are killed in the evening because more people are on the highways. Electric power is **available** to $\frac{3}{4}$ of farms. This means that power lines go within ten miles of the farms. This doesn't mean that all those farmers actually have power.
+If you can't prove what you want to prove, demonstrate something else and pretend they're the same. Your nostrum killed 31,108 **germs** in a test tube. An antiseptic that works well in a test tube may not perform in the human throat. "$ 4 \times$ more fatalities occur at 7 p.m. than at 7 a.m." But the conclusion doesn't follow. More people are killed in the evening because more people are on the highways. Electric power is **available** to $\frac{3}{4}$ of farms. This means that power lines go within ten miles of the farms. This doesn't mean that all those farmers actually have power.
 
 The **expected value** is the average of its values weighted according to their probabilities.
 
@@ -38,9 +38,9 @@ $$\frac{1}{2} - \frac{(6 - 1)^3}{6^3} = \frac{1}{2} - \frac{125}{216} \approx -\
 
 Thus, 125 out of 216 you play chuck-a-luck, you'll lose $1.
 
-Assume Myrtle meets men sequentially, and once she's rejected someone, he's gone forever. Myrtle should reject approximately the first $\frac{1}{e} = 37\text%$ of the $N$ candidates she's likely to meet, and then accept the first suitor after that who's a heartthrob.
+Assume Maureen meets men sequentially, and once she's rejected someone, he's gone forever. Maureen should reject approximately the first $\frac{1}{e} = 37 \text %$ of the $N$ candidates she's likely to meet, and then accept the first suitor after that who's a heartthrob.
 
-"The average number of things in a system is the product of the average rate at which they leave and the average time they spend there." If you have 150 cases and drink 25 per year, you hold each case for 6 years. If a club holds 60 people and the average stay is 3 hours, people enter at a rate of 20 per hour. If there are 20 people in line, you'll wait one hour.
+"The average number of things in a system is the product of the average rate at which they leave and the average time they spend there." If you have 150 cases of wine and drink 25 per year, you hold each case for 6 years. If a club holds 60 people and the average stay is 3 hours, people enter at a rate of 20 per hour. If there are 20 people in line, you'll wait one hour.
 
 John Roebling designed the Brooklyn Bridge to be six times as strong as required because he recognized the limits of his knowledge regarding aerodynamic lift. In software and engineering, we should derate our systems in software - estimating cost with a safety factor to compensate for our ignorance.
 

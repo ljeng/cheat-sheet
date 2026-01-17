@@ -2,6 +2,8 @@
 
 ## Column Families in Databases
 
+### Row-oriented
+
 ```mermaid
 graph TD
     A[Google Bigtable] -->|inherited concept| B[HBase<br/>Apache Project]
@@ -20,8 +22,9 @@ graph TD
 
 ```
 
-
 It's misleading to call Cassandra and HBase column-oriented. The Bigtable model is mostly row-oriented.
+
+### Architecture
 
 ```mermaid
 graph TB
@@ -57,7 +60,7 @@ graph TB
         DM["Disk Management"]
         MA["Memory Accounting"]
     end
-    subgraph Apps["Application Types"]
+    subgraph Apps["App Types"]
         direction TB
         App1["Read base data"]
         App2["Generate derived column families"]
@@ -74,6 +77,8 @@ graph TB
     style TableTop fill:none,stroke:none
 
 ```
+
+### Webtable
 
 ```mermaid
 graph TB
@@ -114,6 +119,6 @@ graph TB
 
 ```
 
-Each column key in the **anchor family** represents a single anchor. These controls allow us to manage applications that add new base data and read-only applications with restricted visibility[^1].
+Each column key in the **anchor family** represents a single anchor. These controls allow us to manage apps that add new base data and read-only apps with restricted visibility[^1].
 
 [^1]: excluding certain families for privacy reasons

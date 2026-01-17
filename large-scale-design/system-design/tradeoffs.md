@@ -31,7 +31,7 @@ Programming is an exercise in optimism, but wise programmers build for failure. 
 
 Trade-offs even exist in how we build our teams. From a company perspective, it's acceptable to reject some good candidates[^6] provided that those who *are* hired are truly excellent. This is a trade-off between recruiting costs and workforce quality. If you need to hire exactly once without interviewing everyone, you must decide when to stop looking. This is the ultimate trade-off: minimizing the amount of interviewing versus maximizing the quality of the hire.
 
-Whether you're choosing between a 32-bit and 64-bit architecture or deciding whether to add an optimization that makes code harder to read, remember: **everything has a cost**. A strong developer isn't one who knows the best way but one who understands the trade-offs among disparate solutions and knows when to use each one.
+Whether you're choosing between a 32-bit and 64-bit architecture or deciding whether to add an optimization that makes code harder to read, remember: **everything has a cost**. A strong dev isn't one who knows the best way but one who understands the trade-offs among disparate solutions and knows when to use each one.
 
 [^1]: rod cutting
 [^2]: as seen in depth-first search

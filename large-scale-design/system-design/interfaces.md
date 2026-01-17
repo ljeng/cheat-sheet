@@ -35,21 +35,21 @@ Java dedicates an interface keyword to delineate the distinction explicitly.
 
 ```java
 public interface StatusCallback {
-    void updateStatus(int oState, int nState);
+  void updateStatus(int oState, int nState);
 }
 
 public class MyClass extends SomeOtherClass implements StatusCallback {
-    @Override
-    public void updateStatus(int oState, int nState) {
-        if (nState > oState) {
-            // Implementation logic
-        }
+  @Override
+  public void updateStatus(int oState, int nState) {
+    if (nState > oState) {
+      // Implementation logic
     }
+  }
 }
 
 ```
 
-A powerful pattern is to **implement** an interface using an abstract class by **default**. This helps reduce boilerplate code for the end developer. The **interface** defines the full contract. **The abstract class** implements one method using the other, leaving only the core logic for the subclass.
+A powerful pattern is to **implement** an interface using an abstract class by **default**. This helps reduce boilerplate code for the end dev. The **interface** defines the full contract. **The abstract class** implements one method using the other, leaving only the core logic for the subclass.
 
 ```java
 public interface XMLReader {

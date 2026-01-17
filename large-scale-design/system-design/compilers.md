@@ -2,11 +2,11 @@
 
 ## Code Execution
 
-Code interacts with a compiler. Programming interfaces define how. **Systems programmers** work on the code that keeps computer systems running: frameworks, drivers, and compilers themselves. Other programmers are their audience, and the job involves little user interface work. **Application developers** work on the pieces that non-programmers use.
+Code interacts with a compiler. Programming interfaces define how. **Systems programmers** work on the code that keeps computer systems running: frameworks, drivers, and compilers themselves. Other programmers are their audience, and the job involves little user interface work. **App devs** work on the pieces that non-programmers use.
 
 ```mermaid
 graph TD
-    A[Application code] --> B{Written in machine code?}
+    A[App code] --> B{Written in machine code?}
     B -->|Yes| C[Direct execution]
     B -->|No| D[Processing required]
     D --> E{Which tool?}

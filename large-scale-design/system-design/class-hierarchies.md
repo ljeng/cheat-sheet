@@ -140,7 +140,7 @@ class Ellipse extends Shape {
 
 ```
 
-Even though many shapes may be defined, the part of the application that draws them doesn’t need to do much work:
+Even though many shapes may be defined, the part of the app that draws them doesn’t need to do much work:
 
 ```java
 void paintShapes(Graphics g, List<Shape> shapes) {
@@ -392,4 +392,3 @@ erDiagram
 [^4]: Car, Bus, Motorcycle
 [^5]: Handicapped
 [^6]: Directories, Files
-

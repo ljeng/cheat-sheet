@@ -29,7 +29,7 @@ For each of the services identified, you must consider the following items:
 
 To illustrate these principles, consider a service that resizes images. Although it seems trivial, operating this at scale disabuses engineers of any optimism; the inherent complexity of distributed systems is ineluctable.
 
-100K users; 10K requests per second (RPS) per region. the 99<superscript>th</superscript> %ile of latency should <500ms for images <1MB in size. The system provides 99.9% availability. The service should offer a usage-based pricing model[^02], so it needs to keep track of the amount of CPU time required to convert an image and its size.
+100K users; 10K requests per second (RPS) per region. The 99<superscript>th</superscript> %ile of latency should <500ms for images <1MB in size. The system provides 99.9% availability. The service should offer a usage-based pricing model[^02], so it needs to keep track of the amount of CPU time required to convert an image and its size.
 
 Assume an average of 256KB per image, so the system can process 10 conversions per second per CPU core. We need **1K cores** to support 10K RPS. We need ~32 servers using 32-core machines. Adding 20% headroom for surges, we require a fleet of $\geq 40$ **dedicated processing systems**. This scale confirms that a simple single-server monolith is impossible; we need a distributed stack.
 
