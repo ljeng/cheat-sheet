@@ -1,6 +1,8 @@
 window.MathJax = {
-  tex: { inlineMath: [['$', '$'], ['$$', '$$']] },
-  svg: { fontCache: 'global' }
+  tex: {
+    inlineMath: [['$', '$'], ['$$', '$$']],
+    processEscapes: true},
+  svg: {fontCache: 'global'}
 };
 document.addEventListener('DOMContentLoaded', () => {
   hljs.highlightAll();
