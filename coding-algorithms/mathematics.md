@@ -177,6 +177,7 @@ You are given a *0-indexed* array of positive integers `w` where `w[i]` describe
 
 ```python
 import collections
+import random
 
 Alias = collections.namedtuple('Alias', ['indexes', 'alias'])
 
@@ -193,13 +194,14 @@ class Solution:
             over, overweight = full[1].popitem()
             weight = underweight + overweight - self.sum_w
             full[weight >= self.sum_w][over] = weight
-            self.aliases.append(Alias(indexes=[under, over], alias=underweight))
+            self.aliases.append(Alias(indexes=[under, over],
+                alias=underweight))
         for over in full[1]:
             self.aliases.append(Alias(indexes=[over], alias=self.sum_w))
 
     def pickIndex(self):
-        alias = choice(self.aliases)
-        return alias.indexes[uniform(0, self.sum_w) > alias.alias]
+        alias = random.choice(self.aliases)
+        return alias.indexes[random.uniform(0, self.sum_w) > alias.alias]
 
 ```
 
@@ -242,14 +244,14 @@ def getPermutation(n, k):
 
 The number of ways to choose $k$ items from $n$ items without repetition and without order is
 
-$\pmatrix{
+$$\pmatrix{
     n \\
     k \\
-\pmatrix} = \frac{n!}{k! {(n - k)}!}$
+\pmatrix} = \frac{n!}{k! {(n - k)}!}$$
 
 for
 
-$0 \leq k \leq n$
+$$0 \leq k \leq n$$
 
 or
 
