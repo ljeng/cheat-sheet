@@ -58,7 +58,7 @@ def shortestPathBinaryMatrix(grid):
     for ui, uj in itertools.product(range(n), repeat=2):
         if grid[ui][uj]: continue
         u_int = toInt(ui + uj*1j)
-        for d in self.directions:
+        for d in directions:
             v_complex = ui + uj*1j + d
             vi, vj = int(v_complex.real), int(v_complex.imag)
             if 0 <= vi < n and 0 <= vj < n and not grid[vi][vj]:
