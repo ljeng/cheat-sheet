@@ -123,6 +123,143 @@ graph TB
 
 Distributed systems are the default approach to scaling, but no one benefits from irrational exuberance. It takes about a decade for a file system to mature. Good software can't run reliably with bad **operations**. Check invariants[^10]. If you have a NoSQL vendor, ask for the observed real-life distribution of MTTF and MTTR.
 
+## Engineering
+
+When you're writing a program on a single computer, it behaves predictably: it either works or it doesn’t. The same operation produces the same result[^11] if the hardware is working correctly. If there's a hardware problem (e.g., memory corruption), the consequence is usually a total system failure[^12]. An individual computer is either fully functional or entirely broken. In distributed systems, we're no longer operating in an idealized system model. We confront the messy reality of the physical world when you're writing software that runs on several computers connected by a network. What sets distributed systems engineering apart is the **probability of partial failure**. If a mutex unlock fails, we can assume the process is unstable and crash it. But the failure of a distributed unlock must be built into the lock protocol. You may not even know whether something succeeded, as the time it takes for a message to travel across a network is non-deterministic!
+
+I've seen a number of distributed databases describe themselves as being CA[^13] while not providing partition-tolerance - a solecism that indicates that the developers don't understand the CAP theorem. Under the **consistency** guarantee[^14], each operation looks as if it were completed at a single instant. This is equivalent to requiring requests of the distributed shared memory to act as if they were executing on a single node. For a distributed system to be **available**, every request received by a non-failing node must result in a response[^15].
+
+```mermaid
+graph TD
+    subgraph S1 ["Normal Network Operation"]
+        N1[Node 1]
+        N2[Node 2]
+        N3[Node 3]
+        N1 -.->|message| N2
+        N2 -.->|message| N3
+        N3 -.->|message| N1
+    end
+    S1 --> S2
+    subgraph S2 ["Network Partition<br />Messages Lost"]
+        P1[Node 1]
+        P2[Node 2]
+        P3[Node 3]
+        P1 -.->|❌ lost| P2
+        P2 -->|✅ delivered| P3
+        P3 -.->|❌ lost| P1
+        P1 -.->|❌ lost| P3
+    end
+    S2 --> S3
+    subgraph S3 ["Partition Tolerance Property"]
+        PT[System continues operating despite arbitrary message loss]
+    end
+    style N1 fill:#90EE90
+    style N2 fill:#90EE90
+    style N3 fill:#90EE90
+    style P1 fill:#FFB6C6
+    style P2 fill:#FFB6C6
+    style P3 fill:#FFB6C6
+    style PT fill:#87CEEB
+
+```
+
+*Figure 2*
+
+When a network is partitioned, all messages sent from nodes in one component of the partition to nodes in another component are lost.
+
+**You can't choose CA** for a distributed system. It would need to run on a network which is guaranteed to never drop messages and whose nodes are guaranteed to never die. These types of systems don't exist.
+
+Atomic consistency is expected by most web services. That said, the universe doesn't permit consistency which is both instantaneous and global. Information has an upper limit to the speed it can travel[^16]. The goal is to push consistency breaks down to a point where we no longer notice it. Just don't try to act outside your own light cone. The trick of horizontal scalability is **independence**.
+
+```mermaid
+graph TD
+    subgraph S1["1 Machine"]
+        M1[Machine] --> D1[Decision Made ✅]
+        style M1 fill:#90EE90
+        style D1 fill:#90EE90
+    end
+    S1 --> L1[Simple]
+    style L1 fill:#90EE90
+    L1 --> S2
+    subgraph S2["2 Machines<br />Agreement Needed"]
+        M2A[Machine A] -.->|propose| Agreement1[Agreement Protocol]
+        M2B[Machine B] -.->|propose| Agreement1
+        Agreement1 -->|consensus| D2[Decision Made ✅]
+        Agreement1 -.->|network delay| Delay1[Complexity++]
+        Agreement1 -.->|conflict resolution| Delay1
+        style M2A fill:#FFD700
+        style M2B fill:#FFD700
+        style D2 fill:#FFD700
+        style Delay1 fill:#FFA500
+    end
+    S2 --> L2[Harder]
+    style L2 fill:#FFD700
+    L2 --> S3
+    subgraph S3["3+ Machines<br />Even Harder"]
+        M3A[Machine A] -.->|propose| Agreement2[Agreement Protocol]
+        M3B[Machine B] -.->|propose| Agreement2
+        M3C[Machine C] -.->|propose| Agreement2
+        M3D[Machine D] -.->|propose| Agreement2
+        Agreement2 -->|quorum?| D3[Decision Made ✅]
+        Agreement2 -.->|network partitions| Delay2[Complexity+++]
+        Agreement2 -.->|Byzantine faults| Delay2
+        Agreement2 -.->|split brain| Delay2
+        style M3A fill:#FF6B6B
+        style M3B fill:#FF6B6B
+        style M3C fill:#FF6B6B
+        style M3D fill:#FF6B6B
+        style D3 fill:#FF6B6B
+        style Delay2 fill:#DC143C
+    end
+    S3 --> L3[Much Harder]
+    style L3 fill:#FF6B6B
+
+```
+
+*Figure 3*
+
+Standard database replication isn't strongly consistent. Special logic must be introduced to handle replication lag. Paxos is very hard to implement. Avoid coordinating machines wherever possible.
+
+Design for failure. I've dealt with switch failures, PDU failures, accidental power cycles of racks, and even a hypoglycemic driver smashing his pickup truck into a HVAC system. Backpressure is one of the basic building blocks of creating a robust distributed system. It's the signaling of failure from a serving system to the requesting system. Implementations of backpressure involve either dropping new messages or shipping errors back to users. Timeouts and exponential back-offs are essential. Without backpressure, cascading failure becomes likely.
+
+```mermaid
+graph TB
+    subgraph Metrics["Latency Metrics Comparison"]
+        A["Average Latency ❌"] -->|"misleading"| B["Hides outliers<br />Assumes bell curve<br/>Poor user experience insight"]
+        C["Percentiles ✅"] -->|"accurate"| D["P50: Median experience<br />P99: Worst 1%<br />P99.9: Tail latency"]
+        style A fill:#ffcccc
+        style C fill:#ccffcc
+    end
+    subgraph Availability["Uptime vs Yield"]
+        E["Uptime Metric"] -->|"time-based"| F["% of time system is up<br />Ignores request volume"]
+        G["Yield Metric"] -->|"request-based"| H["% of requests served<br />Accounts for traffic patterns"]
+        I["Example: 1 second downtime"] --> J["Off-peak: Low impact<br />Peak: High impact"]
+        J --> K["Same uptime<br />Different yield"]
+        style G fill:#ccffcc
+        style E fill:#ffffcc
+    end
+    subgraph Locality["Data Locality Principle"]
+        L["Processing"] -->|"close proximity"| M["Persistent Storage"]
+        M -->|"efficient"| N["Pointer dereferences<br />Low latency<br />Fewer failures"]
+        L -->|"network separation"| O["Remote Storage"]
+        O -->|"inefficient"| P["Network calls<br />Higher latency<br />More failures"]
+        style N fill:#ccffcc
+        style P fill:#ffcccc
+    end
+    Metrics -.->|"better monitoring"| Availability
+    Availability -.->|"consider traffic"| Locality
+    style Metrics fill:#e3f2fd
+    style Availability fill:#f3e5f5
+    style Locality fill:#e8f5e9
+
+```
+
+*Figure 4*
+
+**Harvest** is the fraction of the data that was reflected in the result. For example, if a search engine queries three shards[^17] but Shard B is down, returning results only from A and C gives you a **67% harvest**. A partial answer[^18] is better than no answer[^19] for many businesses.
+
+Your system will have to make a choice between **reducing yield**[^20] and **reducing harvest**[^21]. You're always building a **partition-tolerant** system. Decide now how you'll handle the moment the lights go out.
+
 [^01]: as opposed to theoretical reliability
 [^02]: requires precise CPU/size tracking
 [^03]: the front door
@@ -133,3 +270,14 @@ Distributed systems are the default approach to scaling, but no one benefits fro
 [^08]: a Dynamo-style key-value store
 [^09]: tape or low-cost disk
 [^10]: "Are all messages sent actually received?"
+[^11]: determinism
+[^12]: a kernel panic of Blue Screen of Death
+[^13]: consistent and available
+[^14]: atomic/linearizable
+[^15]: not an error or timeout
+[^16]: the speed of light
+[^17]: A, B,and C
+[^18]: reduced harvest
+[^19]: reduced yield
+[^20]: stop answering
+[^21]: give incomplete answers
