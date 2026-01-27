@@ -106,4 +106,8 @@
             - [Underlying Hardware](large-scale-design/operating-systems.md#underlying-hardware)
         - [Scheduling](large-scale-design/operating-systems.md#scheduling)
         - [Modern Concurrency Constructs](large-scale-design/operating-systems.md#modern-concurrency-constructs)
-- Research Science
+- Research Engineering
+    - Probability
+    - Decision-making
+    - Financial Mathematics
+
