@@ -108,6 +108,7 @@
         - [Modern Concurrency Constructs](large-scale-design/operating-systems.md#modern-concurrency-constructs)
 - Research Engineering
     - Probability
-    - Decision-making
+        - [General Probability](probability/general-probability.md)
+        - [Univariate Random Variables](probability/univariate-random-variables.md)
+        - [Multivariate Random Variables](probability/multivariate-random-variables.md)
     - Financial Mathematics
-
