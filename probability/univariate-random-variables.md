@@ -1,9 +1,31 @@
 # Univariate Random Variables
 
-#### Continuous Random Variables
+## Discrete Univariate Distributions
 
-If $X$ is uniformly distributed over (0, 1), find the density function of $Y = \exp X$.
+### Binomial
 
-#### Limit Theorems
+### Geometric
 
-From past experience, a professor knows that the test score of a student taking her final examination is a random variable with mean 75. It is known that the variance of a student's test score is equal to 25. Give an upper bound for the probability that a student's test score will exceed 85.
+### Hypergeometric
+
+### Negative Binomial
+
+### Poisson
+
+There are three highways in the county. The number of daily accidents that occur on these highways are Poisson random variables with respective parameters 0.3, 0.5, and 0.7. Find the expected number of accidents that will happen on any of these highways today.
+
+## Continuous Univariate Distributions
+
+### Beta
+
+### Exponential
+
+### Gamma
+
+### Normal
+
+### Uniform
+
+If $Y$ is uniformly distributed over (0, 5), what is the probability that the roots of the equation $4x^2 + 4xY + Y + 2 = 0$ are both real?
+
+## Applications
