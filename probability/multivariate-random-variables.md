@@ -2,7 +2,7 @@
 
 ## Multivariate Distributions
 
-Suppose that if a signal value $s$ is sent from location A, then the signal value received at location B is normally distributed with parameters ($s$, 1). $S$ is normally distributed with parameters ($\mu$, $\sigma$ 2). Let $S$ denote the signal sent and $R$ the signal received.
+Suppose that if a signal value $s$ is sent from location A, then the signal value received at location B is normally distributed with parameters ($s$, 1). $S$ is normally distributed with parameters ($\mu$, $\sigma^2$). Let $S$ denote the signal sent and $R$ the signal received.
 
 1. Compute $\operatorname E\[R\]$.
 1. Compute $\operatorname{Var}(R)$.
@@ -13,8 +13,12 @@ Suppose that if a signal value $s$ is sent from location A, then the signal valu
 
 If $X_1, X_2, X_3, X_4, X_5$ are independent and identically distributed exponential random variables with the parameter $\lambda$, compute
 
-1. $P\{\operatorname{min}(X_1, \cdot, X_5) \leq a\}$
-1. $P\{\operatorname{max}(X_1, \cdot, X_5) \leq a\}$
+1. $P \lbrace \operatorname{min}(X_1, \ldots, X_5) \leq a \rbrace$
+1. $P \lbrace \operatorname{max}(X_1, \ldots, X_5) \leq a \rbrace$
+
+---
+
+Let $Y_1, Y_2, \cdot,Y_n$ denote a random sample from the uniform distribution $f(y) = 1, 0 \leq y \leq 1$. Find the probability density function for the range $R = Y_{(n)} − Y_{(1)}$
 
 ## Linear Combinations of Independent Random Variables
 
@@ -24,4 +28,10 @@ A.J. has 20 jobs that she must do in sequence, with the times required to do eac
 1. Find the probability that M.J. finishes in less than 900 minutes.
 1. Find the probability that A.J. finishes before M.J.
 
+---
+
+If $Y1$ and $Y2$ are independent random variables, each having a normal distribution with mean 0 and variance 1, find the moment-generating function of $U = Y_1 Y_2$. Use this moment-generating function to find $\operatorname E(U)$ and $\operatorname V(U)$. Check the result by evaluating $\operatorname E(U)$ and $\operatorname V(U)$ directly from the density functions for $Y_1$ and $Y_2$.
+
 ## Associated Applications
+
+The times to process orders at the service counter of a pharmacy are exponentially distributed with mean 10 minutes. If 100 customers visit the counter in a 2-day period, what is the probability that at least half of them need to wait more than 10 minutes?

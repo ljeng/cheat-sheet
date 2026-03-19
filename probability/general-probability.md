@@ -17,9 +17,15 @@ A person tried by a 3-judge panel is declared guilty if at least 2 judges cast v
 
 Let $E_i$, $i = 1, 2, 3$ denote the event that judge $i$ casts a guilty vote. Are these events independent. Are they conditionally independent? Explain.
 
+---
+
+#### Numerical Events and Random Variables
+
+Suppose that two defective refrigerators have been included in a shipment of six refrigerators. The buyer begins to test the six refrigerators one at a time. Let the random variable $Y$ represent the number of the test in which the last defective refrigerator is identified. Compute the probabilities for each value of $Y$.
+
 ## Discrete Mathematics
 
-We have 20 thousand dollars that must beinvested among 4 possible opportunities. Each investment must be integral in units of 1 thousand dollars, and there are minimal investments that need to be made if one is to invest in these opportunities. The minimal investments are 2, 2, 3, and 4 thousand dollars. How many different investment strategies are available if
+We have 20 thousand dollars that must be invested among 4 possible opportunities. Each investment must be integral in units of 1 thousand dollars, and there are minimal investments that need to be made if one is to invest in these opportunities. The minimal investments are 2, 2, 3, and 4 thousand dollars. How many different investment strategies are available if
 
 1. an investment must be made in each opportunity?
 1. investments must be made in at least 3 of the 4 opportunities?
