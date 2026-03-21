@@ -18,7 +18,7 @@ If $X_1, X_2, X_3, X_4, X_5$ are independent and identically distributed exponen
 
 ---
 
-Let $Y_1, Y_2, \cdot,Y_n$ denote a random sample from the uniform distribution $f(y) = 1, 0 \leq y \leq 1$. Find the probability density function for the range $R = Y_{(n)} − Y_{(1)}$
+Let $Y_1, Y_2, \ldots,Y_n$ denote a random sample from the uniform distribution $f(y) = 1, 0 \leq y \leq 1$. Find the probability density function for the range $R = Y_{(n)} − Y_{(1)}$
 
 ## Linear Combinations of Independent Random Variables
 
@@ -30,7 +30,11 @@ A.J. has 20 jobs that she must do in sequence, with the times required to do eac
 
 ---
 
-If $Y1$ and $Y2$ are independent random variables, each having a normal distribution with mean 0 and variance 1, find the moment-generating function of $U = Y_1 Y_2$. Use this moment-generating function to find $\operatorname E(U)$ and $\operatorname V(U)$. Check the result by evaluating $\operatorname E(U)$ and $\operatorname V(U)$ directly from the density functions for $Y_1$ and $Y_2$.
+If $Y_1$ and $Y_2$ are independent random variables, each having a normal distribution with mean 0 and variance 1, find the moment-generating function of $U = Y_1 Y_2$. Use this moment-generating function to find $\operatorname E(U)$ and $\operatorname V(U)$. Check the result by evaluating $\operatorname E(U)$ and $\operatorname V(U)$ directly from the density functions for $Y_1$ and $Y_2$.
+
+---
+
+A charity receives 2025 contributions. Contributions are assumed to be independent and identically distributed with mean 3125 and standard deviation 250. Calculate the approximate 90<superscript>th</superscript> percentile for the distribution of the total contributions received.
 
 ## Associated Applications
 

@@ -19,7 +19,22 @@ Let $E_i$, $i = 1, 2, 3$ denote the event that judge $i$ casts a guilty vote. Ar
 
 ---
 
-#### Numerical Events and Random Variables
+A health study tracked a group of persons for five years. At the beginning of the study, 20% were classified as heavy smokers, 30% as light smokers, and 50% as nonsmokers. Results of the study showed that light smokers were twice as likely as nonsmokers to die during the five-year study but only half as likely as heavy smokers. A randomly selected participant from the study died over the five-year period. Calculate the probability that the participant was a heavy smoker.
+
+---
+
+A study of automobile accidents produced the following data: An automobile from one of the model years 1997, 1998, and 1999 was involved in an accident.
+
+| Model | Proportion of All Vehicles | Probability of Involvement in an Accident |
+| ---- | --------------- | ---------------------------- |
+| 1997 | 0.16            | 0.05                         |
+| 1998 | 0.18            | 0.02                         |
+| 1999 | 0.20            | 0.03                         |
+| Other | 0.46            | 0.04                         |
+
+Determine the probability that the model year of this automobile is 1997.
+
+---
 
 Suppose that two defective refrigerators have been included in a shipment of six refrigerators. The buyer begins to test the six refrigerators one at a time. Let the random variable $Y$ represent the number of the test in which the last defective refrigerator is identified. Compute the probabilities for each value of $Y$.
 
@@ -29,3 +44,13 @@ We have 20 thousand dollars that must be invested among 4 possible opportunities
 
 1. an investment must be made in each opportunity?
 1. investments must be made in at least 3 of the 4 opportunities?
+
+---
+
+An auto insurance company has 10,000 policyholders. Each policyholder is classified as
+
+1. young or old
+1. male or female
+1. married or single
+
+Of these policyholders, 3000 are young, 4600 are male, and 7000 are married. The policyholders can also be classified as 1320 young males, 3010 married males, and 1400 young married persons. Finally, 600 of the policyholders are young married males. How many of the company's policyholders are young, female, and single?
