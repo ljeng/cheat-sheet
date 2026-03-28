@@ -38,6 +38,10 @@ Determine the probability that the model year of this automobile is 1997.
 
 Suppose that two defective refrigerators have been included in a shipment of six refrigerators. The buyer begins to test the six refrigerators one at a time. Let the random variable $Y$ represent the number of the test in which the last defective refrigerator is identified. Compute the probabilities for each value of $Y$.
 
+---
+
+A hospital receives two fifths of its flu vaccine from Company A and the remainder from Company B. Each shipment contains a large number of vials of vaccine. From Company A, 3% of the vials are ineffective; from Company B, 2% are ineffective. A hospital tests $n = 25$ randomly selected vials from one shipment and finds that 2 are ineffective. What is the conditional probability that this shipment came from Company A?
+
 ## Discrete Mathematics
 
 We have 20 thousand dollars that must be invested among 4 possible opportunities. Each investment must be integral in units of 1 thousand dollars, and there are minimal investments that need to be made if one is to invest in these opportunities. The minimal investments are 2, 2, 3, and 4 thousand dollars. How many different investment strategies are available if

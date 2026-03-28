@@ -9,6 +9,10 @@ Suppose that if a signal value $s$ is sent from location A, then the signal valu
 1. Is $R$ normally distributed?
 1. Compute $\operatorname{Cov}(R, S)$.
 
+---
+
+Choose a random integer $X$ from the interval [0, 4]. Then choose a random integer $Y$ from the interval [0, $x$], where $x$ is the observed value of $X$. Make assumptions about the marginal pmf $f_X(x)$ and the conditional pmf $h(y | x)$ and compute $P(X + Y > 4)$.
+
 ## The Distribution of Order Statistics for Independent Random Variables
 
 If $X_1, X_2, X_3, X_4, X_5$ are independent and identically distributed exponential random variables with the parameter $\lambda$, compute
@@ -35,6 +39,10 @@ If $Y_1$ and $Y_2$ are independent random variables, each having a normal distri
 ---
 
 A charity receives 2025 contributions. Contributions are assumed to be independent and identically distributed with mean 3125 and standard deviation 250. Calculate the approximate 90<superscript>th</superscript> percentile for the distribution of the total contributions received.
+
+---
+
+The number of trees in one acre has a Poisson distribution with mean 60. Assuming independence, compute $P(5950 \leq X \leq 6100)$, approximately, where $X$ is the number of trees in 100 acres.
 
 ## Associated Applications
 

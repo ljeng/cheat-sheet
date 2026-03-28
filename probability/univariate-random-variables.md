@@ -28,13 +28,19 @@ where $p_n$ represents the probability that the policyholder files $n$ claims du
 
 If
 
-$$M_x(t) = {(\frac{0.70}{1 - 0.3e^t})}^5$$
+$$M_x(t) = {\left(\frac{0.70}{1 - 0.3e^t}\right)}^5$$
 
 what is the distribution of $X$?
 
 ### Poisson
 
 There are three highways in the county. The number of daily accidents that occur on these highways are Poisson random variables with respective parameters 0.3, 0.5, and 0.7. Find the expected number of accidents that will happen on any of these highways today.
+
+---
+
+Assume that a policyholder is four times more likely to file exactly two claims as to file exactly three claims. Assume also that the number $X$ of claims of this policyholder is Poisson. Determine the expectation $\operatorname E(X^2)$.
+
+### Uniform
 
 ## Continuous Univariate Distributions
 
@@ -53,11 +59,11 @@ $$F(y) = \begin{cases}
 
 ---
 
-An insurance company insures a large number of homes. The insured value, X, of a randomly selected home is assumed to follow a distribution with density function
+An insurance company insures a large number of homes. The insured value $X$ of a randomly selected home is assumed to follow a distribution with density function
 
 $$f(y) = \begin{cases}
     3x^{-4} & \operatorname{for} & x > 1 \\
-    0 & \text{otherwise}
+    0 & & \text{otherwise}
 \end{cases}$$
 
 Given that a randomly selected home is insured for at least 1.5, what is the probability that it is insured for less than 2?
@@ -80,6 +86,19 @@ Calculate the variance of $X$.
 
 ### Gamma
 
+In a medical experiment, a rat has been exposed to some radiation. The experimenters believe that the rat's survival time $X$ (in weeks) has the pdf
+
+$$ f(x) = \frac{3x^2}{120^3} e^{-\frac{x}{120}}^3$
+
+$$0 < x < \infty$$
+
+1. What is the probability that the rat survives at least 100 weeks?
+1. Find the expected value of the survival time. *Hint*: In the integral representing $\operatorname E(X)$, let
+
+$$y = {\frac{x}{120}}^3$$
+
+and get the answer in terms of a gamma function.
+
 ### Normal
 
 ### Uniform
@@ -101,11 +120,10 @@ A pharmaceutical company wants to know whether an experimental drug has an effec
 1. Approximate the value of $s$ using the range approximation.
 2. Calculate the values of $\bar{y}$ and $s$ for the 15 blood pressure readings.
 3. Let $k \geq 1$. For any set of $n$ measurements, the fraction included in the interval $\bar y - ks$ to $\bar y + ks$ is at least $1 - \frac{1}{k^2}$.
-
-$$s^2 = \frac{1}{n - 1}\sum_{i = 1}^n (y_i - \bar y)^2$$
-
-   Find values $a$ and $b$ such that at least 75% of the blood pressure measurements lie between $a$ and $b$.
-
+    
+    $$s^2 = \frac{1}{n - 1}\sum_{i = 1}^n (y_i - \bar y)^2$$
+    
+    Find values $a$ and $b$ such that at least 75% of the blood pressure measurements lie between $a$ and $b$.
 4. Did Tchebysheff's theorem work? That is, use the data to find the actual percent of blood pressure readings that are between the values $a$ and $b$ you found in *(3)*. Is this actual percentage greater than 75%?
 
 ---
@@ -118,7 +136,7 @@ An auto insurance company insures an automobile worth 15,000 for one year under 
 
 $$f(x) = \begin{cases}
     0.5003e^{\frac{x}{2}} & \operatorname{for} & 0 < x < 15 \\
-    0 & \text{otherwise} \\
+    0 & & \text{otherwise}
 \end{cases}$$
 
 What is the expected claim payment?
