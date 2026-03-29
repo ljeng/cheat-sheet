@@ -12,6 +12,25 @@ Find the following:
 1. $\operatorname V(Y)$
 1. The distribution of $Y$
 
+---
+
+Consider the following discrete distributions:
+
+- Discrete uniform random variable with $n = 10$
+- Binomial random variable with $n = 10$ and $p = 0.6$
+- Hypergeometric random variable with $n = 5$, $B = 10$, and $G = 30$
+- Poisson random variable with $\lambda = 4$
+- Geometric random variable with $p = 0.25$
+- A negative binomial variable with $r =3$ and $p = 0.5$
+
+For each of these distributions, calculate the probability that
+
+1. The random variable is within one standard deviation of the mean
+1. The random variable is within two standard deviations of the mean
+1. The random variable is within three standard deviations of the mean
+
+*Note*: For the normal distribution, these probabilities are 68.26%, 95.44%,and 99.74% respectively.
+
 ### Binomial
 
 ### Geometric
@@ -82,20 +101,26 @@ Calculate the variance of $X$.
 
 ### Beta
 
+Suppose that
+
+$$Y ~ \Beta (2, 5)$$
+
+Find the median and the 95<superscript>th</superscript> percentile for $Y$.
+
 ### Exponential
 
 ### Gamma
 
 In a medical experiment, a rat has been exposed to some radiation. The experimenters believe that the rat's survival time $X$ (in weeks) has the pdf
 
-$$ f(x) = \frac{3x^2}{120^3} e^{-\frac{x}{120}}^3$
+$$f(x) = \frac{3x^2}{120^3} e^{-\frac{x}{120}}^3$$
 
 $$0 < x < \infty$$
 
 1. What is the probability that the rat survives at least 100 weeks?
 1. Find the expected value of the survival time. *Hint*: In the integral representing $\operatorname E(X)$, let
 
-$$y = {\frac{x}{120}}^3$$
+$$y = {\left(\frac{x}{120}\right)}^3$$
 
 and get the answer in terms of a gamma function.
 
@@ -115,6 +140,7 @@ A pharmaceutical company wants to know whether an experimental drug has an effec
 
 ```
 [172, 140, 123, 130, 115, 148, 108, 129, 137, 161, 123, 152, 133, 128, 142]
+
 ```
 
 1. Approximate the value of $s$ using the range approximation.
@@ -140,3 +166,28 @@ $$f(x) = \begin{cases}
 \end{cases}$$
 
 What is the expected claim payment?
+
+---
+
+The cumulative distribution function for health care costs experienced by a policyholder is modeled by the function
+
+$$F(x) = \begin{cases}
+    1 - e^{-\frac{x}{100}} & x > 0 \\
+    0, & \text{otherwise}
+\end{cases}$$
+
+The policy has a deductible of 20. An insurer reimburses the policyholder for 100% of health care costs between 20 and 120. Health care costs above 120 are reimbursed at 50%. Let $G$ be the cumulative distribution function of reimbursements given that the reimbursement is positive. Calculate $G(115)$.
+
+---
+
+Let $F(x)$ represent the fraction of payroll earned by the highest paid fraction $x$ of employees in a company (for example, $F(0.2) = 0.5$ means that the highest paid 20% of workers earn 50% of the payroll). Gini's index of inequality, $G$ is one way to measure how evenly payroll is distributed among all employees and is defined as follows:
+
+$$G = 2 \int_0^1 |x - F(x)| \, dx$$
+
+In a certain company, the distribution of payroll is described by the density function:
+
+$$f(x) = 3 {(1 - x)}^2$$
+
+$$0 \leq x \leq 1$$
+
+Calculate $G$ for this company.

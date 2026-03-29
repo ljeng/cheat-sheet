@@ -42,6 +42,18 @@ Suppose that two defective refrigerators have been included in a shipment of six
 
 A hospital receives two fifths of its flu vaccine from Company A and the remainder from Company B. Each shipment contains a large number of vials of vaccine. From Company A, 3% of the vials are ineffective; from Company B, 2% are ineffective. A hospital tests $n = 25$ randomly selected vials from one shipment and finds that 2 are ineffective. What is the conditional probability that this shipment came from Company A?
 
+---
+
+An insurance company determines that $N$, the number of claims received in a week, is a random variable with:
+
+$$P \lbracket N = n \rbracket = \frac{1}{2^{n + 1}}$$
+
+where $n \geq 0$.
+
+The company also determines that the number of claims received in a given week is independent of the number of claims received in any other week.
+
+Calculate the probability that exactly seven claims will be received during a given two-week period.
+
 ## Discrete Mathematics
 
 We have 20 thousand dollars that must be invested among 4 possible opportunities. Each investment must be integral in units of 1 thousand dollars, and there are minimal investments that need to be made if one is to invest in these opportunities. The minimal investments are 2, 2, 3, and 4 thousand dollars. How many different investment strategies are available if
@@ -58,3 +70,17 @@ An auto insurance company has 10,000 policyholders. Each policyholder is classif
 1. married or single
 
 Of these policyholders, 3000 are young, 4600 are male, and 7000 are married. The policyholders can also be classified as 1320 young males, 3010 married males, and 1400 young married persons. Finally, 600 of the policyholders are young married males. How many of the company's policyholders are young, female, and single?
+
+---
+
+Thirty items are arranged in a 6-by-5 array as shown.
+
+| $A_1$  | $A_2$   | $A_3$    | $A_4$    | $A_5$    |
+|------ | ------- | -------- | ------- | -------- |
+| $A_6$  | $A_7$   | $A_8$    | $A_9$    | $A_{10}$  |
+| $A_{11}$ | $A_{12}$ | $A_{13}$ | $A_{14}$ | $A_{15}$ |
+| $A_{16}$ | $A_{17}$ | $A_{18}$ | $A_{19}$ | $A_{20}$ |
+| $A_{21}$ | $A_{22}$ | $A_{23}$ | $A_{24}$ | $A_{25}$ |
+| $A_{26}$ | $A_{27}$ | $A_{28}$ | $A_{29}$ | $A_{30}$ |
+
+Calculate the number of ways to form a set of three distinct items such that no two of the selected items are in the same row or same column.

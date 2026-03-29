@@ -11,7 +11,43 @@ Suppose that if a signal value $s$ is sent from location A, then the signal valu
 
 ---
 
-Choose a random integer $X$ from the interval [0, 4]. Then choose a random integer $Y$ from the interval [0, $x$], where $x$ is the observed value of $X$. Make assumptions about the marginal pmf $f_X(x)$ and the conditional pmf $h(y | x)$ and compute $P(X + Y > 4)$.
+Choose a random integer $X$ from the interval [0, 4]. Then choose a random integer $Y$ from the interval [0, $x$], where $x$ is the observed value of $X$. Make assumptions about the marginal pmf $f_X(x)$ and the conditional pmf $h(y \| x)$ and compute $P(X + Y > 4)$.
+
+---
+
+Suppose that we have the following information about basketball player shoe size $S$, and player height $H$.
+
+<table style="border-collapse: collapse">
+    <tr>
+        <td colspan="2" style="border: none"></td>
+        <td colspan="3" style="border: none">
+            <span>H = Height</span>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="border: none"></td>
+        <th>68</th>
+        <th>70</th>
+        <th>73</th>
+    </tr>
+    <tr>
+        <td rowspan="2" style="border: none">S = Shoe Size</td>
+        <th>8.5</th>
+        <td>0.25</td>
+        <td>0.20</td>
+        <td>0.15</td>
+    </tr>
+    <tr>
+        <th>12</th>
+        <td>0.05</td>
+        <td>0.12</td>
+        <td>?</td>
+    </tr>
+</table>
+
+1. Find the expected height and expected shoe size of a basketball player.
+1. Find the expected shoe size, given that a player is 73 inches tall, $\operatorname E \lbracket S | H = 73 \rbracket$.
+1. Find the conditional coefficient of variation for shoe size, given the player is 5'8" tall.
 
 ## The Distribution of Order Statistics for Independent Random Variables
 
@@ -38,7 +74,7 @@ If $Y_1$ and $Y_2$ are independent random variables, each having a normal distri
 
 ---
 
-A charity receives 2025 contributions. Contributions are assumed to be independent and identically distributed with mean 3125 and standard deviation 250. Calculate the approximate 90<superscript>th</superscript> percentile for the distribution of the total contributions received.
+A charity receives 2025 contributions. Contributions are assumed to be independent and identically distributed with mean 3125 and standard deviation 250. Calculate the approximate 90<sup>th</sup> percentile for the distribution of the total contributions received.
 
 ---
 
@@ -47,3 +83,7 @@ The number of trees in one acre has a Poisson distribution with mean 60. Assumin
 ## Associated Applications
 
 The times to process orders at the service counter of a pharmacy are exponentially distributed with mean 10 minutes. If 100 customers visit the counter in a 2-day period, what is the probability that at least half of them need to wait more than 10 minutes?
+
+---
+
+A driver and a passenger are in a car accident. Each of them independently has probability 0.3 of being hospitalized. When a hospitalization occurs, the loss is uniformly distributed on [0, 1]. When two hospitalizations occur, the losses are independent. Calculate the expected number of people in the car who are hospitalized, given that the total loss due to hospitalizations from the accident is less than 1.
