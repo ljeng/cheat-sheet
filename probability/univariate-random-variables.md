@@ -33,6 +33,8 @@ For each of these distributions, calculate the probability that
 
 ### Binomial
 
+If $X ~ \operatorname{binomial}(n, p)$ and $p$ is $P ~ \operatorname{beta}(\alpha, \beta)$, what is the pmf of $X$?
+
 ### Geometric
 
 In modeling the number of claims filed by an individual under an automobile policy during a three-year period, an actuary makes the simplifying assumption that for all integers $n \geq 0$
@@ -41,7 +43,26 @@ $$p_{n + 1} = \frac{1}{5} p_n$$
 
 where $p_n$ represents the probability that the policyholder files $n$ claims during the period. Under this assumption, what is the probability that a policyholder files more than one claim during the period?
 
+---
+
+In modeling the number of claims filed by an individual under an automobile policy during a three-year period, an actuary makes the simplifying assumption that for all integers $n \geq 0$
+
+$$p_{n + 1} = \frac{1}{5} p_n$$
+
+where $p_n$ represents the probability that the policyholder files $n$ claims during the period. Under this assumption, what is the probability that a policyholder files more than one claim during the period?
+
 ### Hypergeometric
+
+A catch-and-release program estimates the population size of an animal in a region. During the catch phase, 20 animals are tagged. Several months later, 30 animals are captured, and 7 of them have tags. What is the most likely population size?
+
+Assumptions:
+
+- Enough time passes between the two catches so that the animals disperse throughout the region
+- No tags fall off between the two catches
+- No new animal enters the population by birth between the catches; no animal exits the population by death between the catches
+- No animals migrate into or out of the region
+- Both catches involve sampling without replacement
+- Capturing is done so that each uncaptured animal is equally likely to be captured
 
 ### Negative Binomial
 
@@ -191,3 +212,13 @@ $$f(x) = 3 {(1 - x)}^2$$
 $$0 \leq x \leq 1$$
 
 Calculate $G$ for this company.
+
+---
+
+A thief is in a sinister, diabolical, fiendish, dark, circular dungeon with three identical doors. Once the thief chooses a door and passes through it, the door locks behind him. The three doors lead to
+
+- a 6-hour tunnel that leads to freedom
+- a 3-hour tunnel that returns him to the dungeon
+- a 9-hour tunnel that returns him to the dungeon
+
+Each door is chosen with equal probability. When he is dropped back into the dungeon by the second and third doors, he is a "Markov" thief in the sense that there is a memoryless choice of doors. He isn't able to mark the doors in any way. What is his expected time to escape?

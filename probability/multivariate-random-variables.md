@@ -60,6 +60,10 @@ If $X_1, X_2, X_3, X_4, X_5$ are independent and identically distributed exponen
 
 Let $Y_1, Y_2, \ldots,Y_n$ denote a random sample from the uniform distribution $f(y) = 1, 0 \leq y \leq 1$. Find the probability density function for the range $R = Y_{(n)} − Y_{(1)}$
 
+---
+
+Let $X_1, X_2, \ldots, X_n$ be a random sample from a $\operatorname U(0, 1)$ population. Find the distribution of the sample range $X_{(n)} - X_{(1)}$.
+
 ## Linear Combinations of Independent Random Variables
 
 A.J. has 20 jobs that she must do in sequence, with the times required to do each of these jobs being independent random variables with mean 50 minutes and standard deviation 10 minutes. M.J. has 20 jobs that he must do in sequence, with the times required to do each of these jobs being independent random variables with mean 52 minutes and standard deviation 15 minutes.
@@ -78,6 +82,10 @@ A charity receives 2025 contributions. Contributions are assumed to be independe
 
 ---
 
+What is the expected number of rolls of a fair die required to see all six outcomes? What is the population variance of the number of rolls of a fair die required to see all six outcomes?
+
+---
+
 The number of trees in one acre has a Poisson distribution with mean 60. Assuming independence, compute $P(5950 \leq X \leq 6100)$, approximately, where $X$ is the number of trees in 100 acres.
 
 ## Associated Applications
@@ -87,3 +95,7 @@ The times to process orders at the service counter of a pharmacy are exponential
 ---
 
 A driver and a passenger are in a car accident. Each of them independently has probability 0.3 of being hospitalized. When a hospitalization occurs, the loss is uniformly distributed on [0, 1]. When two hospitalizations occur, the losses are independent. Calculate the expected number of people in the car who are hospitalized, given that the total loss due to hospitalizations from the accident is less than 1.
+
+---
+
+Cassie is interested in determining the average gas mileage for a fleet of a particular model of car. Previous data collection of gas mileage gives her confidence that the standard deviation of the gas mileages that she collects will have a standard deviation of 3.3 miles per gallon. How many cars should she sample in order to be at least 95% certain that the difference between the population mean and sample mean is less than 1 mile per gallon?

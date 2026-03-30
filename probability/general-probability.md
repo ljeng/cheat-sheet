@@ -54,6 +54,10 @@ The company also determines that the number of claims received in a given week i
 
 Calculate the probability that exactly seven claims will be received during a given two-week period.
 
+---
+
+You win at craps by throwing a 7 or 11 on the first toss or by throwing a 4, 5, 6, 8, 9, or 10 on the first toss (the number tossed is referred to as a "point") and subsequently throwing your point before you throw a seven. Find the probability of winning at craps.
+
 ## Discrete Mathematics
 
 We have 20 thousand dollars that must be invested among 4 possible opportunities. Each investment must be integral in units of 1 thousand dollars, and there are minimal investments that need to be made if one is to invest in these opportunities. The minimal investments are 2, 2, 3, and 4 thousand dollars. How many different investment strategies are available if
@@ -84,3 +88,7 @@ Thirty items are arranged in a 6-by-5 array as shown.
 | $A_{26}$ | $A_{27}$ | $A_{28}$ | $A_{29}$ | $A_{30}$ |
 
 Calculate the number of ways to form a set of three distinct items such that no two of the selected items are in the same row or same column.
+
+---
+
+How many of the first 1000 positive integers are multiples of neither 6 nor 9?
