@@ -34,6 +34,16 @@ A study of automobile accidents produced the following data: An automobile from 
 
 Determine the probability that the model year of this automobile is 1997.
 
+
+| Model | $\Pi$ |
+| ---- | ----- |
+| 1997 | 0.0080 |
+| 1998 | 0.0036 |
+| 1999 | 0.0060 |
+| Other | 0.0184 |
+
+$$\frac{0.0080}{0.0080 + 0.0036 + 0.0060 + 0.0184} \approx 0.22$$
+
 ---
 
 Suppose that two defective refrigerators have been included in a shipment of six refrigerators. The buyer begins to test the six refrigerators one at a time. Let the random variable $Y$ represent the number of the test in which the last defective refrigerator is identified. Compute the probabilities for each value of $Y$.
@@ -53,6 +63,17 @@ where $n \geq 0$.
 The company also determines that the number of claims received in a given week is independent of the number of claims received in any other week.
 
 Calculate the probability that exactly seven claims will be received during a given two-week period.
+
+$$\frac{1}{2^{0 + 1}} \times \frac{1}{2^{7 + 1}} \\
+    + \frac{1}{2^{1 + 1}} \times \frac{1}{2^{6 + 1}} \\
+    + \frac{1}{2^{2 + 1}} \times \frac{1}{2^{5 + 1}} \\
+    + \frac{1}{2^{3 + 1}} \times \frac{1}{2^{4 + 1}} \\
+    + \frac{1}{2^{4 + 1}} \times \frac{1}{2^{3 + 1}} \\
+    + \frac{1}{2^{5 + 1}} \times \frac{1}{2^{2 + 1}} \\
+    + \frac{1}{2^{6 + 1}} \times \frac{1}{2^{1 + 1}} \\
+    + \frac{1}{2^{7 + 1}} \times \frac{1}{2^{0 + 1}} \\
+    = 8 \times \frac{1}{2^9}
+    = \frac{1}{64}$$
 
 ---
 
@@ -74,6 +95,17 @@ An auto insurance company has 10,000 policyholders. Each policyholder is classif
 1. married or single
 
 Of these policyholders, 3000 are young, 4600 are male, and 7000 are married. The policyholders can also be classified as 1320 young males, 3010 married males, and 1400 young married persons. Finally, 600 of the policyholders are young married males. How many of the company's policyholders are young, female, and single?
+
+Young: $3000$
+Male: $4600$
+Married: $7000$
+Young male: $1320$
+Young female: $3000 - 1320 = 1680$
+Married male: $3010$
+Yong married: $1400$
+Young married male: $600$
+Young married female: $1400 - 600 = 800$
+Young single female: $1680 - 800 = 880$
 
 ---
 
