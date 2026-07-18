@@ -11,6 +11,13 @@ Compute the probability that a hand of 13 cards contains
 
 A person tried by a 3-judge panel is declared guilty if at least 2 judges cast votes of guilty. Suppose that when the defendant is in fact guilty, each judge will independently vote guilty with probability 0.7, whereas when the defendant is in fact innocent, this probability drops to 0.2. If 70 percent of defendants are guilty, compute the conditional probability that judge number 3 votes guilty given that
 
+$$P(\text{guilty}) = 0.70$$
+$$P(\text{innocent}) = 1 - 0.70 = 0.30$$
+$$P(\text{vote guilty | guilty}) = 0.7$$
+$$P(\text{vote innocent | guilty}) = 1 - 0.7 = 0.3$$
+$$P(\text{vote guilty | innocent}) = 0.2$$
+$$P(\text{vote innocent | innocent}) = 0.8$$
+
 1. judges 1 and 2 vote guilty
 1. judges 1 and 2 cast 1 guilty and 1 not guilty vote
 1. judges 1 and 2 both cast not guilty votes
@@ -20,6 +27,14 @@ Let $E_i$, $i = 1, 2, 3$ denote the event that judge $i$ casts a guilty vote. Ar
 ---
 
 A health study tracked a group of persons for five years. At the beginning of the study, 20% were classified as heavy smokers, 30% as light smokers, and 50% as nonsmokers. Results of the study showed that light smokers were twice as likely as nonsmokers to die during the five-year study but only half as likely as heavy smokers. A randomly selected participant from the study died over the five-year period. Calculate the probability that the participant was a heavy smoker.
+
+| Smoker | $\Pi$ |
+| ----- | ----- |
+| Heavy | $0.40$ |
+| Light | $0.30$ |
+| Non   | $0.25$ |
+
+$$\frac{0.40}{0.40 + 0.30 + 0.25} \approx 0.42$$
 
 ---
 
@@ -48,6 +63,10 @@ $$\frac{0.0080}{0.0080 + 0.0036 + 0.0060 + 0.0184} \approx 0.22$$
 
 Suppose that two defective refrigerators have been included in a shipment of six refrigerators. The buyer begins to test the six refrigerators one at a time. Let the random variable $Y$ represent the number of the test in which the last defective refrigerator is identified. Compute the probabilities for each value of $Y$.
 
+$$P(Y = 0) = 0$$
+$$P(Y = 1) = 0$$
+$$P(Y = 2) = \frac{2}{6} \times \frac{1}{5} = \frac{1}{15}$$
+
 ---
 
 A hospital receives two fifths of its flu vaccine from Company A and the remainder from Company B. Each shipment contains a large number of vials of vaccine. From Company A, 3% of the vials are ineffective; from Company B, 2% are ineffective. A hospital tests $n = 25$ randomly selected vials from one shipment and finds that 2 are ineffective. What is the conditional probability that this shipment came from Company A?
@@ -65,14 +84,13 @@ The company also determines that the number of claims received in a given week i
 Calculate the probability that exactly seven claims will be received during a given two-week period.
 
 $$\frac{1}{2^{0 + 1}} \times \frac{1}{2^{7 + 1}} \\
-    + \frac{1}{2^{1 + 1}} \times \frac{1}{2^{6 + 1}} \\
-    + \frac{1}{2^{2 + 1}} \times \frac{1}{2^{5 + 1}} \\
-    + \frac{1}{2^{3 + 1}} \times \frac{1}{2^{4 + 1}} \\
-    + \frac{1}{2^{4 + 1}} \times \frac{1}{2^{3 + 1}} \\
-    + \frac{1}{2^{5 + 1}} \times \frac{1}{2^{2 + 1}} \\
-    + \frac{1}{2^{6 + 1}} \times \frac{1}{2^{1 + 1}} \\
-    + \frac{1}{2^{7 + 1}} \times \frac{1}{2^{0 + 1}} \\
-    = 8 \times \frac{1}{2^9}
+        + \frac{1}{2^{1 + 1}} \times \frac{1}{2^{6 + 1}} \\
+        + \frac{1}{2^{2 + 1}} \times \frac{1}{2^{5 + 1}} \\
+        + \frac{1}{2^{3 + 1}} \times \frac{1}{2^{4 + 1}} \\
+        + \frac{1}{2^{4 + 1}} \times \frac{1}{2^{3 + 1}} \\
+        + \frac{1}{2^{5 + 1}} \times \frac{1}{2^{2 + 1}} \\
+        + \frac{1}{2^{6 + 1}} \times \frac{1}{2^{1 + 1}} \\
+        + \frac{1}{2^{7 + 1}} \times \frac{1}{2^{0 + 1}} \\
     = \frac{1}{64}$$
 
 ---
@@ -100,19 +118,18 @@ Young: $3000$
 Male: $4600$
 Married: $7000$
 Young male: $1320$
-Young female: $3000 - 1320 = 1680$
 Married male: $3010$
 Yong married: $1400$
 Young married male: $600$
-Young married female: $1400 - 600 = 800$
-Young single female: $1680 - 800 = 880$
+
+$$(3000 - 1320) - (1400 - 600) = 880$$
 
 ---
 
 Thirty items are arranged in a 6-by-5 array as shown.
 
 | $A_1$  | $A_2$   | $A_3$    | $A_4$    | $A_5$    |
-|------ | ------- | -------- | ------- | -------- |
+| ------ | ------- | -------- | ------- | -------- |
 | $A_6$  | $A_7$   | $A_8$    | $A_9$    | $A_{10}$  |
 | $A_{11}$ | $A_{12}$ | $A_{13}$ | $A_{14}$ | $A_{15}$ |
 | $A_{16}$ | $A_{17}$ | $A_{18}$ | $A_{19}$ | $A_{20}$ |
@@ -124,3 +141,8 @@ Calculate the number of ways to form a set of three distinct items such that no 
 ---
 
 How many of the first 1000 positive integers are multiples of neither 6 nor 9?
+
+$$1000 - \lfloor 1000 / 6 \rfloor
+        - \lfloor 1000 / 9 \rfloor
+        + \lfloor 1000 / \operatorname{lcm}(6, 9) \rfloor
+    = 778$$
