@@ -43,13 +43,15 @@ $$p_{n + 1} = \frac{1}{5} p_n$$
 
 where $p_n$ represents the probability that the policyholder files $n$ claims during the period. Under this assumption, what is the probability that a policyholder files more than one claim during the period?
 
----
-
-In modeling the number of claims filed by an individual under an automobile policy during a three-year period, an actuary makes the simplifying assumption that for all integers $n \geq 0$
-
-$$p_{n + 1} = \frac{1}{5} p_n$$
-
-where $p_n$ represents the probability that the policyholder files $n$ claims during the period. Under this assumption, what is the probability that a policyholder files more than one claim during the period?
+$$p_0 \Sigma_{i = 0}^\infty \frac{1}{5^i} = 1$$
+$$p_0 \frac{1}{1 - \frac{1}{5}} = 1$$
+$$p_0 \cdot \frac{5}{4} = 1$$
+$$p_0 = \frac{4}{5}$$
+$$1 - (p_0 + p_1)
+    = 1 - \left(p_0 + \frac{1}{5} p_0\right)
+    = 1 - p_0 \frac{6}{5}
+    = 1 - \frac{4}{5} \cdot \frac{6}{5}
+    = \frac{1}{25}$$
 
 ### Hypergeometric
 
@@ -155,6 +157,11 @@ $$4x^2 + 4xY + Y + 2 = 0$$
 
 are both real?
 
+$${(4Y)}^2 - 4 \cdot 4 \cdot (Y + 2) \geq 0$$
+$$Y^2 - Y - 2 \geq 0$$
+$$\frac{1 \pm \sqrt{1^2 - 4 \cdot 1(-2)}}{2 \cdot 1} = \{-1, 2\}$$
+$$\frac{\min{5, 2} - \max{0, -1}}{5 - 0} = \frac{2}{5}$$
+
 ## Applications
 
 A pharmaceutical company wants to know whether an experimental drug has an effect on systolic blood pressure. Fifteen randomly selected subjects were given the drug and, after sufficient time for the drug to have an impact, their systolic blood pressures were recorded. The data appear below:
@@ -176,6 +183,8 @@ A pharmaceutical company wants to know whether an experimental drug has an effec
 ---
 
 A tour operator has a bus that can accommodate 20 tourists. The operator knows that tourists may not show up, so he sells 21 tickets. The probability that an individual tourist will not show up is 0.02, independent of all other tourists. Each ticket costs 50 and is non-refundable if a tourist fails to show up. If a tourist shows up and a seat is not available, the tour operator has to pay 100 (ticket cost + 50 penalty) to the tourist. What is the expected revenue of the tour operator?
+
+$$21 \cdot (1 - 0.02) \cdot 50 - {(1 - 0.02)} ^ {21} \cdot 50 = 996$$
 
 ---
 
