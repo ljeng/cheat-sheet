@@ -47,10 +47,10 @@ $$p_0 \Sigma_{i = 0}^\infty \frac{1}{5^i} = 1$$
 $$p_0 \frac{1}{1 - \frac{1}{5}} = 1$$
 $$p_0 \cdot \frac{5}{4} = 1$$
 $$p_0 = \frac{4}{5}$$
-$$1 - (p_0 + p_1)
-    = 1 - \left(p_0 + \frac{1}{5} p_0\right)
-    = 1 - p_0 \frac{6}{5}
-    = 1 - \frac{4}{5} \cdot \frac{6}{5}
+$$1 - (p_0 + p_1) \\
+    = 1 - \left(p_0 + \frac{1}{5} p_0\right) \\
+    = 1 - p_0 \frac{6}{5} \\
+    = 1 - \frac{4}{5} \cdot \frac{6}{5} \\
     = \frac{1}{25}$$
 
 ### Hypergeometric
@@ -77,6 +77,8 @@ what is the distribution of $X$?
 ### Poisson
 
 There are three highways in the county. The number of daily accidents that occur on these highways are Poisson random variables with respective parameters 0.3, 0.5, and 0.7. Find the expected number of accidents that will happen on any of these highways today.
+
+$$0.3 + 0.5 + 0.7 = 1.5$$
 
 ---
 
@@ -110,6 +112,15 @@ $$f(y) = \begin{cases}
 
 Given that a randomly selected home is insured for at least 1.5, what is the probability that it is insured for less than 2?
 
+$$\int_a^b f(y) \, dx \\
+    = \int_a^b 3x^{-4} \, dx \\
+    = -x^{-3} \right|_a^b \\
+    = -b^{-3} + a^{-3}$$
+$$\frac{P(1.5 \leq x < 2)}{P(x \geq 1.5)} \\
+    = \frac{\int_{1.5}^2 f(y) \, dx}{\int_{1.5}^\infty f(y) \, dx} \\
+    = \frac{-2^{-3} + {1.5}^{-3}}{0 + {1.5}^{-3}} \\
+    \approx 0.578$$
+
 ---
 
 A random variable $X$ has the cumulative distribution function
@@ -141,6 +152,24 @@ $$f(x) = \frac{3x^2}{120^3} e^{-\left(\frac{x}{120\right)}^3$$
 $$0 < x < \infty$$
 
 1. What is the probability that the rat survives at least 100 weeks?
+    Let
+    $$y = {\left(\frac{x}{120}\right)}^3$$
+    $$dy = \frac{1}{40} \cdot {\left(\frac{x}{120}\right)}^2 \, dx$$
+    $$dx = 40 \cdot {\left(\frac{120}{x}\right)}^2 \, dy$$
+    $$\int_{100}^\infty f(x) \, dx \\
+        = \int_{100}^\infty
+            \frac{3x^2}{120^3}
+            e^{-\left(\frac{x}{120\right)}^3
+            \, dx \\
+        = \int_{{\left(\frac{100}{120}\right)}^3}^\infty
+            \frac{3x^2}{120^3} e^{-y}
+            \cdot 40
+            \cdot {\left(\frac{120}{x}\right)}^2
+            \, dy \\
+        = \int_{\frac{125}{216}}^\infty e^{-y} \, dy \\
+        = (-e^{-y}) \right|_{\frac{125}{216}}^\infty \\
+        = e^{-y} \right|_\infty^{\frac{125}{216}}
+        = e^{-\frac{125}{216}}$$
 1. Find the expected value of the survival time. *Hint*: In the integral representing $\operatorname E(X)$, let
 
 $$y = {\left(\frac{x}{120}\right)}^3$$
