@@ -74,6 +74,8 @@ $$M_x(t) = {\left(\frac{0.70}{1 - 0.3e^t}\right)}^5$$
 
 what is the distribution of $X$?
 
+$$\operatorname{NB}(5, 0.70)$$
+
 ### Poisson
 
 There are three highways in the county. The number of daily accidents that occur on these highways are Poisson random variables with respective parameters 0.3, 0.5, and 0.7. Find the expected number of accidents that will happen on any of these highways today.
@@ -132,6 +134,8 @@ $$F(x) = \begin{cases}
 \end{cases}$$
 
 Calculate the variance of $X$.
+
+0
 
 ### Beta
 
@@ -201,13 +205,59 @@ A pharmaceutical company wants to know whether an experimental drug has an effec
 ```
 
 1. Approximate the value of $s$ using the range approximation.
-2. Calculate the values of $\bar{y}$ and $s$ for the 15 blood pressure readings.
+
+    $$s \approx \frac{172 - 108}{4} = 16$$
+
+2. Calculate the values of $\bar y$ and $s$ for the 15 blood pressure readings.
+
+    $$\bar y =
+        \frac{172
+            + 140
+            + 123
+            + 130
+            + 115
+            + 148
+            + 108
+            + 129
+            + 137
+            + 161
+            + 123
+            + 152
+            + 133
+            + 128
+            + 142}{15}
+        \approx 136$$
+    $$s = \sqrt{\frac{{172 - 136}^2
+        + {140 - 136}^2
+        + {123 - 136}^2
+        + {130 - 136}^2
+        + {115 - 136}^2
+        + {148 - 136}^2
+        + {108 - 136}^2
+        + {129 - 136}^2
+        + {137 - 136}^2
+        + {161 - 136}^2
+        + {123 - 136}^2
+        + {152 - 136}^2
+        + {133 - 136}^2
+        + {128 - 136}^2
+        + {142 - 136}^2}{15 - 1}}
+        = 17.1$$
+
 3. Let $k \geq 1$. For any set of $n$ measurements, the fraction included in the interval $\bar y - ks$ to $\bar y + ks$ is at least $1 - \frac{1}{k^2}$.
     
     $$s^2 = \frac{1}{n - 1}\sum_{i = 1}^n (y_i - \bar y)^2$$
     
     Find values $a$ and $b$ such that at least 75% of the blood pressure measurements lie between $a$ and $b$.
+
+    $$1 - \frac{1}{k^2} = 0.75$$
+    $$k = 2$$
+    $$a = y - ks = 102$$
+    $$b = y + ks = 170$$
+
 4. Did Tchebysheff's theorem work? That is, use the data to find the actual percent of blood pressure readings that are between the values $a$ and $b$ you found in *(3)*. Is this actual percentage greater than 75%?
+    
+    Yes
 
 ---
 
@@ -237,11 +287,18 @@ $$F(x) = \begin{cases}
 
 The policy has a deductible of 20. An insurer reimburses the policyholder for 100% of health care costs between 20 and 120. Health care costs above 120 are reimbursed at 50%. Let $G$ be the cumulative distribution function of reimbursements given that the reimbursement is positive. Calculate $G(115)$.
 
+$$G(115)
+    = F((120 - 20) + \frac{115 - 100}{0.50}) - F(20) \\
+    = F((120 - 20) + \frac{115 - 100}{0.50}) - F(20) \\
+    = \[1 - e^{-\frac{(120 - 20) + \frac{115 - 100}{0.50}}{100}}\]
+        - \[1 - e^{-\frac{20}{100}}\] \\
+    = -e^{-1.5} + e^{-0.2} = -0.2231 + 0.8187 = 0.596$$
+
 ---
 
 Let $F(x)$ represent the fraction of payroll earned by the highest paid fraction $x$ of employees in a company (for example, $F(0.2) = 0.5$ means that the highest paid 20% of workers earn 50% of the payroll). Gini's index of inequality, $G$ is one way to measure how evenly payroll is distributed among all employees and is defined as follows:
 
-$$G = 2 \int_0^1 |x - F(x)| \, dx$$
+$$G = 2 \int_0^1 \lvert x - F(x) \rvert \, dx$$
 
 In a certain company, the distribution of payroll is described by the density function:
 
@@ -260,3 +317,9 @@ A thief is in a sinister, diabolical, fiendish, dark, circular dungeon with thre
 - a 9-hour tunnel that returns him to the dungeon
 
 Each door is chosen with equal probability. When he is dropped back into the dungeon by the second and third doors, he is a "Markov" thief in the sense that there is a memoryless choice of doors. He isn't able to mark the doors in any way. What is his expected time to escape?
+
+$$E(t)
+    = \frac{6 + (3 + E(t)) + (9 + E(t))}{3}
+    = 6 + \frac{2E(t)}{3}$$
+$$E(t) = 18$$
+18 hours
