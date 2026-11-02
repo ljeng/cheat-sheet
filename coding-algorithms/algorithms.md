@@ -27,19 +27,21 @@ string longestPalindrome(string s) {
   string t = "#";
   for (char x : s) t += x, t += '#';
   int n = t.size();
-  vector<int> m(n, 0);
+  vector<int> m(n);
   string longest_palindrome = s.substr(0, 1);
   for (int enp = 0, tc = 0, bp = 0; enp < n; enp++) {
     if (enp < bp) m[enp] = min(bp - enp, m[2 * tc - enp]);
-    while (enp - m[enp]
-      && enp + m[enp] + 1 < n
-      && t[enp - m[enp] - 1] == t[enp + m[enp] + 1])
-      m[enp]++;
+    while (true) {
+      int i = enp - m[enp] - 1, j = enp + m[enp] + 1;
+      if (i >= 0 && j <= n && t[i] == t[j]) m[enp]++;
+      else break;
+    }
     if (enp + m[enp] > bp) tc = enp, bp = enp + m[enp];
     if (m[enp] > longest_palindrome.size()) {
       longest_palindrome = "";
-      for (int i = enp - m[enp]; i < enp + m[enp] + 1; i++) if (t[i] != '#')
-        longest_palindrome += t[i];
+      for (int i = enp - m[enp]; i <= enp + m[enp]; i++)
+        if (t[i] != '#')
+          longest_palindrome += t[i];
     }
   }
   return longest_palindrome;
@@ -55,15 +57,15 @@ string longestPalindrome(string s) {
 using namespace std;
 
 vector<int> KnuthMorrisPratt(string pattern, string text) {
-  int j, m = pattern.length(), t = 0, k = 0, n = text.length();
+  int j, m = pattern.length(), k = 0;
   vector<int> lps(m + 1);
-  for (j = 1; j < m; lps[++j] = t) {
+  for (int t = 0, j = 1; j < m; lps[++j] = t) {
     while (t && pattern[j] != pattern[t]) t = lps[t];
     t += pattern[j] == pattern[t];
   }
   j = 0;
   vector<int> matches;
-  while (k < n) {
+  while (k < text.length()) {
     while (j && text[k] != pattern[j]) j = lps[j];
     j += text[k++] == pattern[j];
     if (j == m) {
@@ -159,8 +161,10 @@ def maxEnvelopes(envelopes):
     lis = []
     for w, h in sorted(envelopes, key = lambda x: (x[0], -x[1])):
         i = bisect.bisect_left(lis, h)
-        if i < len(lis): lis[i] = h
-        else: lis.append(h)
+        if i < len(lis):
+          lis[i] = h
+        else:
+          lis.append(h)
     return len(lis)
 
 ```
@@ -215,10 +219,9 @@ int smallestDistancePair(vector<int>& nums, int k) {
   while (lo < hi) {
     int mid = (lo + hi) >> 1;
     int distance = -n;
-    for (int i = 0, j = 0; i < n; i++) {
-      while (j < n && nums[j] <= nums[i] + mid) j++;
-      distance += j - i;
-    }
+    for (int i = 0, j = 0; i < n; distance += j - i++)
+      while (j < n && nums[j] <= nums[i] + mid)
+        j++;
     if (distance < k) lo = ++mid;
     else hi = mid;
   }
@@ -279,11 +282,16 @@ def fullJustify(words, maxWidth):
                 n -= 1
                 div, mod = divmod(maxWidth - width, n)
                 spaces = [div] * n
-                for i in range(mod): spaces[i] += 1
+                for i in range(mod):
+                  spaces[i] += 1
                 spaces.append(0)
-                justified.append(''.join(word + space * ' '
-                    for word, space in zip(line, spaces)))
-            else: justified.append(line[0].ljust(maxWidth))
+                justified.append(
+                  ''.join(
+                    word + space * ' ' for word, space in zip(line, spaces)
+                    )
+                  )
+            else:
+              justified.append(line[0].ljust(maxWidth))
             n = width = 0
             line = []
         n += 1
@@ -339,9 +347,10 @@ Given a sorted integer array `nums` and an integer `n`, add/patch elements to th
 
 int minPatches(std::vector<int>& nums, int n) {
   int i = 0, patches = 0;
-  for (long m = 1; m <= n; patches++)
-    m += i < nums.size() && nums[i] <= m ? nums[i++] : m;
-  return patches - i;
+  for (long m = 1;
+    m <= n;
+    m += i < nums.size() && nums[i] <= m ? nums[i++] : (patches++, m));
+  return patches;
 }
 
 ```
