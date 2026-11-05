@@ -43,15 +43,16 @@ Return the median array for each window in the original array. Answers within ${
 
 vector<double> medianSlidingWindow(vector<int>& nums, int k) {
   multiset<int> window(nums.begin(), nums.begin() + k);
-  auto it = next(window.begin(), k / 2);
+  auto it = next(window.begin(), k >> 1);
   vector<double> median;
   for (int i = k; ; i++) {
-    median.push_back((double(*it) + *prev(it, k % 2 ^ 1)) / 2);
+    median.push_back((double(*it) + *prev(it, k & 1 ^ 1)) / 2);
     if (i == nums.size()) return median;
     window.insert(nums[i]);
-    if (nums[i] < *it) it--;
-    if (nums[i - k] <= *it) it++;
+    if (nums[i] < *it) --it;
+    if (nums[i - k] <= *it) ++it;
     window.erase(window.lower_bound(nums[i - k]));
+  }
 }
 
 ```
@@ -120,7 +121,7 @@ public:
       auto it_prev = it_current == nodes.begin()
         ? nodes.end()
         : prev(it_current);
-      if (it_prev->count != count || it_current == nodes.begin())
+      if (it_current == nodes.begin() || it_prev->count != count)
         it_prev = nodes.insert(it_current, {count, {}});
       it_prev->keys.insert(key);
       key_node[key] = it_prev;
@@ -151,11 +152,14 @@ def longestValidParentheses(s):
     index = [-1]
     m = 0
     for i, x in enumerate(s):
-        if x == '(': index.append(i)
+        if x == '(':
+            index.append(i)
         else:
             index.pop()
-            if index: m = max(m, i - index[-1])
-            else: index.append(i)
+            if index:
+                m = max(m, i - index[-1])
+            else:
+                index.append(i)
     return m
 
 ```
@@ -223,13 +227,14 @@ import collections
 def findItinerary(tickets):
     airports = ['JFK']
     adjacency = collections.defaultdict(list)
-    for from_, to in sorted(tickets, reverse=True): adjacency[from_].append(to)
-    itinerary = []
+    for from_, to in sorted(tickets, reverse=True):
+        adjacency[from_].append(to)
+    itinerary = collections.deque()
     while airports:
         while adjacency[airports[-1]]:
             airports.append(adjacency[airports[-1]].pop())
-        itinerary.append(airports.pop())
-    return itinerary[::-1]
+        itinerary.appendleft(airports.pop())
+    return itinerary
 
 ```
 
@@ -259,7 +264,9 @@ def isValid(code):
     i = 0
     tag_names = []
     while i < len(code):
-        if i and not tag_names: return False
+        if not tag_names:
+            if i or not code.startswith('<') or code.startswith('<![CDATA['):
+                return False
         if code.startswith('<![CDATA[', i):
             i = code.find(']]>', i + 9)
             if i == -1: return False
@@ -311,7 +318,7 @@ Convert a non-negative integer `num` to its English words representation.
 ```python
 from collections import deque
 
-one = ['',
+ONE = ['',
     'One',
     'Two',
     'Three',
@@ -331,7 +338,7 @@ one = ['',
     'Seventeen',
     'Eighteen',
     'Nineteen']
-ten = ['',
+TEN = ['',
     'Ten',
     'Twenty',
     'Thirty',
@@ -341,7 +348,7 @@ ten = ['',
     'Seventy',
     'Eighty',
     'Ninety']
-power1000 = ['', 'Thousand', 'Million', 'Billion']
+POWER1000 = ['', 'Thousand', 'Million', 'Billion']
 
 def numberToWords(num):
     superwords = deque()
@@ -352,15 +359,17 @@ def numberToWords(num):
             subwords = deque()
             if mod >= 100:
                 div, mod = divmod(mod, 100)
-                subwords.extendleft([one[div], 'Hundred'])
+                subwords.extendleft([ONE[div], 'Hundred'])
             if mod >= 20:
                 div, mod = divmod(mod, 10)
-                subwords.appendleft(ten[div])
-            subwords.extendleft([one[mod], power1000[i]])
+                subwords.appendleft(TEN[div])
+            subwords.extendleft([ONE[mod], POWER1000[i]])
             superwords.extendleft(subwords)
         i += 1
-    if superwords: return ' '.join(word for word in superwords if word)
-    else: return 'Zero'
+    if superwords:
+        return ' '.join(word for word in superwords if word)
+    else:
+        return 'Zero'
 
 ```
 
@@ -485,7 +494,8 @@ public:
     m = matrix.size(), n = matrix[0].size();
     this->matrix = vector<vector<int>>(m, vector<int>(n));
     bit = vector<vector<int>>(m + 1, vector<int>(n + 1));
-    for (int i = 0; i < m; i++) for (int j = 0; j < n; j++) update(i, j, matrix[i][j]);
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++) update(i, j, matrix[i][j]);
   }
   
   void update(int row, int col, int val) {
@@ -506,9 +516,9 @@ public:
   
   int sumRegion(int row1, int col1, int row2, int col2) {
     return sum(row1, col1)
-      - sum(row1, ++col2)
-      - sum(++row2, col1)
-      + sum(row2, col2);
+      - sum(row1, col2 + 1)
+      - sum(row2 + 1, col1)
+      + sum(row2 + 1, col2 + 1);
   }
 };
 
@@ -604,9 +614,11 @@ import sys
 def getSkyline(buildings):
     height_right = [(0, sys.maxsize)]
     skyline = [[0, 0]]
-    for left, height, right in sorted(itertools.chain(*[[(l, -h, r),
-        (r, 0, 0)] for l, r, h in buildings])):
-        while left >= height_right[0][1]: heapq.heappop(height_right)
+    for left, height, right in sorted(
+        itertools.chain(*[[(l, -h, r), (r, 0, 0)] for l, r, h in buildings])
+        ):
+        while left >= height_right[0][1]:
+            heapq.heappop(height_right)
         if height: heapq.heappush(height_right, (height, right))
         height = -height_right[0][0]
         if skyline[-1][1] != height: skyline.append([left, height])
@@ -624,9 +636,9 @@ import collections
 import heapq
 
 def rearrangeString(s, k):
-    heap = [(-count, character)
-      for character, count
-      in collections.Counter(s).items()]
+    heap = []
+    for character, count in collections.Counter(s).items():
+        heap.append((-count, character))
     heapq.heapify(heap)
     queue = collections.deque()
     rearranged = []
@@ -699,7 +711,8 @@ def longestDupSubstring(s):
                     p = automaton[p].link
                 last -= 1
                 automaton[q].link = automaton[last].link = last + 1
-        else: automaton[last].link = 0
+        else:
+            automaton[last].link = 0
     return lds
 
 ```
