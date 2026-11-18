@@ -69,7 +69,7 @@ But we're back to doing a loop in Python and the operations in Python; the code 
 
 ---
 
-*Why is the difference so significant? If we're multiplying a vector of size N by a scalar, we'll have $N$ multiplications to perform either way, won't we?* The CPU instruction pipelines do not like branches[^4]. Vectorization reduces the number that execute. Modern CPUs tend to be very wide[^5]. Intel's current AVX10 instruction set uses 512-bit registers, which can be used to hold[^6] a set of 16 operands. Instruction-level parallelism allows a single CPU[^7] to execute more than one **instruction** at a time[^8].
+*Why is the difference so significant? If we're multiplying a vector of size $N$ by a scalar, we'll have $N$ multiplications to perform either way, won't we?* The CPU instruction pipelines do not like branches[^4]. Vectorization reduces the number that execute. Modern CPUs tend to be very wide[^5]. Intel's current AVX10 instruction set uses 512-bit registers, which can be used to hold[^6] a set of 16 operands. Instruction-level parallelism allows a single CPU[^7] to execute more than one **instruction** at a time[^8].
 
 ## Alternative Solutions
 
@@ -86,6 +86,7 @@ At the point where vectorization doesn't help you and you need some other soluti
     ```
 
     ✅ PyPy is almost as fast as NumPy, and it's just a normal Python loop.
+
     ❌ PyPy doesn't interface with NumPy well. A loop over a NumPy array is actually slower than CPython.
 
 - **Numba** also does just-in-time compilation. Unlike PyPy, it is designed to work with NumPy.
@@ -116,6 +117,7 @@ At the point where vectorization doesn't help you and you need some other soluti
 - The other approach is to compile code ahead of time. Using Cython, Rust, or C, you can write fast extensions for Python.
 
 ✅ Compiled languages are much more flexible. Cython supports almost all of Python, Rust is a sophisticated language with excellent tooling, and so on.
+
 ❌ You will have to add a bunch of configuration to your build setup to compile these extensions before Python runs. It requires users to have a compiler installed.
 
 ## Choosing a Solution
